@@ -65,17 +65,34 @@
                         </div>
 
                         <div class="col mb-3">
+                            <label for="name" class="col-md-4 col-form-label text-md-start">Asal Sekolah</label>
+
                             <div class="col">
-                                <form action="/">
-                                    <label for="cars"class="col-md-4 col-form-label text-md-start">Mengetahui Melalui</label>
-                                    <select id="cars" name="cars" class="rounded-pill p-2 form-select">
-                                      <option value="EXPO">EXPO</option>
-                                      <option value="Online">Online</option>
-                                      <option value="Open House">Open House</option>
-                                      <option value="Sosial Media">Sosial Media</option>
+                                <input id="asalSekolah" type="text" class="rounded-pill p-2 form-control @error('asalSekolah') is-invalid @enderror" name="asalSekolah" value="{{ old('asalSekolah') }}" required autocomplete="asalSekolah" autofocus>
+
+                                @error('asalSekolah')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col mb-3">
+                            <div class="col">
+                                
+                        
+                                    <label for="asalReferensiSekolah" class="col-md-4 col-form-label text-md-start">Mengetahui Melalui</label>
+                                    <select name="asalReferensiSekolah" class="rounded-pill p-2 form-select">
+                                        <option value="EXPO">EXPO</option>
+                                        <option value="Online">Online</option>
+                                        <option value="Open House">Open House</option>
+                                        <option value="Sosial Media">Sosial Media</option>
                                     </select>
-                
-                                  </form>
+                        
+                                    
+                                    
+                                    
                                 
                             </div>
                         </div>

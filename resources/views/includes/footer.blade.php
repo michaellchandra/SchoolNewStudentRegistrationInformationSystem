@@ -1,4 +1,3 @@
-<!-- Footer -->
 <footer class="sticky-footer bg-white p-3">
     <div class="container my-auto">
         <div class="text-center my-auto">
@@ -6,4 +5,3 @@
         </div>
     </div>
 </footer>
-<!-- End of Footer -->
