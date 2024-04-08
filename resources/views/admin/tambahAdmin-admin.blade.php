@@ -21,7 +21,8 @@
 
                 <div class="form-group">
                     <label for="adminFoto">Foto Admin</label>
-                    <input type="file" id="adminFoto" name="adminFoto" class="form-control-file" accept="image/*">
+                    <input type="file" id="adminFoto" name="adminFoto" class="form-control-file form-control form-control-md w-25 me-3" accept="image/*">
+                    
                 </div>
 
                 <div class="form-group">

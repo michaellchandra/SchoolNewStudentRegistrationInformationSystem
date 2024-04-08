@@ -32,6 +32,11 @@ class AdminController extends Controller
     return view('admin.pendaftar-admin', ['users' => $users]); 
     }
 
+    public function semuaAkun() {
+        $users = User::all(); 
+        return view('admin.allAkun-admin', ['users' => $users]);  
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -71,7 +76,7 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -79,7 +84,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       
     }
 
     /**
@@ -87,6 +92,18 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       
     }
+
+
+    public function settings(){
+        return view ('admin.settings-admin');
+    }
+
+    public function manageAdmin(){
+        $admins = Admin::all();
+        return view('admin.manageAdmin-admin')->with('admins', $admins);
+    }
+    
+
 }

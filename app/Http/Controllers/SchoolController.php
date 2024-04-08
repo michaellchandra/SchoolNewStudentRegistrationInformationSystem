@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\School;
+use Illuminate\Support\Facades\Auth;
+
 
 class SchoolController extends Controller
 {
@@ -11,7 +14,8 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        $school = School::all(); 
+        return view ('admin.schoolsetting-admin')->with('school', $school);
     }
 
     /**
@@ -41,17 +45,25 @@ class SchoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit( $id)
     {
-        //
+        
+        $school = School::all(); 
+        return view('admin.schoolsetting-admin')->with('school', $school);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+    {   
+        $school = School::findOrFail($id);
+        $school->update([
+            'schoolNama' => $request->schoolNama,
+            'schoolDeskripsi' => $request->schoolDeskripsi,
+            'schoolTelepon' => $request->schoolTelepon,
+        ]);
+
     }
 
     /**

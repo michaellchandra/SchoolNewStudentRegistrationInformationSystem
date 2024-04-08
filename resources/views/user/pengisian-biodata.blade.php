@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-fluid">
-    <a href="/home" class="pt-5 link-primary">< Back to Dashboard</a>
+    <a href="/user/dashboard" class="pt-5 link-primary">< Back to Dashboard</a>
     <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
         <h1 class="h3 mb-0 text-dark">Pengisian Biodata & Berkas</h1>
         <a href="#" class="p-2 fs-6 btn btn-sm btn-primary shadow-sm"><i

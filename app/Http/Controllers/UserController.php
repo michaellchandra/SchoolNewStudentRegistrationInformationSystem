@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,9 +14,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.dashboard-user')->with('users',$users);
+        return view('user.dashboard-user')->with('users', $users);
     }
-    
+
 
 
     /**
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.tambahAkun');
     }
 
     /**
@@ -31,7 +32,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $request->validate([
+        //     'email' => ['required', 'email', 'unique:users'],
+        //     'password' => ['required', 'min:8'],
+        //     'asalSekolah' => ['required'],
+        //     'asalReferensiSekolah' => ['required'],
+        // ]);
+
+        User::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'asalSekolah' => $request->asalSekolah,
+            'asalReferensiSekolah' => $request->asalReferensiSekolah,
+        ]);
+
+        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Akun pengguna berhasil ditambahkan.');
     }
 
     /**
@@ -47,7 +62,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id); // Mengambil data pengguna berdasarkan ID
+        return view('admin.editUser', compact('user'));
     }
 
     /**
@@ -55,7 +71,22 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+
+        ]);
+
+        
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            
+        ]);
+
+        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Akun berhasil diperbarui.');
     }
 
     /**
@@ -63,6 +94,25 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        // Hapus pengguna dari database
+        $user->delete();
+
+        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Data pengguna berhasil dihapus.');
     }
+
+
+    public function resetPassword(Request $request, $id)
+{
+    $request->validate([
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return redirect()->back()->with('success', 'Password pengguna berhasil direset.');
+}
 }

@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('registration', function (Blueprint $table) {
-            $table->bigIncrements('registrationID');
-            $table->integer('userID');
-            // $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('registrationStatus');
             $table->string('hasilTes');
-            $table->date('tanggalRegistrasi');
+            $table->dateTime('tanggalRegistrasi');
         });
     }
 

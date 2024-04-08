@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengumuman;
+use Illuminate\Support\Facades\Auth;
+
 class PengumumanController extends Controller
 {
     /**
@@ -11,9 +13,14 @@ class PengumumanController extends Controller
      */
     public function index()
     {
-        // $pengumuman = Pengumuman::first(); // Mengambil pengumuman pertama
+        $users = Auth::user();
+        if ($users->isAdmin()) {
+            return view('admin.pengumuman-admin');
+        } else {
+            return view('user.pengumuman-user');
+        }
 
-        return view('admin.pengumuman-admin');
+        
     }
 
     /**

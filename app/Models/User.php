@@ -17,7 +17,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'asalSekolah',
@@ -60,5 +59,10 @@ class User extends Authenticatable
     {
         
         return $this->admin()->exists(); 
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class, 'user_id');
     }
 }

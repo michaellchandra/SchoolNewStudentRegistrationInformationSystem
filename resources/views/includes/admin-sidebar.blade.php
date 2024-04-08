@@ -10,32 +10,32 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="dashboard">
+        <a class="nav-link" href="/admin/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="pendaftar">
+        <a class="nav-link" href="/admin/pendaftar">
             <i class="fas fa-solid fa-users"></i>
             <span>Pendaftar</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="payment">
+        <a class="nav-link" href="/admin/payment">
             <i class="fas fa-solid fa-money-bill"></i>
             <span>Pembayaran</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="analytic">
+        <a class="nav-link" href="/admin/analytic">
             <i class="fas fa-solid fa-chart-line"></i>
             <span>Analitik</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="pengumuman">
+        <a class="nav-link" href=/admin/pengumuman>
             <i class="fas fa-solid fa-info"></i>
             <span>Pengumuman</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="settings">
+        <a class="nav-link" href="/admin/settings">
             <i class="fas fa-solid fa-ellipsis"></i>
             <span>Pengaturan</span></a>
     </li>

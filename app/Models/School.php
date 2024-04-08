@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
-    use HasFactory;
+    
+    protected $fillable = [
+        'schoolNama', 
+        'schoolLogo', 
+        'schoolDeskripsi', 'schoolTelepon', 'admin_id'
+    ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
+    }
 }

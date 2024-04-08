@@ -19,7 +19,11 @@
             </div>
         </div>
     </div> --}}
-
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
             <h1 class="h3 mb-0 text-dark">Dashboard</h1>
             {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i

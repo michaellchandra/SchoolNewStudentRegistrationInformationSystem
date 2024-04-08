@@ -10,7 +10,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="home">
+        <a class="nav-link" href="dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -20,7 +20,7 @@
             <span>Pengumuman</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="payment-admin">
+        <a class="nav-link" href="payment">
             <i class="fas fa-solid fa-money-bill"></i>
             <span>Pembayaran</span></a>
     </li>
