@@ -28,13 +28,13 @@ class AdminController extends Controller
 
     public function pendaftarAdmin()
     {
-    $users = User::all(); 
-    return view('admin.pendaftar-admin', ['users' => $users]); 
+    $users = User::all();
+    return view('admin.pendaftar-admin', ['users' => $users]);
     }
 
     public function semuaAkun() {
-        $users = User::all(); 
-        return view('admin.allAkun-admin', ['users' => $users]);  
+        $users = User::all();
+        return view('admin.allAkun-admin', ['users' => $users]);
     }
 
     /**
@@ -43,9 +43,9 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            
+
         ]);
-    
+
         // Simpan data admin ke dalam database
         $admin = new Admin();
         $admin->adminNama = $request->input('adminNama');
@@ -53,14 +53,14 @@ class AdminController extends Controller
         $admin->adminTelepon = $request->input('adminTelepon');
         $admin->user_id = $request->input('user_id');
         $admin->save();
-    
-        
+
+
         $user = User::find($request->input('user_id'));
 
         $user->save();
-    
-    
-        return redirect()->route('admin.dashboard')->with('success', 'Admin berhasil ditambahkan.');
+
+
+        return redirect()->route('admin.index')->with('success', 'Admin berhasil ditambahkan.');
     }
 
     /**
@@ -76,7 +76,7 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        
+
     }
 
     /**
@@ -84,7 +84,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       
+
     }
 
     /**
@@ -92,7 +92,7 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-       
+
     }
 
 
@@ -105,6 +105,6 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.manageAdmin-admin', compact('admins','users'));
     }
-    
+
 
 }

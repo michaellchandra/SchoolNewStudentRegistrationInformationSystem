@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -28,7 +29,17 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/dashboard';
+
+    protected function redirectTo()
+    {
+        // Check if the authenticated user has admin role
+        if (Auth::user()->isAdmin()) {
+            return route('admin.index'); // Redirect to admin dashboard
+        } else {
+            return route('user.index'); // Redirect to user dashboard
+        }
+    }
 
     /**
      * Create a new controller instance.
@@ -65,7 +76,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'asalSekolah' => $data['asalSekolah'],

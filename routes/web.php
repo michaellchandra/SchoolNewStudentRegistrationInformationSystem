@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/dashboard', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::get('/admin/create', [App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
     Route::post('/admin/store', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
-    
+
 });
 
 //Admin View

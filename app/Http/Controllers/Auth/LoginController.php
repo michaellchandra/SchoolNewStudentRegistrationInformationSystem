@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -52,7 +52,7 @@ class LoginController extends Controller
                 return redirect()->route('user.index');
             }
         } else {
-            // Tambahkan logika jika login gagal
+            return back()->withErrors(['email' => 'Invalid credentials']);
         }
     }
 }

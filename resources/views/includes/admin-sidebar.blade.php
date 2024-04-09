@@ -36,7 +36,7 @@
     </li>
     <li class="nav-item active">
         <a class="nav-link" href="/admin/settings">
-            <i class="fas fa-solid fa-ellipsis"></i>
+            <i class="fas fa-solid fa-wrench"></i>
             <span>Pengaturan</span></a>
     </li>
 
