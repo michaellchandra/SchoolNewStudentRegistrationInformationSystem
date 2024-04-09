@@ -14,8 +14,8 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $school = School::all(); 
-        return view ('admin.schoolsetting-admin')->with('school', $school);
+        $school = School::first();
+        return view ('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
     }
 
     /**
@@ -63,6 +63,7 @@ class SchoolController extends Controller
             'schoolDeskripsi' => $request->schoolDeskripsi,
             'schoolTelepon' => $request->schoolTelepon,
         ]);
+        return redirect()->route('admin.school.index')->with('success', 'Data sekolah berhasil diperbarui.');
 
     }
 

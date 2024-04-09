@@ -12,7 +12,8 @@
         <li class="nav-item">
 
             <label class="nav-item m-0 text-s">Welcome,</label>
-            <div class="nav-item fw-bold">SMA Zion Makassar</div>
+
+          
         </li>
     </ul>
 
@@ -83,13 +84,7 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                    <a href="create" class="dropdown-item">
-                        <div class="row d-flex align-items-center">
-                            <p class="text-primary fw-bold">+ Tambah Admin</p>
-                            <p class="mr-2 d-none d-lg-inline text-gray-600 small w-100">You can add maximum 5 admin</p>
-                        </div>
-
-                    </a>
+                    
                 </div>
             </li>
         @endguest

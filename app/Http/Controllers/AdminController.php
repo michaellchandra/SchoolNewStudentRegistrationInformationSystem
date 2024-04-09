@@ -23,7 +23,7 @@ class AdminController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('admin.tambah-admin')->with('users',$users);
+        return view('admin.tambahAdmin-admin')->with('users',$users);
     }
 
     public function pendaftarAdmin()
@@ -102,7 +102,8 @@ class AdminController extends Controller
 
     public function manageAdmin(){
         $admins = Admin::all();
-        return view('admin.manageAdmin-admin')->with('admins', $admins);
+        $users = User::all();
+        return view('admin.manageAdmin-admin', compact('admins','users'));
     }
     
 

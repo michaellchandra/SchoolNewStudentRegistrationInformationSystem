@@ -13,11 +13,12 @@ class PengumumanController extends Controller
      */
     public function index()
     {
+        $pengumuman = Pengumuman::all();
         $users = Auth::user();
         if ($users->isAdmin()) {
-            return view('admin.pengumuman-admin');
+            return view('admin.pengumuman-admin',compact('pengumuman'));
         } else {
-            return view('user.pengumuman-user');
+            return view('user.pengumuman-user',compact('pengumuman'));
         }
 
         
@@ -43,7 +44,7 @@ class PengumumanController extends Controller
         // Cek apakah sudah ada pengumuman
         if (Pengumuman::count() > 0) {
             // Jika sudah ada, ubah pengumuman yang sudah ada
-            $pengumuman = Pengumuman::first();
+            $pengumuman = Pengumuman::findOrFail($id);
             $pengumuman->update($request->only('pengumumanDetail'));
         } else {
             // Jika belum ada, buat pengumuman baru
@@ -74,7 +75,10 @@ class PengumumanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pengumuman = Pengumuman::findOrFail($id);
+        $pengumuman->update($request->all());
+
+        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil diperbarui');
     }
 
     /**

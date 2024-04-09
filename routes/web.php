@@ -31,14 +31,16 @@ Route::get('/admin/semua-akun',[App\Http\Controllers\AdminController::class, 'se
 Route::get('/pengisian-biodata',[App\Http\Controllers\BiodataController::class,'index']);
 Route::get('/admin/settings',[App\Http\Controllers\AdminController::class,'settings'])->name('admin.settings');
 Route::get('/admin/settings/manageadmin', [App\Http\Controllers\AdminController::class,'manageAdmin'])->name('admin.manageAdmin');
-Route::get('/pengumuman',[App\Http\Controllers\PengumumanController::class,'index']);
+Route::get('/admin/pengumuman',[App\Http\Controllers\PengumumanController::class,'index'])->name('admin.pengumuman.index');
+Route::get('/admin/settings/tambah-admin',[App\Http\Controllers\AdminController::class,'create'])->name('admin.createAdmin');
 
 
 //School
 Route::get('/admin/settings/school/',[App\Http\Controllers\SchoolController::class,'index'])->name('admin.school.index');
-Route::get('/settings/school/{id}',[App\Http\Controllers\SchoolController::class,'edit'])->name('admin.school.edit');
+Route::get('/admin/settings/school/{id}',[App\Http\Controllers\SchoolController::class,'edit'])->name('admin.school.edit');
 // Route::put('/admin/settings/school/',[App\Http\Controllers\SchoolController::class,'update'])->name('admin.school.update');
 // Route::post('/admin/settings/school/', [App\Http\Controllers\SchoolController::class, 'store'])->name('admin.school.store');
+Route::put('/admin/school/{id}', [App\Http\Controllers\SchoolController::class,'update'])->name('admin.school.update');
 
 //Manage Akun & Pendaftar
 Route::get('/user/create',[App\Http\Controllers\UserController::class,'create'])->name('admin.tambahUser');
