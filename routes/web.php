@@ -38,6 +38,7 @@ Route::get('/admin/settings/tambah-admin',[App\Http\Controllers\AdminController:
 //School
 Route::get('/admin/settings/school/',[App\Http\Controllers\SchoolController::class,'index'])->name('admin.school.index');
 Route::get('/admin/settings/school/{id}',[App\Http\Controllers\SchoolController::class,'edit'])->name('admin.school.edit');
+Route::get('/admin/settings/school/create',[App\Http\Controllers\SchoolController::class,'create'])->name('admin.school.create');
 // Route::put('/admin/settings/school/',[App\Http\Controllers\SchoolController::class,'update'])->name('admin.school.update');
 // Route::post('/admin/settings/school/', [App\Http\Controllers\SchoolController::class, 'store'])->name('admin.school.store');
 Route::put('/admin/school/{id}', [App\Http\Controllers\SchoolController::class,'update'])->name('admin.school.update');

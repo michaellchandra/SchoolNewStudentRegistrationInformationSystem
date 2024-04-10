@@ -14,8 +14,18 @@ class SchoolController extends Controller
      */
     public function index()
     {
+        // $school = School::first();
+        // return view ('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
+
         $school = School::first();
-        return view ('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
+
+    // Periksa apakah ada data sekolah
+    if ($school) {
+        return view('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
+    } else {
+        // Jika tidak ada data sekolah, arahkan ke halaman untuk membuat sekolah baru
+        return redirect()->route('admin.school.create')->with('message', 'Anda harus membuat sekolah terlebih dahulu.');
+    }
     }
 
     /**
@@ -23,7 +33,7 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        //
+        return view ('admin.tambahSchool-admin');
     }
 
     /**
@@ -47,8 +57,8 @@ class SchoolController extends Controller
      */
     public function edit( $id)
     {
-        
-        $school = School::all(); 
+
+        $school = School::all();
         return view('admin.schoolsetting-admin')->with('school', $school);
     }
 
@@ -56,7 +66,7 @@ class SchoolController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {   
+    {
         $school = School::findOrFail($id);
         $school->update([
             'schoolNama' => $request->schoolNama,
