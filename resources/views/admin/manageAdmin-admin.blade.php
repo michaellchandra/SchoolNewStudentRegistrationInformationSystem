@@ -33,8 +33,8 @@
                         <tbody>
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>Michael Chandra</td>
                                 <td>{{ $admin -> adminNama }}</td>
+                                <td>{{ $admin -> adminTelepon }}</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-primary w-100 shadow-sm">Lihat Foto</a>
                                 </td>

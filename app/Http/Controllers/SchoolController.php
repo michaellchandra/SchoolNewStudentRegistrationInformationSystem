@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -14,18 +15,12 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        // $school = School::first();
-        // return view ('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
-
         $school = School::first();
-
-    // Periksa apakah ada data sekolah
-    if ($school) {
-        return view('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
-    } else {
-        // Jika tidak ada data sekolah, arahkan ke halaman untuk membuat sekolah baru
-        return redirect()->route('admin.school.create')->with('message', 'Anda harus membuat sekolah terlebih dahulu.');
-    }
+        if ($school !== null) {
+            return view('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
+        } else {
+            return redirect()->route('admin.school.create')->with('message', 'Anda harus membuat sekolah terlebih dahulu.');
+        }
     }
 
     /**
@@ -33,7 +28,8 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        return view ('admin.tambahSchool-admin');
+
+        return view('admin.tambahSchool-admin');
     }
 
     /**
@@ -41,7 +37,31 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'schoolNama' => 'required|string|max:255',
+            'schoolDeskripsi' => 'required|string',
+            'schoolTelepon' => 'required|string|max:20',
+        ]);
+    
+        // Mendapatkan admin yang sedang login
+        $admin = Auth::user()->admin;
+    
+        if (!$admin) {
+            return redirect()->route('admin.school.index')->with('error', 'Anda tidak memiliki izin untuk menambahkan sekolah.');
+        }
+    
+        // Membuat sekolah baru dan menyimpan admin_id
+        $school = new School([
+            'schoolNama' => $request->get('schoolNama'),
+            'schoolDeskripsi' => $request->get('schoolDeskripsi'),
+            'schoolTelepon' => $request->get('schoolTelepon'),
+            'schoolLogo' => $request->get('schoolLogo'),
+            'admin_id' => $admin->id
+        ]);
+        $school->save();
+    
+        return redirect()->route('admin.school.index')->with('success', 'Sekolah berhasil ditambahkan.');
+    
     }
 
     /**
@@ -55,7 +75,7 @@ class SchoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit($id)
     {
 
         $school = School::all();
@@ -74,7 +94,6 @@ class SchoolController extends Controller
             'schoolTelepon' => $request->schoolTelepon,
         ]);
         return redirect()->route('admin.school.index')->with('success', 'Data sekolah berhasil diperbarui.');
-
     }
 
     /**

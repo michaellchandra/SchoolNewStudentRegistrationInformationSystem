@@ -13,12 +13,11 @@ class PengumumanController extends Controller
      */
     public function index()
     {
-        $pengumuman = Pengumuman::all();
+        $pengumuman = Pengumuman::first();
         $users = Auth::user();
-        if ($users->isAdmin()) {
-            return view('admin.pengumuman-admin',compact('pengumuman'));
-        } else {
-            return view('user.pengumuman-user',compact('pengumuman'));
+        
+        if ($pengumuman){
+            return view('admin.schoolsetting-admin', compact('pengumuman'))->with('pengumuman');
         }
 
         

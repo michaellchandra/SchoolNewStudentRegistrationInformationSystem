@@ -26,14 +26,19 @@ class VerificationController extends Controller
      * @var string
      */
     // protected $redirectTo = '/home';
-    protected function redirectTo()
-{
-    if (auth()->user()->isAdmin()) {
-        return '/admin/dashboard';
-    } else {
-        return '/user/dashboard';
-    }
-}
+    // protected function redirectTo()
+    // {
+    //     $role = auth()->user()->role;
+    
+    //     switch ($role) {
+    //         case 'admin':
+    //             return '/admin/dashboard';
+    //         case 'user':
+    //             return '/user/dashboard';
+    //         // Tambahkan case untuk peran lain jika diperlukan
+            
+    //     }
+    // }
 
     /**
      * Create a new controller instance.

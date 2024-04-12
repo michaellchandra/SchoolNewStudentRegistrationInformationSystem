@@ -23,6 +23,11 @@ class User extends Authenticatable
         'asalReferensiSekolah'
     ];
 
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -46,7 +51,7 @@ class User extends Authenticatable
         ];
     }
 
-    
+
 
 
     public function admin()
@@ -57,8 +62,8 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        
-        return $this->admin()->exists(); 
+
+        return $this->admin()->exists();
     }
 
     public function registrations()

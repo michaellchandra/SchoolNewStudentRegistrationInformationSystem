@@ -25,6 +25,7 @@
                                     <div class="font-weight-bold text-primary text-uppercase mb-1">
                                         Nama Sekolah</div>
                                     <div class="fs-3 mb-0 font-weight-bold text-gray-800 align-items-center">
+                                        
                                         {{ $school->schoolNama }}</div>
                                 </div>
 
