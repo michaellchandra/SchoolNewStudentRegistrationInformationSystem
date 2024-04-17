@@ -14,13 +14,23 @@ class PengumumanController extends Controller
     public function index()
     {
         $pengumuman = Pengumuman::first();
-        $users = Auth::user();
-        
-        if ($pengumuman){
-            return view('admin.schoolsetting-admin', compact('pengumuman'))->with('pengumuman');
-        }
+        $user = Auth::user();
 
-        
+        if ($user && $user->role === 'admin') {
+            if ($pengumuman) {
+                return view('admin.pengumuman-admin', compact('pengumuman'));
+            } else {
+                return redirect()->route('admin.pengumuman.create')->with('message', 'Anda harus membuat pengumuman terlebih dahulu.');
+            }
+        } elseif ($user && $user->role === 'user') {
+            if ($pengumuman) {
+                return view('user.pengumuman-user', compact('pengumuman'));
+            } else {
+                return view('user.pengumumanEmpty-user')->with('message', 'Tidak ada informasi terkait pengumuman yang tersedia saat ini, jika ada pertanyaan silahkan hubungi WhatsApp Sekolah');
+            }
+        } else {
+            abort(403, 'Unauthorized');
+        }
     }
 
     /**
@@ -28,7 +38,7 @@ class PengumumanController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.tambahPengumuman-admin');
     }
 
     /**
@@ -85,6 +95,10 @@ class PengumumanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pengumuman = Pengumuman::findOrFail($id);
+
+        // Hapus pengumuman
+        $pengumuman->delete();
+        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil dihapus. Harap tambahkan pengumuman baru.');
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\RegistrationStatus;
 
 class UserController extends Controller
 {
@@ -13,8 +15,28 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('user.dashboard-user')->with('users', $users);
+        $loggedInUser = Auth::user();
+        $users = User::with('registrations')->get();
+
+        foreach ($users as $user) {
+            if ($user->id === $loggedInUser->id) {
+                foreach ($user->registrations as $registration) {
+                    
+                    $registrationStatus = $registration->registrationStatus;
+
+                    // $pendaftaranAkunStatus = ($registrationStatus === RegistrationStatus::STATUS_ACCOUNT_REGISTERED) ? 'SUDAH' : 'BELUM';
+                    // $pembayaranFormulirStatus = ($registrationStatus === RegistrationStatus::STATUS_FORM_PAYMENT_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
+                    // $pengisianAdministrasi = ($registrationStatus === RegistrationStatus::STATUS_BIODATA_FORM_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
+                    // $melakukanTes = ($registrationStatus === RegistrationStatus::STATUS_TEST_RESULT_PASSED) ? 'LULUS' : 'TIDAK LULUS';
+                    // $pembayaranAdministrasi = ($registrationStatus === RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
+
+                    $registration->registrationStatus = $registrationStatus;
+                }
+            }
+        }
+    
+
+        return view('user.dashboard-user', compact('users'));
     }
 
 
@@ -72,18 +94,18 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
 
         ]);
 
-        
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            
+
         ]);
 
         return redirect()->route('admin.pendaftarAdmin')->with('success', 'Akun berhasil diperbarui.');
@@ -104,15 +126,26 @@ class UserController extends Controller
 
 
     public function resetPassword(Request $request, $id)
-{
-    $request->validate([
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
-    ]);
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
-    $user = User::findOrFail($id);
-    $user->password = Hash::make($request->password);
-    $user->save();
+        $user = User::findOrFail($id);
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-    return redirect()->back()->with('success', 'Password pengguna berhasil direset.');
-}
+        return redirect()->back()->with('success', 'Password pengguna berhasil direset.');
+    }
+
+    public function getTotalUsers()
+    {
+        $totalUsers = User::where('role', 'user')->count();
+        return $totalUsers;
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
 }

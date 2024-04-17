@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registration', function (Blueprint $table) {
+        Schema::create('registrations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('registrationStatus');
-            $table->string('hasilTes');
-            $table->dateTime('tanggalRegistrasi');
+            $table->string('registrationStatus')->default('');
+            
+            $table->string('rejectionReasonAdministrasi')->nullable(); // Alasan penolakan untuk berkas
+            $table->string('hasilTes')->nullable();
+            $table->dateTime('tanggalRegistrasi')->default(now());
         });
     }
 

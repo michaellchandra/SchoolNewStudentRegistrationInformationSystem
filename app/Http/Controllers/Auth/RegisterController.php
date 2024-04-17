@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\RegistrationStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Registration;
 
 class RegisterController extends Controller
 {
@@ -29,17 +31,9 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/dashboard';
 
-    protected function redirectTo()
-    {
-        // Check if the authenticated user has admin role
-        if (Auth::user()->isAdmin()) {
-            return route('admin.index'); // Redirect to admin dashboard
-        } else {
-            return route('user.index'); // Redirect to user dashboard
-        }
-    }
+    
 
     /**
      * Create a new controller instance.
@@ -75,11 +69,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'asalSekolah' => $data['asalSekolah'],
             'asalReferensiSekolah' => $data['asalReferensiSekolah']
         ]);
+
+        $registration = new Registration();
+        $registration->user_id = $user->id;
+        $registration->registrationStatus = RegistrationStatus::STATUS_ACCOUNT_REGISTERED;
+        $registration->save();
+
+        return $user;
+    }
+
+    public function redirectTo()
+    {
+        // Periksa apakah pengguna adalah admin atau bukan, dan alihkan mereka ke rute yang sesuai
+        if (Auth::user()->role === 'admin') {
+            return '/admin/dashboard'; // Redirect ke admin dashboard
+        } else {
+            return '/user/dashboard'; // Redirect ke user dashboard
+        }
     }
 }

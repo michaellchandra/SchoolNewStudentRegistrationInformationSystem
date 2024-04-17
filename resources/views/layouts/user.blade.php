@@ -33,7 +33,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content">
+            <div id="content" class="flex-grow-1">
 
                 @include('includes.user-navbar')
 
@@ -49,6 +49,8 @@
         <!-- End of Content Wrapper -->
         
     </div>
+
+    
     <!-- End of Page Wrapper -->
     
     <!-- Scroll to Top Button-->

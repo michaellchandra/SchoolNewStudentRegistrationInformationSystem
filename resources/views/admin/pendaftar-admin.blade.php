@@ -25,7 +25,7 @@
                             <div class="col mr-2 p-3">
                                 <div class="font-weight-bold text-primary text-uppercase mb-1">
                                     Total Akun Terdaftar</div>
-                                <div class="h1 mb-0 font-weight-bold text-gray-800">231</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ app()->make('App\Http\Controllers\UserController')->getTotalUsers() }}</div>
                             </div>
 
                         </div>
@@ -161,9 +161,12 @@
                             </tr>
                         </thead>
                         @foreach ($users as $key => $user)
+                        
+                        @if ($user->role === 'user')
+                        @php $number = 1 @endphp
                             <tbody>
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $number++ }}</td>
                                     <td>
                                         {{ $user->email }}
                                     </td>
@@ -300,6 +303,7 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            @endif
                         @endforeach
                     </table>
                 </div>

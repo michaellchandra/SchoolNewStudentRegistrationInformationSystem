@@ -9,7 +9,7 @@ class Pengumuman extends Model
 {
 
     protected $table = 'pengumuman';
-    
+    public $timestamps = false;
     protected $fillable = [
         'pengumumanDetail'
     ];
