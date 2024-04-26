@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('biodata', function (Blueprint $table) {
-            $table->bigIncrements('paymentID');
-            $table->integer('userID');
-            // $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
-            
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('biodataStatus');
+    
             //Data Siswa
             $table->string('namaLengkap');
             $table->string('jenisKelamin');
@@ -51,10 +52,10 @@ return new class extends Migration
             $table->string('nomorTeleponAyahKandung');
 
             //Wali
-            $table->string('namaWali');
-            $table->string('pekerjaanWali');
-            $table->string('penghasilanWali');
-            $table->string('nomorTeleponWali');
+            $table->string('namaWali')->nullable();
+            $table->string('pekerjaanWali')->nullable();
+            $table->string('penghasilanWali')->nullable();
+            $table->string('nomorTeleponWali')->nullable();
 
             //Berkas
             $table->string('berkasAktaKelahiran');

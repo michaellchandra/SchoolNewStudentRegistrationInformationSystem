@@ -21,6 +21,9 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @include('includes.style')
+
+    @stack('scripts')
+    
 </head>
 
 <body>
@@ -38,11 +41,11 @@
                 @include('includes.user-navbar')
 
                 @yield('content')
+               
                 
-                @include('includes.footer')
             </div>
             <!-- End of Main Content -->
-
+            @include('includes.footer')
            
 
         </div>

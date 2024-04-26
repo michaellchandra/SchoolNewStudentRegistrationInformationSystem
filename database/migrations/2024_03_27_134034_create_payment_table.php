@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
-            $table->date('paymentDate');
+            $table->date('paymentDate')->nullable();;
+            $table->bigInteger('paymentAmount')->nullable();
             $table->string('paymentStatus');
             $table->string('paymentCategory');
-            $table->string('paymentProof');
-            $table->string('rejectionReason');
+            $table->string('paymentProof')->nullable();
+            $table->string('rejectionReason')->nullable();
+            $table->string('updated_at')->nullable();;
+            $table->string('created_at')->nullable();;
+
         });
     }
 

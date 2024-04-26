@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\RegistrationStatus;
@@ -17,9 +18,12 @@ class UserController extends Controller
     {
         $loggedInUser = Auth::user();
         $users = User::with('registrations')->get();
-
+        $payments = Payment::where('user_id', $loggedInUser->id)->get();
+        
         foreach ($users as $user) {
+            
             if ($user->id === $loggedInUser->id) {
+                
                 foreach ($user->registrations as $registration) {
                     
                     $registrationStatus = $registration->registrationStatus;
@@ -31,12 +35,14 @@ class UserController extends Controller
                     // $pembayaranAdministrasi = ($registrationStatus === RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
 
                     $registration->registrationStatus = $registrationStatus;
+                    
                 }
             }
+            
         }
-    
-
-        return view('user.dashboard-user', compact('users'));
+        
+        // $payments = Payment::where('user_id', $users->id)->get();
+        return view('user.dashboard-user', compact('users','registrationStatus','payments'));
     }
 
 

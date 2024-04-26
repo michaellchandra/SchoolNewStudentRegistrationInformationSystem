@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Registration;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -28,8 +30,9 @@ class AdminController extends Controller
 
     public function pendaftarAdmin()
     {
-    $users = User::all();
-    return view('admin.pendaftar-admin', ['users' => $users]);
+    // $users = User::all();
+    // $registration = Registration::where('user_id', $users->id)->get();
+    
     }
 
     public function semuaAkun() {

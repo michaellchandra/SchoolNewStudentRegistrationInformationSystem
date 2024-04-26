@@ -20,7 +20,7 @@ class PengumumanController extends Controller
             if ($pengumuman) {
                 return view('admin.pengumuman-admin', compact('pengumuman'));
             } else {
-                return redirect()->route('admin.pengumuman.create')->with('message', 'Anda harus membuat pengumuman terlebih dahulu.');
+                return redirect()->route('admin.pengumuman.create')->with('message', 'Belum ada pengumuman, anda harus membuat pengumuman terlebih dahulu.');
             }
         } elseif ($user && $user->role === 'user') {
             if ($pengumuman) {

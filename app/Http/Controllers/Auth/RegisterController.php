@@ -76,6 +76,7 @@ class RegisterController extends Controller
             'asalReferensiSekolah' => $data['asalReferensiSekolah']
         ]);
 
+        event(new \App\Events\UserRegistered($user));
         $registration = new Registration();
         $registration->user_id = $user->id;
         $registration->registrationStatus = RegistrationStatus::STATUS_ACCOUNT_REGISTERED;

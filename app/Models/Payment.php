@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     protected $fillable = [
-        'user_id', 'paymentDate', 'paymentStatus', 'paymentCategory', 'paymentProof', 'rejectionReason'
+        'user_id', 'paymentDate', 'paymentAmount', 'paymentStatus', 'paymentCategory', 'paymentProof', 'rejectionReason'
     ];
 
     public function user()
