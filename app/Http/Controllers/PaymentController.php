@@ -72,6 +72,7 @@ class PaymentController extends Controller
                 'paymentStatus' => 'Verifying',
                 'paymentCategory' => $request->paymentCategory,
                 'paymentProof' => $filename,
+                'updated_at_submit'=> now()
             ]);
         } else {
             // Jika tidak, buat pembayaran baru
@@ -81,7 +82,8 @@ class PaymentController extends Controller
                 'paymentAmount' => 0,
                 'paymentStatus' => 'Verifying',
                 'paymentCategory' => $request->paymentCategory,
-                'paymentProof' => $filename
+                'paymentProof' => $filename,
+                'updated_at_submit'=> now()
             ]);
             $payment->save();
         }
@@ -208,7 +210,10 @@ class PaymentController extends Controller
         }
 
         // Perbarui status pembayaran menjadi 'approved'
-        $payment->update(['paymentStatus' => 'approved']);
+        $payment->update([
+            'paymentStatus' => 'approved',
+            'updated_at_accepted'=>now()
+        ]);
 
         return redirect()->back()->with('success', 'Payment approved successfully!');
     }
@@ -242,6 +247,7 @@ class PaymentController extends Controller
         $payment->update([
             'paymentStatus' => 'rejected',
             'rejectionReason' => $request->rejectionReason,
+            'updated_at_revision' => now()
         ]);
 
         return redirect()->back()->with('success', 'Payment rejected successfully!');
@@ -252,11 +258,11 @@ class PaymentController extends Controller
     // Dapatkan path lengkap ke file bukti pembayaran
     $user_id = auth()->id();
     $filePath = storage_path("app/public/paymentProofs/{$user_id}/{$paymentProof}");
-    
+
     // Periksa apakah file ada
     if (!file_exists($filePath)) {
         abort(404
-    ); 
+    );
     }
 
     // Tampilkan bukti pembayaran

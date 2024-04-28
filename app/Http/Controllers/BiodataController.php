@@ -74,7 +74,7 @@ class BiodataController extends Controller
 
         $directory = 'public/' . $user_id . '/Biodata';
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true); 
+            Storage::makeDirectory($directory, 0777, true);
         }
         $biodataData = $request->except('_token');
 
@@ -91,15 +91,17 @@ class BiodataController extends Controller
         if ($biodata) {
             $biodataData['user_id'] = $user_id;
             $biodataData['biodataStatus'] = 'Verifying';
+            $biodataData['updated_at_submit'] = now();
             $biodata->update($biodataData);
-            
+
         } else {
             $biodataData['user_id'] = $user_id;
             $biodataData['biodataStatus'] = 'Verifying';
+            $biodataData['updated_at_submit'] = now();
             Biodata::create($biodataData);
         }
 
-        
+
 
         $registrationStatus = RegistrationStatus::STATUS_BIODATA_FORM_VERIFICATION_PENDING;
         $registration = Registration::where('user_id', $user_id)->first();
@@ -144,7 +146,10 @@ class BiodataController extends Controller
     public function acceptBiodata(Biodata $biodata)
     {
         // Ubah status biodata menjadi 'accepted'
-        $biodata->update(['biodataStatus' => 'accepted']);
+        $biodata->update([
+            'biodataStatus' => 'accepted',
+            'updated_at_accepted'=> now()
+        ]);
 
         // Ambil semua registrasi untuk pengguna yang terkait dengan biodata ini
         $registrations = $biodata->user->registrations;
@@ -163,7 +168,10 @@ class BiodataController extends Controller
     public function rejectBiodata(Biodata $biodata)
     {
         // Ubah status biodata menjadi 'rejected'
-        $biodata->update(['biodataStatus' => 'rejected']);
+        $biodata->update([
+            'biodataStatus' => 'rejected',
+            'updated_at_revision' => now()
+        ]);
         $registrations = $biodata->user->registrations;
         foreach ($registrations as $registration) {
 
@@ -181,20 +189,18 @@ class BiodataController extends Controller
         $user_id = auth()->id();
         $filePath = storage_path("app/public/Biodata/{$user_id}/{$biodataData}");
 
-        // Periksa apakah file ada
         if (!file_exists($filePath)) {
             abort(
                 404
             );
         }
 
-        // Tampilkan bukti pembayaran
         return response()->file($filePath);
     }
 
     public function showBiodataFiles($user_id, $filename)
     {
-        // Dapatkan biodata dari user_id
+
         $biodata = Biodata::where('user_id', $user_id)->first();
 
         // Pastikan biodata ditemukan

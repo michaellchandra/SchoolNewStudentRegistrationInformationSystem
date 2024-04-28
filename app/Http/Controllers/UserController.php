@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Biodata;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -19,20 +20,21 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
         $users = User::with('registrations')->get();
         $payments = Payment::where('user_id', $loggedInUser->id)->get();
-        
+        $biodata = Biodata::where('user_id', $loggedInUser->id)->get();
+
         foreach ($users as $user) {
-            
+
             if ($user->id === $loggedInUser->id) {
                 foreach ($user->registrations as $registration) {
                     $registrationStatus = $registration->registrationStatus;
                     $registration->registrationStatus = $registrationStatus;
                 }
             }
-            
+
         }
-        
+
         // $payments = Payment::where('user_id', $users->id)->get();
-        return view('user.dashboard-user', compact('users','registrationStatus','payments'));
+        return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata'));
     }
 
 

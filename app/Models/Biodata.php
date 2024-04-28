@@ -57,6 +57,9 @@ class Biodata extends Model
         'scanRaportKelas9Genap',
         'sertifikatPrestasi',
         'sertifikatSertifikasi',
+        'updated_at_submit',
+        'updated_at_revision',
+        'updated_at_accepted'
 
     ];
 
