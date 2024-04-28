@@ -26,7 +26,8 @@
                                 </div>
                                 <div class="col-12 col-md-10">
                                     <input id="namaLengkap" type="text" class="rounded-pill p-2 form-control"
-                                        name="namaLengkap" value="" required>
+                                        name="namaLengkap"
+                                        value="{{ $biodata ? $biodata->namaLengkap : old('namaLengkap') }}" required>
                                 </div>
                             </div>
 
@@ -39,18 +40,23 @@
                                     <div
                                         class="d-flex align-items-center justify-content-start form-check form-check-inline">
                                         <input class="form-check-input mt-0" id="radioLaki" name="jenisKelamin"
-                                            type="radio" value="Laki-laki"
+                                            type="radio" value="Laki-laki" value="Laki-laki"
+                                            {{ $biodata && $biodata->jenisKelamin === 'Laki-laki' ? 'checked' : '' }}
                                             aria-label="Radio button for following text input">
                                         <label class="form-check-label pe-3" for="radioLaki">
                                             Laki-laki
                                         </label>
                                         <input class="form-check-input mt-0" id="radioPerempuan" name="jenisKelamin"
                                             type="radio" value="Perempuan"
+                                            {{ $biodata && $biodata->jenisKelamin === 'Perempuan' ? 'checked' : '' }}
                                             aria-label="Radio button for following text input">
                                         <label class="form-check-label" for="radioPerempuan">
                                             Perempuan
                                         </label>
                                     </div>
+                                    @if ($errors->has('jenisKelamin'))
+                                        <span class="text-danger">{{ $errors->first('jenisKelamin') }}</span>
+                                    @endif
                                 </div>
                             </div>
                             <!-- Nomor NIK  -->
@@ -60,7 +66,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-md-start align-items-center">
                                     <input id="nomorNIK" type="number" class="rounded-pill p-2 form-control"
-                                        name="nomorNIK" value="" required>
+                                        name="nomorNIK" value="{{ $biodata ? $biodata->nomorNIK : old('nomorNIK') }}" required>
                                 </div>
                             </div>
                             <!-- Tempat Lahir -->
@@ -70,10 +76,9 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-md-start align-items-center">
                                     <input id="tempatLahir" type="text" class="rounded-pill p-2 form-control"
-                                        name="tempatLahir" value="" required>
+                                        name="tempatLahir" value="{{ $biodata ? $biodata->tempatLahir : old('tempatLahir') }}" required>
                                 </div>
                             </div>
-
                             <!-- Tanggal Lahir -->
                             <div class="row mb-3">
                                 <div class="col-12 col-md-2 d-flex align-items-center">
@@ -81,7 +86,8 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-center justify-content-md-start">
                                     <input id="tanggalLahir" type="date" class="rounded-pill p-2 form-control"
-                                        name="tanggalLahir" value="" required>
+                                        name="tanggalLahir"
+                                        value="{{ $biodata ? $biodata->tanggalLahir : old('tanggalLahir') }}" required>
                                 </div>
                             </div>
 
@@ -92,7 +98,9 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <input id="jumlahSaudaraKandung" type="number" class="rounded-pill p-2 form-control"
-                                        name="jumlahSaudaraKandung" value="" required>
+                                        name="jumlahSaudaraKandung"
+                                        value="{{ $biodata ? $biodata->jumlahSaudaraKandung : old('jumlahSaudaraKandung') }}"
+                                        required>
                                 </div>
                             </div>
 
@@ -104,7 +112,7 @@
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <div class="w-100">
                                         <input id="jumlahSaudaraAngkat" type="number" class="rounded-pill p-2 form-control"
-                                            name="jumlahSaudaraAngkat" value="" required>
+                                            name="jumlahSaudaraAngkat" value="{{ $biodata ? $biodata->jumlahSaudaraAngkat : old('jumlahSaudaraAngkat') }}" required>
                                         <p class="text-xs">*Jika tidak ada isi dengan angka 0</p>
                                     </div>
                                 </div>
@@ -117,7 +125,7 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <input id="tinggiBadan" type="number" class="rounded-pill p-2 form-control"
-                                        name="tinggiBadan" value="" required>
+                                        name="tinggiBadan" value="{{ $biodata ? $biodata->tinggiBadan : old('tinggiBadan') }}" required>
                                 </div>
                             </div>
 
@@ -128,7 +136,7 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <input id="beratBadan" type="number" class="rounded-pill p-2 form-control"
-                                        name="beratBadan" value="" required>
+                                        name="beratBadan" value="{{ $biodata ? $biodata->beratBadan : old('beratBadan') }}" required>
                                 </div>
                             </div>
 
@@ -139,7 +147,7 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <input id="alamatSiswa" type="text" class="rounded-pill p-2 form-control"
-                                        name="alamatSiswa" value="" required>
+                                        name="alamatSiswa" value="{{ $biodata ? $biodata->alamatSiswa : old('alamatSiswa') }}" required>
                                 </div>
                             </div>
 
@@ -150,11 +158,11 @@
                                 </div>
                                 <div class="col-12 col-md-10 d-flex align-items-center justify-content-start">
                                     <select name="jenisTinggal" class="rounded-pill p-2 form-select" required>
-                                        <option value="Bersama Orang Tua">Bersama Orang Tua</option>
-                                        <option value="Bersama Wali">Bersama Wali</option>
-                                        <option value="Kost">Kost</option>
-                                        <option value="Asrama">Asrama</option>
-                                        <option value="Lainnya">Lainnya</option>
+                                        <option value="Bersama Orang Tua" {{ ($biodata && $biodata->jenisTinggal == 'Bersama Orang Tua') ? 'selected' : '' }}>Bersama Orang Tua</option>
+    <option value="Bersama Wali" {{ ($biodata && $biodata->jenisTinggal == 'Bersama Wali') ? 'selected' : '' }}>Bersama Wali</option>
+    <option value="Kost" {{ ($biodata && $biodata->jenisTinggal == 'Kost') ? 'selected' : '' }}>Kost</option>
+    <option value="Asrama" {{ ($biodata && $biodata->jenisTinggal == 'Asrama') ? 'selected' : '' }}>Asrama</option>
+    <option value="Lainnya" {{ ($biodata && $biodata->jenisTinggal == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                 </div>
                             </div>
@@ -166,13 +174,13 @@
                                 </div>
                                 <div class="col-12 col-md-10 d-flex align-items-center justify-content-start">
                                     <select name="transportasiKeSekolah" class="rounded-pill p-2 form-select" required>
-                                        <option value="Jalan Kaki">Jalan Kaki</option>
-                                        <option value="Mobil Pribadi">Mobil Pribadi</option>
-                                        <option value="Kendaraan Umum">Kendaraan Umum (Angkot/Ojek Online/Becak)</option>
-                                        <option value="Jemputan Sekolah">Jemputan Sekolah</option>
-                                        <option value="Sepeda Motor">Sepeda Motor</option>
-                                        <option value="Sepeda">Sepeda</option>
-                                        <option value="Lainnya">Lainnya</option>
+                                        <option value="Jalan Kaki" {{ ($biodata && $biodata->transportasiKeSekolah == 'Jalan Kaki') ? 'selected' : '' }}>Jalan Kaki</option>
+                                        <option value="Mobil Pribadi" {{ ($biodata && $biodata->transportasiKeSekolah == 'Mobil Pribadi') ? 'selected' : '' }}>Mobil Pribadi</option>
+                                        <option value="Kendaraan Umum" {{ ($biodata && $biodata->transportasiKeSekolah == 'Kendaraan Umum') ? 'selected' : '' }}>Kendaraan Umum (Angkot/Ojek Online/Becak)</option>
+                                        <option value="Jemputan Sekolah" {{ ($biodata && $biodata->transportasiKeSekolah == 'Jemputan Sekolah') ? 'selected' : '' }}>Jemputan Sekolah</option>
+                                        <option value="Sepeda Motor" {{ ($biodata && $biodata->transportasiKeSekolah == 'Sepeda Motor') ? 'selected' : '' }}>Sepeda Motor</option>
+                                        <option value="Sepeda" {{ ($biodata && $biodata->transportasiKeSekolah == 'Sepeda') ? 'selected' : '' }}>Sepeda</option>
+                                        <option value="Lainnya" {{ ($biodata && $biodata->transportasiKeSekolah == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                 </div>
                             </div>
@@ -184,12 +192,12 @@
                                 </div>
                                 <div class="col-12 col-md-10 d-flex align-items-center justify-content-start">
                                     <select name="agamaSiswa" class="rounded-pill p-2 form-select">
-                                        <option value="Islam">Islam</option>
-                                        <option value="Kristen">Kristen</option>
-                                        <option value="Katolik">Katolik</option>
-                                        <option value="Buddha">Buddha</option>
-                                        <option value="Hindu">Hindu</option>
-                                        <option value="Konghucu">Konghucu</option>
+                                        <option value="Islam" {{ ($biodata && $biodata->agamaSiswa == 'Islam') ? 'selected' : '' }}>Islam</option>
+                                        <option value="Kristen" {{ ($biodata && $biodata->agamaSiswa == 'Kristen') ? 'selected' : '' }}>Kristen</option>
+                                        <option value="Katolik" {{ ($biodata && $biodata->agamaSiswa == 'Katolik') ? 'selected' : '' }}>Katolik</option>
+                                        <option value="Buddha" {{ ($biodata && $biodata->agamaSiswa == 'Buddha') ? 'selected' : '' }}>Buddha</option>
+                                        <option value="Hindu" {{ ($biodata && $biodata->agamaSiswa == 'Hindu') ? 'selected' : '' }}>Hindu</option>
+                                        <option value="Konghucu" {{ ($biodata && $biodata->agamaSiswa == 'Konghucu') ? 'selected' : '' }}>Konghucu</option>
                                     </select>
                                 </div>
                             </div>
@@ -201,7 +209,7 @@
                                 </div>
                                 <div class="col-12 col-md-10  justify-content-start">
                                     <input id="nomorTeleponSiswa" type="number" class="rounded-pill p-2 form-control"
-                                        name="nomorTeleponSiswa" value="" required>
+                                        name="nomorTeleponSiswa" value="{{ $biodata ? $biodata->nomorTeleponSiswa : old('nomorTeleponSiswa') }}" required>
                                 </div>
                             </div>
 
@@ -214,7 +222,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input id="namaSekolahAsal" type="text" class="rounded-pill p-2 form-control"
-                                        name="namaSekolahAsal" value="" required>
+                                        name="namaSekolahAsal" value="{{ $biodata ? $biodata->namaSekolahAsal : old('namaSekolahAsal') }}" required>
                                 </div>
                             </div>
 
@@ -225,7 +233,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input id="alamatSekolahAsal" type="text" class="rounded-pill p-2 form-control"
-                                        name="alamatSekolahAsal" value="" required>
+                                        name="alamatSekolahAsal" value="{{ $biodata ? $biodata->alamatSekolahAsal : old('alamatSekolahAsal') }}" required>
                                 </div>
                             </div>
 
@@ -289,7 +297,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="namaIbuKandung" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->namaIbuKandung : old('namaIbuKandung') }}">
                                 </div>
                             </div>
 
@@ -300,7 +308,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="pekerjaanIbuKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->pekerjaanIbuKandung : old('pekerjaanIbuKandung') }}">
                                 </div>
                             </div>
 
@@ -311,7 +319,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="penghasilanIbuKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->penghasilanIbuKandung : old('penghasilanIbuKandung') }}">
                                 </div>
                             </div>
 
@@ -322,7 +330,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="nomorTeleponIbuKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->nomorTeleponIbuKandung : old('nomorTeleponIbuKandung') }}">
                                 </div>
                             </div>
 
@@ -341,7 +349,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="namaAyahKandung" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->namaAyahKandung : old('namaAyahKandung') }}">
                                 </div>
                             </div>
 
@@ -352,7 +360,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="pekerjaanAyahKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->pekerjaanAyahKandung : old('pekerjaanAyahKandung') }}">
                                 </div>
                             </div>
 
@@ -363,7 +371,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="penghasilanAyahKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->penghasilanAyahKandung : old('penghasilanAyahKandung') }}">
                                 </div>
                             </div>
 
@@ -374,7 +382,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="nomorTeleponAyahKandung"
-                                        class="rounded-pill p-2 form-control" value="">
+                                        class="rounded-pill p-2 form-control" value="{{ $biodata ? $biodata->nomorTeleponAyahKandung : old('nomorTeleponAyahKandung') }}">
                                 </div>
                             </div>
 
@@ -390,7 +398,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="namaWali" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->namaWali : old('namaWali') }}">
                                 </div>
                             </div>
 
@@ -401,7 +409,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="text" name="pekerjaanWali" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->pekerjaanWali : old('pekerjaanWali') }}">
                                 </div>
                             </div>
 
@@ -412,7 +420,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="penghasilanWali" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->penghasilanWali : old('penghasilanWali') }}">
                                 </div>
                             </div>
 
@@ -423,7 +431,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <input type="number" name="nomorTeleponWali" class="rounded-pill p-2 form-control"
-                                        value="">
+                                    value="{{ $biodata ? $biodata->nomorTeleponWali : old('nomorTeleponWali') }}">
                                 </div>
                             </div>
 
@@ -441,92 +449,115 @@
                         <div class="card-body">
 
 
-                            <div class="mb-3">
-                                <label for="berkasAktaKelahiran" class="form-label fw-bold">Akta Kelahiran</label>
-                                <input class="form-control rounded-pill p-2" name="berkasAktaKelahiran"type="file">
-                            </div>
-                            <div class="mb-3">
-                                <label for="berkasKartuKeluarga" class="form-label fw-bold">Kartu Keluarga</label>
-                                <input class="form-control rounded-pill p-2" name="berkasKartuKeluarga"type="file">
-                            </div>
-                            <div class="mb-3">
-                                <label for="berkasKTPAyahKandung" class="form-label fw-bold">KTP Ayah Kandung</label>
-                                <input class="form-control rounded-pill p-2" name="berkasKTPAyahKandung"type="file">
-                            </div>
+                            <!-- Akta Kelahiran -->
+<div class="mb-3">
+    <label for="berkasAktaKelahiran" class="form-label fw-bold">Akta Kelahiran</label>
+    <input class="form-control rounded-pill p-2" name="berkasAktaKelahiran" type="file">
+    @if ($biodata && $biodata->berkasAktaKelahiran)
+        <p class="mt-2">File sebelumnya: {{ $biodata->berkasAktaKelahiran }}</p>
+    @endif
+</div>
 
-                            <div class="mb-3">
-                                <label for="berkasKTPIbuKandung" class="form-label fw-bold">KTP Ibu Kandung</label>
-                                <input class="form-control rounded-pill p-2" name="berkasKTPIbuKandung"type="file">
-                            </div>
+<!-- Kartu Keluarga -->
+<div class="mb-3">
+    <label for="berkasKartuKeluarga" class="form-label fw-bold">Kartu Keluarga</label>
+    <input class="form-control rounded-pill p-2" name="berkasKartuKeluarga" type="file">
+    @if ($biodata && $biodata->berkasKartuKeluarga)
+        <p class="mt-2">File sebelumnya: {{ $biodata->berkasKartuKeluarga }}</p>
+    @endif
+</div>
 
-                            <div class="mb-3">
-                                <label for="berkasKTPWali" class="form-label fw-bold">KTP Wali</label>
-                                <input class="form-control rounded-pill p-2" name="berkasKTPWali"type="file">
-                            </div>
+<!-- KTP Ayah Kandung -->
+<div class="mb-3">
+    <label for="berkasKTPAyahKandung" class="form-label fw-bold">KTP Ayah Kandung</label>
+    <input class="form-control rounded-pill p-2" name="berkasKTPAyahKandung" type="file">
+    @if ($biodata && $biodata->berkasKTPAyahKandung)
+        <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPAyahKandung }}</p>
+    @endif
+</div>
+<!-- KTP Ibu Kandung -->
+<div class="mb-3">
+    <label for="berkasKTPIbuKandung" class="form-label fw-bold">KTP Ibu Kandung</label>
+    <input class="form-control rounded-pill p-2" name="berkasKTPIbuKandung" type="file">
+    @if ($biodata && $biodata->berkasKTPIbuKandung)
+        <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPIbuKandung }}</p>
+    @endif
+</div>
+<!-- KTP Wali -->
+<div class="mb-3">
+    <label for="berkasKTPWali" class="form-label fw-bold">KTP Wali</label>
+    <input class="form-control rounded-pill p-2" name="berkasKTPWali" type="file">
+    @if ($biodata && $biodata->berkasKTPWali)
+        <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPWali }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 7 Ganjil -->
+<div class="mb-3">
+    <label for="scanRaportKelas7Ganjil" class="form-label fw-bold">Scan Raport Kelas VII - Semester Ganjil</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas7Ganjil" type="file">
+    @if ($biodata && $biodata->scanRaportKelas7Ganjil)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas7Ganjil }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 7 Genap -->
+<div class="mb-3">
+    <label for="scanRaportKelas7Genap" class="form-label fw-bold">Scan Raport Kelas VII - Semester Genap</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas7Genap" type="file">
+    @if ($biodata && $biodata->scanRaportKelas7Genap)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas7Genap }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 8 Ganjil -->
+<div class="mb-3">
+    <label for="scanRaportKelas8Ganjil" class="form-label fw-bold">Scan Raport Kelas VIII - Semester Ganjil</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas8Ganjil" type="file">
+    @if ($biodata && $biodata->scanRaportKelas8Ganjil)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas8Ganjil }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 8 Genap -->
+<div class="mb-3">
+    <label for="scanRaportKelas8Genap" class="form-label fw-bold">Scan Raport Kelas VIII - Semester Genap</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas8Genap" type="file">
+    @if ($biodata && $biodata->scanRaportKelas8Genap)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas8Genap }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 9 Ganjil -->
+<div class="mb-3">
+    <label for="scanRaportKelas9Ganjil" class="form-label fw-bold">Scan Raport Kelas IX - Semester Ganjil</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas9Ganjil" type="file">
+    @if ($biodata && $biodata->scanRaportKelas9Ganjil)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas9Ganjil }}</p>
+    @endif
+</div>
+<!-- Scan Raport Kelas 9 Genap -->
+<div class="mb-3">
+    <label for="scanRaportKelas9Genap" class="form-label fw-bold">Scan Raport Kelas IX - Semester Genap</label>
+    <input class="form-control rounded-pill p-2" name="scanRaportKelas9Genap" type="file">
+    @if ($biodata && $biodata->scanRaportKelas9Genap)
+        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas9Genap }}</p>
+    @endif
+</div>
+<!-- Sertifikat Lomba Akademik/Non-Akademik -->
+<div class="mb-3">
+    <label for="sertifikatPrestasi" class="form-label fw-bold">Sertifikat Lomba Akademik/Non-Akademik</label>
+    <input class="form-control rounded-pill p-2" name="sertifikatPrestasi" type="file">
+    @if ($biodata && $biodata->sertifikatPrestasi)
+        <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatPrestasi }}</p>
+    @endif
+</div>
+<!-- Sertifikasi Bahasa -->
+<div class="mb-3">
+    <label for="sertifikatSertifikasi" class="form-label fw-bold">Sertifikasi Bahasa</label>
+    <input class="form-control rounded-pill p-2" name="sertifikatSertifikasi" type="file">
+    @if ($biodata && $biodata->sertifikatSertifikasi)
+        <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatSertifikasi }}</p>
+    @endif
+</div>
 
-                            <!--Div Kosong -->
-                            <div class="d-flex justify-content-start align-items-center mb-5">
-
-                            </div>
-
-                            <!-- Scan Raport Kelas 7 Ganjil -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas7Ganjil" class="form-label fw-bold">Scan Raport Kelas VII -
-                                    Semester Ganjil</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas7Ganjil"type="file">
-                            </div>
-                            <!-- Scan Raport Kelas 7 Genap -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas7Genap" class="form-label fw-bold">Scan Raport Kelas VII -
-                                    Semester Genap</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas7Genap"type="file">
-                            </div>
-                            <!-- Scan Raport Kelas 8 Ganjil -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas8Ganjil" class="form-label fw-bold">Scan Raport Kelas VIII -
-                                    Semester Ganjil</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas8Ganjil"type="file">
-                            </div>
-                            <!-- Scan Raport Kelas 8 Genap -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas8Genap" class="form-label fw-bold">Scan Raport Kelas VIII -
-                                    Semester Genap</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas8Genap"type="file">
-                            </div>
-
-                            <!-- Scan Raport Kelas 9 Ganjil -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas9Ganjil" class="form-label fw-bold">Scan Raport Kelas IX -
-                                    Semester Ganjil</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas9Ganjil"type="file">
-                            </div>
-                            <!-- Scan Raport Kelas 9 Genap -->
-                            <div class="mb-3">
-                                <label for="scanRaportKelas9Genap" class="form-label fw-bold">Scan Raport Kelas IX -
-                                    Semester Genap</label>
-                                <input class="form-control rounded-pill p-2" name="scanRaportKelas9Genap"type="file">
-                            </div>
-
-                            <!--Div Kosong -->
-                            <div class="d-flex justify-content-start align-items-center mb-5">
-
-                            </div>
-
-                            <!-- Scan Lomba Prestasi -->
-                            <div class="mb-3">
-                                <label for="sertifikatPrestasi" class="form-label fw-bold">Sertifikat Lomba
-                                    Akademik/Non-Akademik</label>
-                                <input class="form-control rounded-pill p-2" name="sertifikatPrestasi"type="file">
-                            </div>
-
-                            <!-- Scan Sertifikasi  -->
-                            <div class="mb-3">
-                                <label for="sertifikatSertifikasi" class="form-label fw-bold">Sertifikasi Bahasa</label>
-                                <input class="form-control rounded-pill p-2" name="sertifikatSertifikasi"type="file">
-                            </div>
-
-
-                            <button type="submit" class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" formmethod="post">
+                            <button type="submit" name="submit"
+                                class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" formmethod="post">
                                 <i class="fas fa-download fa-sm text-white-50"></i> Submit
                             </button>
 

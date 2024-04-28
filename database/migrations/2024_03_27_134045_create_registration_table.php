@@ -19,6 +19,7 @@ return new class extends Migration
             
             $table->string('rejectionReasonAdministrasi')->nullable(); // Alasan penolakan untuk berkas
             $table->string('hasilTes')->nullable();
+            $table->string('tahunAjaran')->nullable();
             $table->dateTime('tanggalRegistrasi')->default(now());
         });
     }

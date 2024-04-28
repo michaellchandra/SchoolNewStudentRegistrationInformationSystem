@@ -16,6 +16,6 @@ class School extends Model
 
     public function admin()
     {
-        return $this->belongsTo(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
+        return $this->hasMany(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
     }
 }

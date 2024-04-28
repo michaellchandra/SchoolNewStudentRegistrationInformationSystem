@@ -12,7 +12,9 @@
         <li class="nav-item">
 
             <label class="nav-item m-0 text-s">Welcome,</label>
-
+            @isset($school)
+            <p class="fw-bold text-black">{{ $school->schoolNama }}</p>
+            @endisset
           
         </li>
     </ul>

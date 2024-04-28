@@ -28,6 +28,7 @@ class Biodata extends Model
         'agamaSiswa',
         'nomorTeleponSiswa',
         'namaSekolahAsal',
+        'alamatSekolahAsal',
         'provinsiSekolahAsal',
         'kotaSekolahAsal',
         'kecamatanSekolahAsal',

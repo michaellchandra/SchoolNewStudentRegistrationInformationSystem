@@ -23,19 +23,9 @@ class UserController extends Controller
         foreach ($users as $user) {
             
             if ($user->id === $loggedInUser->id) {
-                
                 foreach ($user->registrations as $registration) {
-                    
                     $registrationStatus = $registration->registrationStatus;
-
-                    // $pendaftaranAkunStatus = ($registrationStatus === RegistrationStatus::STATUS_ACCOUNT_REGISTERED) ? 'SUDAH' : 'BELUM';
-                    // $pembayaranFormulirStatus = ($registrationStatus === RegistrationStatus::STATUS_FORM_PAYMENT_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
-                    // $pengisianAdministrasi = ($registrationStatus === RegistrationStatus::STATUS_BIODATA_FORM_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
-                    // $melakukanTes = ($registrationStatus === RegistrationStatus::STATUS_TEST_RESULT_PASSED) ? 'LULUS' : 'TIDAK LULUS';
-                    // $pembayaranAdministrasi = ($registrationStatus === RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFIED) ? 'SUDAH' : 'MENUNGGU';
-
                     $registration->registrationStatus = $registrationStatus;
-                    
                 }
             }
             

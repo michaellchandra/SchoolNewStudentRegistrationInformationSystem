@@ -4,13 +4,13 @@
     <!-- Modal Popup -->
     <div class="container-fluid">
         <div class="card shadow m-2 p-4">
-            <form action="{{ route('admin.store') }}" method="post">
+            <form action="{{ route('admin.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="user_id">Pilih Pengguna:</label>
                     <select name="user_id" id="user_id" class="form-control">
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->email }}</option>
+                            <option value="{{ $user->id }}">ID {{ $user->id }} - {{ $user->email }}</option>
                         @endforeach
                     </select>
                 </div>

@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="container-fluid">
-
+        @if(session('success') || session('error'))
+    <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
+        {{ session('success') ?? session('error') }}
+    </div>
+@endif
 
         <!-- Edit Sekolah -->
         <div class="card shadow mb-4  pb-4">

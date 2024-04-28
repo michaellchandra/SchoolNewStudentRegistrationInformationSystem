@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('biodataStatus');
+            $table->string('rejectionReason')->nullable();
     
             //Data Siswa
             $table->string('namaLengkap');
@@ -23,8 +24,8 @@ return new class extends Migration
             $table->string('nomorNIK');
             $table->string('tempatLahir');
             $table->date('tanggalLahir');
-            $table->string('jumlahSaudaraKandung');
-            $table->string('jumlahSaudaraAngkat');
+            $table->string('jumlahSaudaraKandung')->nullable();
+            $table->string('jumlahSaudaraAngkat')->nullable();
             $table->string('tinggiBadan');
             $table->string('beratBadan');
             $table->string('alamatSiswa');
@@ -35,6 +36,7 @@ return new class extends Migration
 
             //Sekolah
             $table->string('namaSekolahAsal');
+            $table->string('alamatSekolahAsal');
             $table->string('provinsiSekolahAsal');
             $table->string('kotaSekolahAsal');
             $table->string('kecamatanSekolahAsal');
@@ -62,7 +64,7 @@ return new class extends Migration
             $table->string('berkasKartuKeluarga');
             $table->string('berkasKTPAyahKandung');
             $table->string('berkasKTPIbuKandung');
-            $table->string('berkasKTPWali');
+            $table->string('berkasKTPWali')->nullable();
 
             //Raport
             $table->string('scanRaportKelas7Ganjil');
@@ -73,13 +75,14 @@ return new class extends Migration
             $table->string('scanRaportKelas9Genap');
 
             //Sertifikat
-            $table->string('sertifikatPrestasi');
-            $table->string('sertifikatSertifikasi');
+            $table->string('sertifikatPrestasi')->nullable();
+            $table->string('sertifikatSertifikasi')->nullable();
 
-
-
-
-
+            //Timestamp
+            $table->timestamp('updated_at_submit')->nullable();
+            $table->timestamp('updated_at_verification')->nullable();
+            $table->timestamp('updated_at_revision')->nullable();
+            $table->timestamp('updated_at_accepted')->nullable();
 
         });
     }

@@ -65,10 +65,10 @@
 
         </div>
 
-        <!-- Menunggu Verifikasi Administrasi -->
+        <!-- Semua Calon Siswa -->
         <div class="card shadow mb-4">
             <div class="card-header d-flex justify-content-between py-3 align-items-center">
-                <h5 class="m-0 fw-bold text-primary">Menunggu Verifikasi Administrasi</h5>
+                <h5 class="m-0 fw-bold text-primary">Daftar Calon Siswa</h5>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Lihat Semua</a>
             </div>
             <div class="card-body">
@@ -81,7 +81,7 @@
                                 <th>Status Biodata</th>
                                 <th>Status Pendaftaran</th>
                                 <th>Biodata & Berkas</th>
-                                <th>Action</th>
+                                <th class="col-2">Action</th>
 
                             </tr>
                         </thead>
@@ -101,7 +101,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary" data-toggle="modal"
+                                    <button class="btn btn-primary" data-toggle="modal"
                                         data-target="#fileModal{{ $data->id }}">
                                         Lihat Berkas
                                     </button>
@@ -295,7 +295,7 @@
 
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                     <div class="col m-0 p-0">
                                                         <!-- Sekolah Asal -->
@@ -527,18 +527,29 @@
 
                                 <td>
                                     @if ($data->biodataStatus === 'Verifying')
-                                        <form action="{{ route('admin.biodata.accept', $data->id) }}" method="POST">
-                                            @csrf
-                                            <button class="btn btn-sm btn-primary shadow-sm"
-                                                type="submit">Approve</button>
-                                        </form>
-                                        <form action="{{ route('admin.biodata.reject', $data->id) }}" method="POST">
-                                            @csrf
-                                            <button class="btn btn-sm btn-primary shadow-sm" type="button"
-                                                data-toggle="modal" data-target="#rejectionModal">Reject</button>
-                                        </form>
-                                    @else
+                                    <div class="row">
+                                        <div class="col">
+                                            <form action="{{ route('admin.biodata.accept', $data->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-primary shadow-sm"
+                                                    type="submit">Approve</button>
+                                            </form>
+                                        </div>
+
+                                        <div class="col">
+                                            <form action="{{ route('admin.biodata.reject', $data->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-danger shadow-sm" type="button"
+                                                    data-toggle="modal" data-target="#rejectionModal">Reject</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                        
+                                        
+                                    @elseif ($data->biodataStatus === 'pending')
                                         <span>Belum Upload Administrasi</span>
+
+                                    
                                     @endif
 
                                 </td>
@@ -546,6 +557,30 @@
 
 
                             </tr>
+                            <!-- Modal for Reject Biodata -->
+                        <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="rejectionModalLabel">Reject Biodata</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form untuk alasan penolakan -->
+                                        <form action="{{ route('admin.biodata.reject', $data->id) }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="rejectionReason">Alasan Penolakan Biodata</label>
+                                                <textarea class="form-control" id="rejectionReason" name="rejectionReason" rows="3"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-danger">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
 
                     </table>
@@ -553,7 +588,7 @@
             </div>
         </div>
 
-        <!-- Daftar Calon Siswa -->
+        {{-- <!-- Daftar Calon Siswa -->
         <div class="card shadow mb-4">
             <div class="card-header d-flex justify-content-between py-3 align-items-center">
                 <h5 class="m-0 fw-bold text-primary">Daftar Calon Siswa</h5>
@@ -591,7 +626,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Daftar Akun -->
         <div class="card shadow mb-4">

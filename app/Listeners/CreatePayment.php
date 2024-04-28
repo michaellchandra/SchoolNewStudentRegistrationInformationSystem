@@ -33,7 +33,11 @@ class CreatePayment
             'paymentProof' => null, 
             'rejectionReason'=> null,
             'created_at'=> now(),
-            'update_at'=> null
+            'update_at'=> null,
+            'updated_at_submit'=> null,
+            'updated_at_verification' => null,
+            'updated_at_revision' => null,
+            'updated_at_accepted' => null
         ]);
         $payment->save();
     }

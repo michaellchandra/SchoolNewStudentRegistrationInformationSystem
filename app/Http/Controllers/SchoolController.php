@@ -41,6 +41,7 @@ class SchoolController extends Controller
             'schoolNama' => 'required|string|max:255',
             'schoolDeskripsi' => 'required|string',
             'schoolTelepon' => 'required|string|max:20',
+            
         ]);
     
         // Mendapatkan admin yang sedang login
@@ -56,7 +57,7 @@ class SchoolController extends Controller
             'schoolDeskripsi' => $request->get('schoolDeskripsi'),
             'schoolTelepon' => $request->get('schoolTelepon'),
             'schoolLogo' => $request->get('schoolLogo'),
-            'admin_id' => $admin->id
+            // 'admin_id' => $admin->id
         ]);
         $school->save();
     
@@ -102,5 +103,12 @@ class SchoolController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function navbarView(){
+        
+        $school = School::first();
+        return view('includes.admin-navbar', compact('school'))->with('navbarSchool', $school);
+        
     }
 }

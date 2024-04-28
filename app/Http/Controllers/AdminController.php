@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\School;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -46,8 +48,26 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
+            'adminFoto'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+        $user_id = auth()->id();
+        $directory = 'public/AdminProfile/' . $user_id ;
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory, 0777, true); 
+        }
+        
+        $file = $request->file('adminFoto');
+        $filename = $file->getClientOriginalName(); // Nama asli file
+        $file->storeAs($directory, $filename);
+
+        // foreach ($request->file() as $key => $file) {
+        //     if ($file->isValid()) {
+        //         $filename = $file->getClientOriginalName();
+        //         $file->storeAs($directory, $filename);
+        //         $adminFoto[$key] = $filename;
+        //     }
+        // }
 
         // Simpan data admin ke dalam database
         $admin = new Admin();
@@ -59,7 +79,7 @@ class AdminController extends Controller
 
 
         $user = User::find($request->input('user_id'));
-
+        $user->role = 'admin';
         $user->save();
 
 
@@ -109,5 +129,5 @@ class AdminController extends Controller
         return view('admin.manageAdmin-admin', compact('admins','users'));
     }
 
-
+    
 }

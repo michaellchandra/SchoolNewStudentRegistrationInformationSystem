@@ -20,8 +20,12 @@ return new class extends Migration
             $table->string('paymentCategory');
             $table->string('paymentProof')->nullable();
             $table->string('rejectionReason')->nullable();
-            $table->string('updated_at')->nullable();;
-            $table->string('created_at')->nullable();;
+            $table->string('updated_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->timestamp('updated_at_submit')->nullable();
+            $table->timestamp('updated_at_verification')->nullable();
+            $table->timestamp('updated_at_revision')->nullable();
+            $table->timestamp('updated_at_accepted')->nullable();
 
         });
     }
