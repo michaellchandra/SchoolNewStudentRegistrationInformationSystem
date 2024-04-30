@@ -11,11 +11,10 @@
         {{-- <img class="img-profile rounded-circle" src="storage/undraw_profile_1.svg"> --}}
         <li class="nav-item">
 
-            <label class="nav-item m-0 text-s">Welcome,</label>
-            @isset($school)
-            <p class="fw-bold text-black">{{ $school->schoolNama }}</p>
-            @endisset
-          
+            <label class="nav-item m-0 text-s text-black fw-bold">Selamat Datang di Sistem Pendaftaran Siswa Baru</label>
+           <p class="fst-italic">Admin Panel</p></p>
+
+
         </li>
     </ul>
 
@@ -80,13 +79,13 @@
 
                     <div class="dropdown-divider"></div>
 
-                    
+
 
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                    
+
                 </div>
             </li>
         @endguest

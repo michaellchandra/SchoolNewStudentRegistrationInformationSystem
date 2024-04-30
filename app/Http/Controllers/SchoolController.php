@@ -41,16 +41,15 @@ class SchoolController extends Controller
             'schoolNama' => 'required|string|max:255',
             'schoolDeskripsi' => 'required|string',
             'schoolTelepon' => 'required|string|max:20',
-            
         ]);
-    
+
         // Mendapatkan admin yang sedang login
         $admin = Auth::user()->admin;
-    
+
         if (!$admin) {
             return redirect()->route('admin.school.index')->with('error', 'Anda tidak memiliki izin untuk menambahkan sekolah.');
         }
-    
+
         // Membuat sekolah baru dan menyimpan admin_id
         $school = new School([
             'schoolNama' => $request->get('schoolNama'),
@@ -60,9 +59,9 @@ class SchoolController extends Controller
             // 'admin_id' => $admin->id
         ]);
         $school->save();
-    
+
         return redirect()->route('admin.school.index')->with('success', 'Sekolah berhasil ditambahkan.');
-    
+
     }
 
     /**
@@ -106,9 +105,9 @@ class SchoolController extends Controller
     }
 
     public function navbarView(){
-        
+
         $school = School::first();
         return view('includes.admin-navbar', compact('school'))->with('navbarSchool', $school);
-        
+
     }
 }

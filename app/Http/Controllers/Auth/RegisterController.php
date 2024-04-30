@@ -10,6 +10,7 @@ use App\Enums\RegistrationStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Registration;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -33,7 +34,7 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/dashboard';
 
-    
+
 
     /**
      * Create a new controller instance.
@@ -75,11 +76,25 @@ class RegisterController extends Controller
             'asalSekolah' => $data['asalSekolah'],
             'asalReferensiSekolah' => $data['asalReferensiSekolah']
         ]);
-        
+
+        // Mendapatkan tanggal sistem saat ini
+        $currentDate = Carbon::now();
+
+        // Periksa bulan saat ini
+        if ($currentDate->month >= 7) {
+            // Jika bulan saat ini adalah Juli atau setelahnya, tambahkan satu tahun
+            $academicYearStart = $currentDate->year + 1;
+        } else {
+            // Jika bulan saat ini adalah sebelum Juli, gunakan tahun saat ini
+            $academicYearStart = $currentDate->year;
+        }
+
+        $academicYear = $academicYearStart . '-' . ($academicYearStart + 1);
         event(new \App\Events\UserRegistered($user));
         $registration = new Registration();
         $registration->user_id = $user->id;
         $registration->registrationStatus = RegistrationStatus::STATUS_ACCOUNT_REGISTERED;
+        $registration->tahunAjaran = $academicYear;
         $registration->save();
 
         return $user;

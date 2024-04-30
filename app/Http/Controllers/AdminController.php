@@ -18,7 +18,8 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.dashboard-admin')->with('users',$users);
+        $school = School::first();
+        return view('admin.dashboard-admin',compact('users','school'));
     }
 
     /**
@@ -34,7 +35,7 @@ class AdminController extends Controller
     {
     // $users = User::all();
     // $registration = Registration::where('user_id', $users->id)->get();
-    
+
     }
 
     public function semuaAkun() {
@@ -54,9 +55,9 @@ class AdminController extends Controller
         $user_id = auth()->id();
         $directory = 'public/AdminProfile/' . $user_id ;
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true); 
+            Storage::makeDirectory($directory, 0777, true);
         }
-        
+
         $file = $request->file('adminFoto');
         $filename = $file->getClientOriginalName(); // Nama asli file
         $file->storeAs($directory, $filename);
@@ -129,5 +130,12 @@ class AdminController extends Controller
         return view('admin.manageAdmin-admin', compact('admins','users'));
     }
 
-    
+    public function navbarAdmin(){
+        $admins = Admin::all();
+        $users = User::all();
+
+        return view('includes.admin-navbar',compact('admins','users'));
+    }
+
+
 }
