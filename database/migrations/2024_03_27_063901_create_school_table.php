@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('schoolLogo');
             $table->string('schoolDeskripsi');
             $table->string('schoolTelepon');
+            $table->string('schoolNomorRekening');
+            $table->string('schoolNamaRekening');
+            $table->string('schoolBatasPendaftaran');
         });
     }
 

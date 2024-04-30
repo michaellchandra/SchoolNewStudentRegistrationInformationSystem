@@ -11,6 +11,7 @@ use App\Enums\RegistrationStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class BiodataController extends Controller
@@ -145,33 +146,38 @@ class BiodataController extends Controller
 
     public function acceptBiodata(Biodata $biodata)
     {
-        // Ubah status biodata menjadi 'accepted'
+        $updated_at_accepted_formatted = Carbon::parse(now())->format('Y-m-d H:i:s');
         $biodata->update([
             'biodataStatus' => 'accepted',
-            'updated_at_accepted'=> now()
+            'updated_at_accepted'=> $updated_at_accepted_formatted
         ]);
 
         // Ambil semua registrasi untuk pengguna yang terkait dengan biodata ini
         $registrations = $biodata->user->registrations;
 
         foreach ($registrations as $registration) {
-            // Atur status pendaftaran
+
             $registration->registrationStatus = RegistrationStatus::STATUS_BIODATA_FORM_VERIFIED;
 
-            // Simpan perubahan pada setiap objek pendaftaran
             $registration->save();
         }
 
         return redirect()->back()->with('success', 'Biodata accepted successfully!');
     }
 
-    public function rejectBiodata(Biodata $biodata)
+    public function rejectBiodata(Request $request, Biodata $biodata)
     {
-        // Ubah status biodata menjadi 'rejected'
+        $request->validate([
+            'rejectionReason' => 'required|string',
+        ]);
+
+        $updated_at_revision_formatted = Carbon::parse(now())->format('Y-m-d H:i:s');
         $biodata->update([
             'biodataStatus' => 'rejected',
-            'updated_at_revision' => now()
+            'rejectionReason' => $request->rejectionReason,
+            'updated_at_revision' => $updated_at_revision_formatted
         ]);
+
         $registrations = $biodata->user->registrations;
         foreach ($registrations as $registration) {
 
@@ -179,7 +185,7 @@ class BiodataController extends Controller
 
             $registration->save();
         }
-
+        dd($registration);
         return redirect()->back()->with('success', 'Biodata rejected successfully!');
     }
 
@@ -203,9 +209,8 @@ class BiodataController extends Controller
 
         $biodata = Biodata::where('user_id', $user_id)->first();
 
-        // Pastikan biodata ditemukan
         if (!$biodata) {
-            abort(404); // Berikan respons 404 Not Found jika tidak ditemukan
+            abort(404); 
         }
 
         // Pastikan file yang diminta ada dalam biodata

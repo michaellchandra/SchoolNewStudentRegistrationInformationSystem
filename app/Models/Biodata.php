@@ -13,6 +13,7 @@ class Biodata extends Model
     protected $fillable = [
         'user_id',
         'biodataStatus',
+        'rejectionReason',
         'namaLengkap',
         'jenisKelamin',
         'nomorNIK',

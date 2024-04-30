@@ -24,7 +24,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/pendaftar', [App\Http\Controllers\BiodataController::class, 'index'])->name('admin.pendaftar');
     Route::get('/admin/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('admin.payment');
     Route::get('/admin/semua-akun', [App\Http\Controllers\AdminController::class, 'semuaAkun'])->name('admin.semuaUser');
-    
+
     Route::get('/admin/settings', [App\Http\Controllers\AdminController::class, 'settings'])->name('admin.settings');
     Route::get('/admin/settings/manageadmin', [App\Http\Controllers\AdminController::class, 'manageAdmin'])->name('admin.manageAdmin');
 
@@ -46,22 +46,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/school/{id}', [App\Http\Controllers\SchoolController::class, 'update'])->name('admin.school.update');
 
     //Payment
-    Route::post('/payment/{payment}/reject', [App\Http\Controllers\PaymentController::class], 'rejectPayment')->name('admin.payment.reject');
+    // Route::post('/payment/{payment}/reject', [App\Http\Controllers\PaymentController::class], 'rejectPayment')->name('admin.payment.reject');
     Route::post('admin/payments/{payment}/approve', [App\Http\Controllers\PaymentController::class, 'approvePayment'])->name('admin.payments.approve');
     Route::post('admin/payments/{payment}/reject', [App\Http\Controllers\PaymentController::class, 'rejectPayment'])->name('admin.payments.reject');
     Route::get('storage/{user_id}/PaymentProofs/{paymentProof}', [App\Http\Controllers\PaymentController::class,'showPaymentProof'])->name('payment.proof');
 
 
     //Biodata
-    
+
     //File Berkas
     Route::get('storage/{user_id}/biodata/{filename}', [App\Http\Controllers\BiodataController::class, 'showBiodataFile'])->name('admin.biodata.file');
+    Route::post('admin/biodata/{biodata}/accept', [App\Http\Controllers\BiodataController::class, 'acceptBiodata'])->name('admin.biodata.accept');
+    Route::post('admin/biodata/{biodata}/reject', [App\Http\Controllers\BiodataController::class, 'rejectBiodata'])->name('admin.biodata.reject');
 
-
-
-    Route::post('/biodata/{biodata}/accept', [App\Http\Controllers\BiodataController::class, 'acceptBiodata'])->name('admin.biodata.accept');
-    Route::post('/biodata/{biodata}/reject', [App\Http\Controllers\BiodataController::class, 'rejectBiodata'])->name('admin.biodata.reject');
-    
+    //Hasil Tes
+    Route::post('/admin/apply-hasiltes', [App\Http\Controllers\RegistrationController::class,'applyStatusTes'])->name('admin.apply-status.test');
 
 });
 

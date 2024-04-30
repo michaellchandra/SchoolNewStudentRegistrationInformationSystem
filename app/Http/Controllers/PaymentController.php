@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\Registration;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 use App\Enums\RegistrationStatus;
@@ -70,7 +71,7 @@ class PaymentController extends Controller
                 'paymentDate' => now(),
                 'paymentAmount' => 0,
                 'paymentStatus' => 'Verifying',
-                'paymentCategory' => $request->paymentCategory,
+                // 'paymentCategory' => $request->paymentCategory,
                 'paymentProof' => $filename,
                 'updated_at_submit'=> now()
             ]);
@@ -102,46 +103,6 @@ class PaymentController extends Controller
 
         return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
     }
-
-//     public function store(Request $request)
-// {
-//     $request->validate([
-//         // Tambahkan validasi untuk setiap file yang diunggah di sini
-//     ]);
-
-//     $user_id = auth()->id();
-//     $directory = 'public/' . $user_id . '/Biodata';
-//     if (!Storage::exists($directory)) {
-//         Storage::makeDirectory($directory, 0777, true); // Membuat direktori secara rekursif jika belum ada
-//     }
-
-//     $biodataData = $request->except('_token');
-
-//     foreach ($request->file() as $key => $file) {
-//         if ($file->isValid()) {
-//             $filename = $file->getClientOriginalName();
-//             $file->storeAs($directory, $filename);
-//             $biodataData[$key] = $filename;
-//         }
-//     }
-
-//     $biodata = Biodata::where('user_id', $user_id)->first();
-
-//     if ($biodata) {
-//         $biodata->update($biodataData);
-//     } else {
-//         $biodataData['user_id'] = $user_id;
-//         $biodataData['biodataStatus'] = 'Verifying';
-//         Biodata::create($biodataData);
-//     }
-
-//     $registrationStatus = RegistrationStatus::STATUS_BIODATA_FORM_VERIFICATION_PENDING;
-//     $registration = Registration::where('user_id', $user_id)->first();
-//     $registration->registrationStatus = $registrationStatus;
-//     $registration->save();
-
-//     return redirect()->route('user.index')->with('success', 'Biodata berhasil disimpan');
-// }
 
 
     /**
@@ -210,6 +171,7 @@ class PaymentController extends Controller
         }
 
         // Perbarui status pembayaran menjadi 'approved'
+
         $payment->update([
             'paymentStatus' => 'approved',
             'updated_at_accepted'=>now()
@@ -248,6 +210,7 @@ class PaymentController extends Controller
             'paymentStatus' => 'rejected',
             'rejectionReason' => $request->rejectionReason,
             'updated_at_revision' => now()
+
         ]);
 
         return redirect()->back()->with('success', 'Payment rejected successfully!');

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Registration;
 
+use App\Models\Registration;
+use App\Models\User;
 use App\Enums\RegistrationStatus;
 
 use Illuminate\Http\Request;
@@ -74,7 +75,7 @@ class RegistrationController extends Controller
         $accountRegistered = $registration->hasCompletedStep(RegistrationStatus::STATUS_ACCOUNT_REGISTERED);
         $formPaymentPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_FORM_PAYMENT_PENDING);
         $formPaymentVerificationPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_FORM_PAYMENT_VERIFICATION_PENDING);
-        $formPaymentRevisionRequired =$registration->hasCompletedStep(RegistrationStatus::STATUS_FORM_PAYMENT_REVISION_REQUIRED);
+        $formPaymentRevisionRequired = $registration->hasCompletedStep(RegistrationStatus::STATUS_FORM_PAYMENT_REVISION_REQUIRED);
         $formPaymentVerified = $registration->hasCompletedStep(RegistrationStatus::STATUS_FORM_PAYMENT_VERIFIED);
         $biodataPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_BIODATA_FORM_PENDING);
         $biodataVerificationPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_BIODATA_FORM_VERIFICATION_PENDING);
@@ -85,11 +86,47 @@ class RegistrationController extends Controller
         $testResultFailed = $registration->hasCompletedStep(RegistrationStatus::STATUS_TEST_RESULT_FAILED);
         $testResultPassed = $registration->hasCompletedStep(RegistrationStatus::STATUS_TEST_RESULT_PASSED);
         $administrativePaymentPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_PENDING);
-        $administrativePaymentVerificationPending =$registration->hasCompletedStep(RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFICATION_PENDING);
+        $administrativePaymentVerificationPending = $registration->hasCompletedStep(RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFICATION_PENDING);
         $administrativePaymentRevisionRequired = $registration->hasCompletedStep(RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_REVISION_REQUIRED);
         $administrativePaymentVerified = $registration->hasCompletedStep(RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFIED);
 
         return view('registration.status');
     }
 
+    public function applyStatusTes(Request $request)
+    {
+
+         $customMessages = [
+            'selectedUsers.required' => 'Tidak ada calon siswa yang dipilih, silahkan pilih minimal 1 calon siswa sebelum menerapkan Status Hasil Tes.',
+        ];
+
+        // Validasi formulir dengan pesan kesalahan yang disesuaikan
+        $request->validate([
+            'hasilTes' => 'required|string',
+            'selectedUsers' => 'required|array',
+            'selectedUsers.*' => 'integer|exists:users,id',
+        ], $customMessages);
+
+        // Ambil data yang dikirimkan dari formulir
+        $userIds = $request->input('selectedUsers');
+        $status = $request->input('hasilTes');
+
+        // Proses data dan simpan status
+
+            foreach ($userIds as $userId) {
+                $registration = Registration::where('user_id', $userId)->first();
+                if ($registration) {
+                    if ($status === 'Lulus') {
+                        $registration->registrationStatus = RegistrationStatus::STATUS_TEST_RESULT_PASSED;
+                    } else if ($status === 'Tidak Lulus') {
+                        $registration->registrationStatus = RegistrationStatus::STATUS_TEST_RESULT_FAILED;
+                    }
+                    $registration->hasilTes = $status;
+                    $registration->save();
+                }
+            }
+
+            return redirect()->back()->with('success', 'Status berhasil diterapkan untuk calon siswa yang dipilih.');
+
+    }
 }
