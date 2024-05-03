@@ -35,7 +35,7 @@ class VerificationController extends Controller
     //             return '/admin/dashboard';
     //         case 'user':
     //             return '/user/dashboard';
-    //         // Tambahkan case untuk peran lain jika diperlukan
+
             
     //     }
     // }

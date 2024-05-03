@@ -46,7 +46,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/school/{id}', [App\Http\Controllers\SchoolController::class, 'update'])->name('admin.school.update');
 
     //Payment
-    // Route::post('/payment/{payment}/reject', [App\Http\Controllers\PaymentController::class], 'rejectPayment')->name('admin.payment.reject');
+    
     Route::post('admin/payments/{payment}/approve', [App\Http\Controllers\PaymentController::class, 'approvePayment'])->name('admin.payments.approve');
     Route::post('admin/payments/{payment}/reject', [App\Http\Controllers\PaymentController::class, 'rejectPayment'])->name('admin.payments.reject');
     Route::get('storage/{user_id}/PaymentProofs/{paymentProof}', [App\Http\Controllers\PaymentController::class,'showPaymentProof'])->name('payment.proof');
@@ -58,10 +58,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('storage/{user_id}/biodata/{filename}', [App\Http\Controllers\BiodataController::class, 'showBiodataFile'])->name('admin.biodata.file');
     Route::post('admin/biodata/{biodata}/accept', [App\Http\Controllers\BiodataController::class, 'acceptBiodata'])->name('admin.biodata.accept');
     Route::post('admin/biodata/{biodata}/reject', [App\Http\Controllers\BiodataController::class, 'rejectBiodata'])->name('admin.biodata.reject');
-
+    Route::get('/admin/biodata/edit/{biodata}',[App\Http\Controllers\BiodataController::class,'edit'])->name('admin.biodata.edit');
+    Route::put('/admin/biodata/{biodata}',[App\Http\Controllers\BiodataController::class,'update'])->name('admin.biodata.update');
+    Route::get('admin/pendaftar/all',[App\Http\Controllers\BiodataController::class,'allCalonSiswa'])->name('admin.biodata.allCalonSiswa');
     //Hasil Tes
     Route::post('/admin/apply-hasiltes', [App\Http\Controllers\RegistrationController::class,'applyStatusTes'])->name('admin.apply-status.test');
-
+    Route::get('/admin/analytic',[App\Http\Controllers\AnalyticController::class, 'index'])->name('admin.analytics');
+    Route::get('/daily-registrations', [App\Http\Controllers\AnalyticController::class, 'dailyRegistrations'])->name('daily.registrations');
+    Route::get('/weekly-registrations', [App\Http\Controllers\AnalyticController::class, 'weeklyRegistrations'])->name('weekly.registrations');
+    Route::get('/download/biodata/{filename}', [App\Http\Controllers\BiodataController::class],'downloadAdministrasi')->name('admin.biodata.download');
+    Route::get('/download-zip/{user_id}', [App\Http\Controllers\BiodataController::class],'downloadZip')->name('admin.biodata.downloadZip');
 });
 
 
@@ -85,7 +91,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/pengisian-biodata', [App\Http\Controllers\BiodataController::class, 'create'])->name('user.biodata.create');
     Route::post('/user/pengisian-biodata/store',[App\Http\Controllers\BiodataController::class,'store'])->name('user.biodata.store');
     Route::get('/user/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('user.payment');
-
+    Route::post('/getKota',[App\Http\Controllers\BiodataController::class,'getKota'])->name('getKota');
+    Route::post('/getKecamatan',[App\Http\Controllers\BiodataController::class,'getKecamatan'])->name('getKecamatan');
     //Payment
     Route::post('/user/payment/store',[App\Http\Controllers\PaymentController::class,'store'])->name('user.payment.store');
 

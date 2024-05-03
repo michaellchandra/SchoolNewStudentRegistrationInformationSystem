@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\School;
+use App\Models\Biodata;
+use App\Models\Payment;
+use Carbon\Carbon;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -19,7 +23,31 @@ class AdminController extends Controller
     {
         $users = User::all();
         $school = School::first();
-        return view('admin.dashboard-admin',compact('users','school'));
+        // $users = User::with('registrations')->get();
+        $biodata = Biodata::all();
+        $payment = Payment::all();
+
+        $totalUsers = User::where('role', 'user')->count();
+
+        //Registrasi Terbaru
+        $latestUsers = User::where('role', '!=', 'admin')->latest()->take(5)->get();
+
+        //Hitung Payment yang Pending
+        $totalVerifyingPayments = DB::table('payments')
+                ->where('paymentStatus', 'verifying')
+                ->whereIn('paymentCategory', ['formulir', 'administrasi'])
+                ->count();
+
+        //Hitung Pending Biodata
+        $totalVerifyingBiodata = Biodata::where('biodataStatus', 'verifying')->count();
+
+        //Registrasi Hari Ini
+        $today = Carbon::now();
+        $todayDate = $today->isoFormat('dddd, D MMMM YYYY'); 
+        $todayRegistrations = User::whereDate('created_at', today())->count();
+        
+        
+        return view('admin.dashboard-admin',compact('users','school','totalUsers','totalVerifyingPayments','totalVerifyingBiodata','todayRegistrations','todayDate','latestUsers'));
     }
 
     /**

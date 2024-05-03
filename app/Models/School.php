@@ -11,11 +11,15 @@ class School extends Model
     protected $fillable = [
         'schoolNama', 
         'schoolLogo', 
-        'schoolDeskripsi', 'schoolTelepon', 'admin_id'
+        'schoolDeskripsi', 
+        'schoolTelepon', 
+        'schoolNomorRekening',
+        'schoolNamaRekening',
+        'schoolBatasPendaftaran'
     ];
 
-    public function admin()
-    {
-        return $this->hasMany(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
-    }
+    // public function admin()
+    // {
+    //     return $this->hasMany(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
+    // }
 }

@@ -280,7 +280,7 @@
                                 <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
                                 @foreach ($biodata as $data)
                                 <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_revision}}</p>
+                                
                                 @endforeach
                             </div>
 
@@ -341,9 +341,26 @@
                             </div>
                         </div>
                         <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div>
+                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                <p class="fs-6">
+                                    <a href="#" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <p class="fs-6">
+                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                    <i class="fas fa-exclamation"></i></a>
+                                    Butuh Revisi Biodata & Formulir, Cek Alasan Penolakan</p>
+                            </div>
+                            <div>
+                                <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
+                                @foreach ($biodata as $data )
+                                <p class="fs-6">{{ $data->updated_at_submit}}</p>
+                                    <p class="fs-6">{{ $data->updated_at_revision}}</p>
+                                @endforeach
 
-                            <p class="m-0">Pengisian Biodata & Berkas</p>
-                            <h6 class="m-0 fw-bold text-warning">BUTUH REVISI</h6>
+                            </div>
+                            
                         </div>
                         <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
@@ -678,7 +695,7 @@
                                 <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
                                 @foreach ($payments as $payment)
                                 <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
                                 @endforeach
 
                             </div>
@@ -852,7 +869,18 @@
             <h2 class="fs-2 fw-bold mb-4">Rp. {{ $payment->paymentAmount }}</h2>
             @endforeach --}}
                     <p>Silahkan melakukan transfer ke </p>
-                    <p class="fs-4 fw-bold">0706012010052 a/n MICHAEL CHANDRA</p>
+                    <p class="fs-4 fw-bold">
+                        @isset($school->schoolNomorRekening)
+                        {{ $school->schoolNomorRekening }} 
+                    @else
+                        Menunggu Konfirmasi dari Admin
+                    @endisset
+                    a/n
+                    @isset($school->schoolNamaRekening)
+                        {{ $school->schoolNamaRekening }}
+                    @else
+                        NULL
+                    @endisset</p>
                 </div>
                 <div class="card-body">
                     <p>Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian lakukan konfirmasi
@@ -1002,7 +1030,10 @@
                 </div>
                 <div class="mb-3 card-body">
                     <p>Mohon maaf, setelah dilakukan verifikasi berkas anda butuh revisi dengan alasan :</p>
-                    {{-- <p>{{ $rejectionReason }}</p> --}}
+                    <p class="fw-bold text-info fs-3 mb-3">@foreach ($biodata as $data )
+                        {{ $data->rejectionReason }}
+                    @endforeach
+                        </p>
 
                     <p>Mohon untuk melakukan revisi berkas sebelum tanggal penutupan pendaftaran</p>
                     <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Revisi
@@ -1069,7 +1100,7 @@
                     </div>
                     <div class="d-flex flex-column justify-content-center align-items-end">
                         <p class="m-0">Batas Akhir Pendaftaran</p>
-                        <h6 class="m-0 fw-bold text-info">24 Maret 2024</h6>
+                        <h6 class="m-0 fw-bold text-info">{{ $school->schoolBatasPendaftaran }}</h6>
                     </div>
                 </div>
 

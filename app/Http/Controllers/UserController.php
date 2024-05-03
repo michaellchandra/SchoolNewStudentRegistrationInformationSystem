@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Biodata;
 use App\Models\Payment;
+use App\Models\School;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\RegistrationStatus;
@@ -21,6 +22,7 @@ class UserController extends Controller
         $users = User::with('registrations')->get();
         $payments = Payment::where('user_id', $loggedInUser->id)->get();
         $biodata = Biodata::where('user_id', $loggedInUser->id)->get();
+        $school = School::first();
 
         foreach ($users as $user) {
 
@@ -34,7 +36,7 @@ class UserController extends Controller
         }
 
         // $payments = Payment::where('user_id', $users->id)->get();
-        return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata'));
+        return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata','school'));
     }
 
 

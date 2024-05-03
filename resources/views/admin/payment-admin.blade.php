@@ -26,7 +26,7 @@
                             <div class="col mr-2 p-3">
                                 <div class="font-weight-bold text-primary text-uppercase mb-1">
                                     Pending Transaction</div>
-                                <div class="h1 mb-0 font-weight-bold text-gray-800">231</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $totalVerifyingPayments }}</div>
                             </div>
 
                         </div>
@@ -42,7 +42,7 @@
                             <div class="col mr-2 p-3">
                                 <div class="font-weight-bold text-primary text-uppercase mb-1">
                                     Pembayaran Formulir Berhasil</div>
-                                <div class="h1 mb-0 font-weight-bold text-gray-800">40</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $totalFormulir }}</div>
                             </div>
 
                         </div>
@@ -58,7 +58,7 @@
                             <div class="col mr-2 p-3">
                                 <div class="font-weight-bold text-primary text-uppercase mb-1">
                                     Pembayaran Administrasi Lunas</div>
-                                <div class="h1 mb-0 font-weight-bold text-gray-800">50</div>
+                                <div class="h1 mb-0 font-weight-bold text-gray-800">{{ $totalAdministrasi }}</div>
                             </div>
 
                         </div>
@@ -125,33 +125,35 @@
 
                                 <th>Bukti Pembayaran</th>
                                 <th>Kategori</th>
-                                
+
                                 <th>Status</th>
                                 <th>Action</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($payment as $payment)
+                            @forelse ($payment as $payment)
                                 <tr>
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->user->email }}</td>
                                     <td>
                                         @if ($payment->paymentProof)
-                                        <a href="{{ route('payment.proof',  ['user_id' => $payment->user_id, 'paymentProof' => $payment->paymentProof]) }}" target="_blank" class="btn btn-sm btn-primary w-100 shadow-sm">Lihat Bukti</a>
-                                        {{-- @php
+                                            <a href="{{ route('payment.proof', ['user_id' => $payment->user_id, 'paymentProof' => $payment->paymentProof]) }}"
+                                                target="_blank" class="btn btn-sm btn-primary w-100 shadow-sm">Lihat
+                                                Bukti</a>
+                                            {{-- @php
                                             dd($payment->paymentProof);
                                         @endphp --}}
-                                    @else
-                                        <span>Belum Upload Bukti Pembayaran</span>
-                                    @endif
+                                        @else
+                                            <span>Belum Upload Bukti Pembayaran</span>
+                                        @endif
                                     </td>
                                     <td>{{ $payment->paymentCategory }}</td>
-                                    
+
                                     <td>{{ $payment->paymentStatus }}</td>
                                     <td>
 
-            
+
                                         @if ($payment->paymentStatus === 'Verifying')
                                             <form action="{{ route('admin.payments.approve', $payment->id) }}"
                                                 method="POST">
@@ -163,20 +165,12 @@
                                             <form action="{{ route('admin.payments.reject', $payment->id) }}"
                                                 method="POST">
                                                 @csrf
-                                                <button
-                                                    class="btn btn-sm btn-primary shadow-sm" type="button" data-toggle="modal" data-target="#rejectionModal">Reject</button>
+                                                <button class="btn btn-sm btn-primary shadow-sm" type="button"
+                                                    data-toggle="modal" data-target="#rejectionModal">Reject</button>
                                             </form>
-                                            
-                                        @endif
-
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
-
-                        <!-- Model for Reject Payment -->
-                        <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel" aria-hidden="true">
+                                            <!-- Model for Reject Payment -->
+                            <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog"
+                            aria-labelledby="rejectionModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -199,13 +193,28 @@
                                 </div>
                             </div>
                         </div>
-                    </table>
+                                        @endif
+
+                                    </td>
+                                </tr>
+                            
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">Belum ada pembayaran yang masuk</td>
+                                    
+                                </tr>
+                            @endforelse
+
+                            </tbody>
+
+                            
+                        </table>
+                    </div>
                 </div>
             </div>
+
+
+
+
         </div>
-
-
-
-
-    </div>
-@endsection
+    @endsection

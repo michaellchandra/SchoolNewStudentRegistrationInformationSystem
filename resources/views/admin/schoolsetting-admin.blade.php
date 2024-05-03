@@ -2,11 +2,12 @@
 
 @section('content')
     <div class="container-fluid">
-        @if(session('success') || session('error'))
-    <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
-        {{ session('success') ?? session('error') }}
-    </div>
-@endif
+        @if (session('success') || session('error'))
+            <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
+                {{ session('success') ?? session('error') }}
+            </div>
+        @endif
+
 
         <!-- Edit Sekolah -->
         <div class="card shadow mb-4  pb-4">
@@ -18,51 +19,69 @@
                 </button>
             </div>
 
-
+            
             <div class="row p-3 mt-3">
+                <div>
+                    <p class="fs-4 fw-bold">Identitas Sekolah</p>
+                </div>
+                <div class="col px-4">
+                    <!-- Nama Sekolah -->
+                    
+                    <div class="row mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 p-3">
+                                        <div class="font-weight-bold text-primary text-uppercase mb-1">
+                                            Nama Sekolah</div>
+                                        <div class="fs-3 mb-0 font-weight-bold text-gray-800 align-items-center">
 
-                <div class="col">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2 p-3">
-                                    <div class="font-weight-bold text-primary text-uppercase mb-1">
-                                        Nama Sekolah</div>
-                                    <div class="fs-3 mb-0 font-weight-bold text-gray-800 align-items-center">
-                                        
-                                        {{ $school->schoolNama }}</div>
+                                            {{ $school->schoolNama }}</div>
+                                    </div>
+
                                 </div>
-
                             </div>
                         </div>
                     </div>
+                    <!-- Telepon -->
+                    <div class="row">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 p-3">
+                                        <div class="font-weight-bold text-primary text-uppercase mb-1">
+                                            Telepon Sekolah</div>
+                                        <div class="fs-4">
+                                            {{ $school->schoolTelepon }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col">
-                    <div class="card border-left-primary shadow h-100 py-2">
+
+                <!-- Logo -->
+                <div class="col-sm-3">
+                    <div class="card border-left-primary shadow py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2 p-3">
                                     <div class="font-weight-bold text-primary text-uppercase mb-1">
                                         Logo Sekolah</div>
-                                    <img src="{{ $school->schoolLogo }}" alt="School Logo" style="max-width: 100px;">
+                                    @if ($school->schoolLogo)
+                                        <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}"
+                                            alt="School Logo" class="img-fluid img-thumbnail">
+                                    @else
+                                        <p>No school logo available</p>
+                                    @endif
                                 </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2 p-3">
-                                    <div class="font-weight-bold text-primary text-uppercase mb-1">
-                                        Telepon Sekolah</div>
-                                    <div class="fs-4">
-                                        {{ $school->schoolTelepon }}
-                                    </div>
-                                </div>
+                                @if ($school->schoolLogo)
+                                    <a href="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}" target="_blank"
+                                        class="btn btn-primary">Lihat Foto</a>
+                                @endif
 
                             </div>
                         </div>
@@ -71,8 +90,9 @@
 
 
             </div>
+            <!-- Deskripsi  -->
             <div class="p-3 col">
-                <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card border-bottom-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2 p-3">
@@ -88,7 +108,67 @@
                 </div>
             </div>
 
-            <!-- Modal -->
+            <div class="row p-3 mt-3">
+                <div>
+                    <p class="fs-4 fw-bold">Pendaftaran Sekolah</p>
+                </div>
+                <div class="row px-4">
+                    <!-- Nomor Rekening Pembayaran -->
+                    
+                    <div class="col">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 p-3">
+                                        <div class="font-weight-bold text-primary text-uppercase mb-1">
+                                            Nomor Rekening Pembayaran
+                                        </div>
+                                        <div class="fs-3 mb-0 font-weight-bold text-gray-800 align-items-center">
+
+                                            {{ $school->schoolNomorRekening }}</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 p-3">
+                                        <div class="font-weight-bold text-primary text-uppercase mb-1">
+                                            Telepon Sekolah</div>
+                                        <div class="fs-4">
+                                            {{ $school->schoolTelepon }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 p-3">
+                                        <div class="font-weight-bold text-primary text-uppercase mb-1">
+                                            Batas Pendaftaran</div>
+                                        <div class="fs-4">
+                                            {{ $school->schoolBatasPendaftaran }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+
+
+            <!-- Modal Edit Sekolah -->
             <div class="modal fade" id="editSchoolModal" tabindex="-1" aria-labelledby="editSchoolModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">

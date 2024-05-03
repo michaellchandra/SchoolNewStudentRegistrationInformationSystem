@@ -1,17 +1,18 @@
-@extends('layouts.user')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container-fluid">
-        <a href="/user/dashboard" class="pt-5 link-primary">
-            < Back to Dashboard</a>
+        <a href="/admin/pendaftar" class="pt-5 link-primary">
+            < Back to Pendaftar</a>
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-dark">Pengisian Biodata & Berkas</h1>
+                    <h1 class="h3 mb-0 text-dark">Ubah Biodata & Berkas</h1>
                     <a href="#" class="p-2 fs-6 btn btn-sm btn-primary shadow-sm"><i
                             class="fas fa-solid fa-question  text-white-50"></i> Bantuan</a>
                 </div>
-
-                <form action="{{ route('user.biodata.store') }}" method="POST" enctype="multipart/form-data">
+                
+                <form action="{{ route('admin.biodata.update', $biodata->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <!-- Biodata Siswa -->
                     <div class="card shadow mb-4">
                         <div class="card-header d-flex justify-content-between py-3 align-items-center">
@@ -66,7 +67,7 @@
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-md-start align-items-center">
                                     <input id="nomorNIK" type="number" class="rounded-pill p-2 form-control"
-                                        name="nomorNIK" value="{{ $biodata ? $biodata->nomorNIK : old('nomorNIK') }}"
+                                        name="nomorNIK" value="{{$biodata->nomorNIK }}"
                                         required>
                                 </div>
                             </div>
@@ -631,8 +632,8 @@
                             </div>
 
                             <button type="submit" name="submit"
-                                class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" formmethod="post">
-                                <i class="fas fa-download fa-sm text-white-50"></i> Submit
+                                class="w-100 p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm" formmethod="post">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Simpan Perubahan
                             </button>
 
                 </form>

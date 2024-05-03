@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('admin_id');
-            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
+            // $table->unsignedBigInteger('admin_id');
+            // $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->string('schoolNama');
-            $table->string('schoolLogo');
-            $table->string('schoolDeskripsi');
-            $table->string('schoolTelepon');
-            $table->string('schoolNomorRekening');
-            $table->string('schoolNamaRekening');
-            $table->string('schoolBatasPendaftaran');
+            $table->string('schoolLogo')->nullable();
+            $table->string('schoolDeskripsi')->nullable();
+            $table->string('schoolTelepon')->nullable();
+            $table->string('schoolNomorRekening')->nullable();
+            $table->string('schoolNamaRekening')->nullable();
+            $table->date('schoolBatasPendaftaran')->nullable();
         });
     }
 

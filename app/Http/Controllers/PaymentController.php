@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\Registration;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\Enums\RegistrationStatus;
@@ -27,7 +28,22 @@ class PaymentController extends Controller
         $payment = Payment::all();
 
         if ($user && $user->role === 'admin') {
-            return view('admin.payment-admin', compact('payment','user'));
+            $totalFormulir = DB::table('payments')
+                ->where('paymentStatus', 'approved')
+                ->where('paymentCategory', 'formulir')
+                ->count();
+
+            $totalAdministrasi = DB::table('payments')
+                ->where('paymentStatus', 'approved')
+                ->where('paymentCategory', 'administrasi')
+                ->count();
+
+            $totalVerifyingPayments = DB::table('payments')
+                ->where('paymentStatus', 'verifying')
+                ->whereIn('paymentCategory', ['formulir', 'administrasi'])
+                ->count();
+
+            return view('admin.payment-admin', compact('payment', 'user', 'totalFormulir', 'totalAdministrasi', 'totalVerifyingPayments'));
         } elseif ($user && $user->role === 'user') {
             $payments = Payment::where('user_id', $user->id)->get();
             return view('user.payment-user', compact('payments'));
@@ -73,7 +89,7 @@ class PaymentController extends Controller
                 'paymentStatus' => 'Verifying',
                 // 'paymentCategory' => $request->paymentCategory,
                 'paymentProof' => $filename,
-                'updated_at_submit'=> now()
+                'updated_at_submit' => now()
             ]);
         } else {
             // Jika tidak, buat pembayaran baru
@@ -84,7 +100,7 @@ class PaymentController extends Controller
                 'paymentStatus' => 'Verifying',
                 'paymentCategory' => $request->paymentCategory,
                 'paymentProof' => $filename,
-                'updated_at_submit'=> now()
+                'updated_at_submit' => now()
             ]);
             $payment->save();
         }
@@ -110,8 +126,7 @@ class PaymentController extends Controller
      */
     public function show(User $user)
     {
-        // $totalPayment = $this->calculateTotalPayment($user);
-        // return view('payment.form', compact('user', 'totalPayment'));
+        //
     }
 
     /**
@@ -153,8 +168,6 @@ class PaymentController extends Controller
             foreach ($registrations as $registration) {
                 // Atur status pendaftaran
                 $registration->registrationStatus = RegistrationStatus::STATUS_FORM_PAYMENT_VERIFIED;
-
-                // Simpan perubahan pada setiap objek pendaftaran
                 $registration->save();
             }
         } elseif ($payment->paymentCategory === 'administrasi') {
@@ -174,7 +187,7 @@ class PaymentController extends Controller
 
         $payment->update([
             'paymentStatus' => 'approved',
-            'updated_at_accepted'=>now()
+            'updated_at_accepted' => now()
         ]);
 
         return redirect()->back()->with('success', 'Payment approved successfully!');
@@ -217,19 +230,21 @@ class PaymentController extends Controller
     }
 
     public function showPaymentProof($paymentProof)
-{
-    // Dapatkan path lengkap ke file bukti pembayaran
-    $user_id = auth()->id();
-    $filePath = storage_path("app/public/paymentProofs/{$user_id}/{$paymentProof}");
+    {
+        // Dapatkan path lengkap ke file bukti pembayaran
+        $user_id = auth()->id();
+        $filePath = storage_path("app/public/paymentProofs/{$user_id}/{$paymentProof}");
 
-    // Periksa apakah file ada
-    if (!file_exists($filePath)) {
-        abort(404
-    );
+        // Periksa apakah file ada
+        if (!file_exists($filePath)) {
+            abort(
+                404
+            );
+        }
+
+        // Tampilkan bukti pembayaran
+        return response()->file($filePath);
     }
 
-    // Tampilkan bukti pembayaran
-    return response()->file($filePath);
-}
-
+    
 }

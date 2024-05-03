@@ -4,11 +4,12 @@
 
 <div class="container-fluid">
     
-    <div class="container-fluid">
+    <div class="container-fluid mb-5">
         <div class="card">
             <div class="card-header">
                 Tambah Sekolah
             </div>
+            
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -19,8 +20,11 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('admin.school.store') }}" method="POST">
+                <form action="{{ route('admin.school.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div>
+                        <p class="fs-5 fw-bold">Identitas Sekolah</p>
+                    </div>
                     <div class="mb-3">
                         <label for="schoolNama" class="form-label">Nama Sekolah</label>
                         <input type="text" class="form-control" id="schoolNama" name="schoolNama" required>
@@ -37,7 +41,24 @@
                         <label for="schoolLogo" class="form-label">Logo Sekolah</label>
                         <input type="file" class="form-control" id="schoolLogo" name="schoolLogo" required>
                     </div>
-                    <!-- Tambahkan input lainnya sesuai kebutuhan -->
+
+                    <div class="pt-3">
+                        <p class="fs-5 fw-bold">Pendaftaran Sekolah</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="schoolNomorRekening" class="form-label">Nomor Rekening Pembayaran Sekolah</label>
+                        <input type="number" class="form-control" id="schoolNomorRekening" name="schoolNomorRekening" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="schoolNamaRekening" class="form-label">Nama Rekening Pembayaran Sekolah</label>
+                        <input type="text" class="form-control" id="schoolNamaRekening" name="schoolNamaRekening" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="schoolBatasPendaftaran" class="form-label">Batas Akhir Pendaftaran Sekolah</label>
+                        <input type="date" class="form-control" id="schoolBatasPendaftaran" name="schoolBatasPendaftaran" required>
+                    </div>
+                    
+                    
 
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>

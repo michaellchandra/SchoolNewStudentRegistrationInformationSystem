@@ -1,8 +1,16 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="text-xs">School Admission System</div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center mt-3" href="">
+        <div class="col align-items-center">
+            {{-- @if ($school->schoolLogo)
+                                        <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}"
+                                            alt="School Logo" class="img-fluid img-thumbnail">
+                                            @endif --}}
+            <div class="row text-xs fw-lighter">School Admission System</div>
+        {{-- <div class="row text-s text-center fw-bold">{{ $school->schoolNama }}</div> --}}
+        </div>
+        
     </a>
 
     <!-- Divider -->
