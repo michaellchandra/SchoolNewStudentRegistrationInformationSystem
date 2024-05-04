@@ -137,8 +137,6 @@ class BiodataController extends Controller
             Biodata::create($biodataData);
         }
 
-
-
         $registrationStatus = RegistrationStatus::STATUS_BIODATA_FORM_VERIFICATION_PENDING;
         $registration = Registration::where('user_id', $user_id)->first();
         $registration->registrationStatus = $registrationStatus;
@@ -147,43 +145,43 @@ class BiodataController extends Controller
         return redirect()->route('user.index')->with('success', 'Biodata berhasil disimpan');
     }
 
-    public function downloadZip($id)
-    {
-        
-        $user = User::findOrFail($id);
-        $user_id = $user->id;
-        $directory = 'public/' . $user_id . '/Biodata';
-        $zipFileName = 'public/' . $user_id . '/Biodata.zip';
     
-        // Buat zip file
-        $this->createZipFile($directory, $zipFileName);
-    
-        // Unduh zip file
-        return response()->download(storage_path($zipFileName))->deleteFileAfterSend(true);
-    }
 
-public function createZipFile($directory, $zipFileName)
-{
-    $zip = new ZipArchive;
+// public function createZipFile($directory, $zipFileName)
+// {
+//     $zip = new ZipArchive;
 
-    if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-        $files = Storage::files($directory);
+//     if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+//         $files = Storage::files($directory);
 
-        foreach ($files as $file) {
-            // Dapatkan nama file asli tanpa path
-            $fileName = pathinfo($file, PATHINFO_BASENAME);
+//         foreach ($files as $file) {
+//             // Dapatkan nama file asli tanpa path
+//             $fileName = pathinfo($file, PATHINFO_BASENAME);
 
-            // Tambahkan file ke zip
-            $zip->addFile(storage_path('app/' . $file), $fileName);
-        }
+//             // Tambahkan file ke zip
+//             $zip->addFile(storage_path('app/' . $file), $fileName);
+//         }
 
-        $zip->close();
+//         $zip->close();
 
-        return true;
-    } else {
-        return false;
-    }
-}
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
+
+// public function downloadZip($user_id)
+// {
+//     $user = User::findOrFail($user_id);
+//     $directory = 'public/' . $user_id . '/Biodata';
+//     $zipFileName = 'public/' . $user_id . '/Biodata.zip';
+
+//     // Buat zip file
+//     $this->createZipFile($directory, $zipFileName);
+
+//     // Unduh zip file
+//     return response()->download(storage_path($zipFileName))->deleteFileAfterSend(true);
+// }
 
     /**
      * Display the specified resource.

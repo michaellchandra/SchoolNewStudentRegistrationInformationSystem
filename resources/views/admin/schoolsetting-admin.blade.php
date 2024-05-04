@@ -123,9 +123,11 @@
                                         <div class="font-weight-bold text-primary text-uppercase mb-1">
                                             Nomor Rekening Pembayaran
                                         </div>
-                                        <div class="fs-3 mb-0 font-weight-bold text-gray-800 align-items-center">
+                                        <div class="fs-4 mb-0 font-weight-bold text-black align-items-center">
 
                                             {{ $school->schoolNomorRekening }}</div>
+                                            <p class="fs-5">a/n</p>
+                                            <p class="mb-0 font-weight-bold text-black align-items-center">{{ $school->schoolNamaRekening }}</p>
                                     </div>
 
                                 </div>

@@ -27,6 +27,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/settings', [App\Http\Controllers\AdminController::class, 'settings'])->name('admin.settings');
     Route::get('/admin/settings/manageadmin', [App\Http\Controllers\AdminController::class, 'manageAdmin'])->name('admin.manageAdmin');
+    Route::delete('/admin/{id}', [App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.destroy');
 
     //Pengumuman
     Route::get('/admin/pengumuman', [App\Http\Controllers\PengumumanController::class, 'index'])->name('admin.pengumuman.index');
@@ -50,6 +51,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/payments/{payment}/approve', [App\Http\Controllers\PaymentController::class, 'approvePayment'])->name('admin.payments.approve');
     Route::post('admin/payments/{payment}/reject', [App\Http\Controllers\PaymentController::class, 'rejectPayment'])->name('admin.payments.reject');
     Route::get('storage/{user_id}/PaymentProofs/{paymentProof}', [App\Http\Controllers\PaymentController::class,'showPaymentProof'])->name('payment.proof');
+    Route::get('/admin/payments/all',[App\Http\Controllers\PaymentController::class,'semuaPayment'])->name('admin.payments.all');
 
 
     //Biodata
@@ -66,8 +68,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/analytic',[App\Http\Controllers\AnalyticController::class, 'index'])->name('admin.analytics');
     Route::get('/daily-registrations', [App\Http\Controllers\AnalyticController::class, 'dailyRegistrations'])->name('daily.registrations');
     Route::get('/weekly-registrations', [App\Http\Controllers\AnalyticController::class, 'weeklyRegistrations'])->name('weekly.registrations');
-    Route::get('/download/biodata/{filename}', [App\Http\Controllers\BiodataController::class],'downloadAdministrasi')->name('admin.biodata.download');
-    Route::get('/download-zip/{user_id}', [App\Http\Controllers\BiodataController::class],'downloadZip')->name('admin.biodata.downloadZip');
+    Route::get('/download/biodata/{filename}', [App\Http\Controllers\BiodataController::class, 'downloadAdministrasi'])->name('admin.biodata.download');
+Route::get('/download-zip/{user_id}', [App\Http\Controllers\BiodataController::class, 'downloadZip'])->name('admin.biodata.downloadZip');
 });
 
 

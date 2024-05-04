@@ -2,6 +2,23 @@
 
 @section('content')
     <div class="container-fluid">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         <a href="/admin/settings" class="pt-5  link-primary ">< Kembali ke Pengaturan</a>
 
         <!-- Manage Admin -->
@@ -21,6 +38,7 @@
                         <thead>
                             <tr>
                                 <th class="th-sm-1">No.</th>
+                                <th>Email</th>
                                 <th>Nama Admin</th>
                                 <th>Telepon</th>
                                 <th>Foto</th>
@@ -33,14 +51,44 @@
                         <tbody>
                             <tr>
                                 <td>{{ $key + 1 }}</td>
+                                <td>{{ $admin->user->email }}</td>
                                 <td>{{ $admin -> adminNama }}</td>
                                 <td>{{ $admin -> adminTelepon }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-primary w-100 shadow-sm">Lihat Foto</a>
+                                <td class="">
+                                    
+                                    <a href="{{ asset('storage/AdminProfile/' . $admin->user_id . '/' . $admin->adminFoto) }}" target="_blank"
+                                        class="btn btn-primary">Lihat Foto</a>
+                                        
                                 </td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-primary shadow-sm">Ubah</a>
-                                    <a href="#" class="btn btn-sm btn-danger shadow-sm">Hapus</a>
+                                    
+                                    <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal{{ $admin->id }}">Hapus</button>
+                                    
+                                    <div class="modal fade" id="confirmDeleteModal{{ $admin->id }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel{{ $admin->id }}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmDeleteModalLabel{{ $admin->id }}">Konfirmasi Hapus</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda yakin ingin menghapus admin ini?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                    <!-- Form untuk menghapus admin -->
+                                                    <form action="{{ route('admin.destroy', $admin->id) }}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -59,13 +107,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('admin.store') }}" method="post">
+                        <form action="{{ route('admin.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="user_id">Pilih Pengguna:</label>
                                 <select name="user_id" id="user_id" class="form-control">
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->email }}</option>
+                                        <option value="{{ $user->id }}">ID:{{ $user->id }} - {{ $user->email }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -76,7 +124,7 @@
         
                             <div class="form-group">
                                 <label for="adminFoto">Foto Admin</label>
-                                <input type="file" id="adminFoto" name="adminFoto" class="form-control-file form-control form-control-md w-25 me-3" accept="image/*">
+                                <input type="file" id="adminFoto" name="adminFoto" class="form-control-file form-control form-control-md w-100 me-3" accept="image/*">
                             </div>
         
                             <div class="form-group">

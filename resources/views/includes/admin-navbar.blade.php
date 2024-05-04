@@ -1,3 +1,16 @@
+@php
+
+    use App\Models\Admin;
+    use Illuminate\Support\Facades\Auth;
+
+    $user = Auth::user();
+
+    if ($user->role === 'admin') {
+        $admin = Admin::where('user_id', $user->id)->first();
+    }
+@endphp
+
+
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow p-5">
 
     <!-- Sidebar Toggle (Topbar) -->
@@ -8,11 +21,12 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav">
-        {{-- <img class="img-profile rounded-circle" src="storage/undraw_profile_1.svg"> --}}
+
         <li class="nav-item">
 
             <label class="nav-item m-0 text-s text-black fw-bold">Selamat Datang di Sistem Pendaftaran Siswa Baru</label>
-           <p class="fst-italic">Admin Panel</p></p>
+            <p class="fst-italic">Admin Panel</p>
+            </p>
 
 
         </li>
@@ -40,18 +54,29 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
 
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                        {{ Auth::user()->name }} </span>
 
 
-                    <img class="img-profile rounded-circle" src="storage/undraw_profile_1.svg">
+                    @if (isset($admin))
+                        <div class="col d-flex align-items-end flex-column">
+                            <span class="mr-2 d-none d-sm-inline text-gray-600 small row">
+
+                                {{ $admin->adminNama }} </span>
+                            <span class="mr-2 d-none d-lg-inline small row align-items-end">{{ Auth::user()->role }}</span>
+
+                        </div>
+
+
+
+                        <img class="img-profile rounded-circle"
+                            src="{{ asset('storage/AdminProfile/' . $admin->user_id . '/' . $admin->adminFoto) }}">
+                    @endif
                 </a>
 
 
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in w-100"
                     aria-labelledby="navbarDropdown">
 
-                    <a class="nav-link dropdown-item d-flex align-items-center " href="#" role="button"
+                    {{-- <a class="nav-link dropdown-item d-flex align-items-center " href="#" role="button"
                         aria-haspopup="true" aria-expanded="false">
                         <div class="row d-flex align-items-center">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small w-100">
@@ -63,9 +88,9 @@
 
 
                         <img class="img-profile rounded-circle" src="storage/undraw_profile_1.svg">
-                    </a>
+                    </a> --}}
 
-                    <div class="dropdown-divider"></div>
+
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                              document.getElementById('logout-form').submit();">
@@ -77,7 +102,7 @@
                         @csrf
                     </form>
 
-                    <div class="dropdown-divider"></div>
+
 
 
 

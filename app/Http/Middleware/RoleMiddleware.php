@@ -28,8 +28,6 @@ class RoleMiddleware
     
         return $next($request);
 
-        
-    
         // Jika bukan admin, arahkan kembali atau tampilkan pesan akses ditolak
         return redirect()->route('user.index')->with('error', 'Access denied.');
     

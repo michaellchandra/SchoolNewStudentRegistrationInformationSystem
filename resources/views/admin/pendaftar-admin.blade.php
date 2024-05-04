@@ -149,9 +149,9 @@
                                         data-toggle="modal">
                                         Lihat Berkas
                                     </a>
-                                    <a href="{{ route('admin.biodata.downloadZip', ['user_id' => $data->user_id]) }}">
+                                    {{-- <a href="{{ route('admin.biodata.downloadZip', ['user_id' => $data->user_id]) }}">
                                         Download Berkas Zip
-                                    </a>
+                                    </a> --}}
 
                                     <!-- Modal Biodata-->
                                     <div class="modal fade" id="fileModal{{ $data->id }}" tabindex="-1"

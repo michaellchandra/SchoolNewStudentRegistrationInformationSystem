@@ -55,7 +55,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::where('role', 'user')->get();
         return view('admin.tambahAdmin-admin')->with('users',$users);
     }
 
@@ -77,43 +77,49 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'adminFoto'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'adminNama' => 'required|string|max:255',
+            'adminTelepon' => 'required|string|max:20',
+            'user_id' => 'required|exists:users,id', // Pastikan user_id ada dalam tabel users
         ]);
+    
 
-        $user_id = auth()->id();
-        $directory = 'public/AdminProfile/' . $user_id ;
+
+        $user_id = $request->input('user_id');
+        
+        // Membuat direktori untuk menyimpan foto admin
+        $directory = 'public/AdminProfile/' . $user_id;
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true);
+            Storage::makeDirectory($directory, 0777, true); 
         }
-
-        $file = $request->file('adminFoto');
-        $filename = $file->getClientOriginalName(); // Nama asli file
-        $file->storeAs($directory, $filename);
-
-        // foreach ($request->file() as $key => $file) {
-        //     if ($file->isValid()) {
-        //         $filename = $file->getClientOriginalName();
-        //         $file->storeAs($directory, $filename);
-        //         $adminFoto[$key] = $filename;
-        //     }
-        // }
-
-        // Simpan data admin ke dalam database
-        $admin = new Admin();
-        $admin->adminNama = $request->input('adminNama');
-        $admin->adminFoto = $request->input('adminFoto');
-        $admin->adminTelepon = $request->input('adminTelepon');
-        $admin->user_id = $request->input('user_id');
-        $admin->save();
-
-
+    
+        // Menyimpan file foto admin
+        if ($request->hasFile('adminFoto')) {
+            $file = $request->file('adminFoto');
+            $filename = $file->getClientOriginalName();
+            $file->storeAs($directory, $filename);
+        } else {
+    
+            return redirect()->back()->with('error', 'Foto admin belum diunggah.');
+        }
+        
+    
+        // Membuat dan menyimpan data admin ke dalam database
+        $adminData = [
+            'adminNama' => $request->input('adminNama'),
+            'adminFoto' => $filename,
+            'adminTelepon' => $request->input('adminTelepon'),
+            'user_id' => $request->input('user_id'),
+        ];
+        $admin = Admin::create($adminData);
+    
+        // Mengubah role user menjadi 'admin'
         $user = User::find($request->input('user_id'));
         $user->role = 'admin';
         $user->save();
-
-
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil ditambahkan.');
+    
+        return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil ditambahkan.');
     }
+    
 
     /**
      * Display the specified resource.
@@ -144,7 +150,20 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
+        $admin = Admin::findOrFail($id);
 
+        // Hapus file foto admin dari storage
+        $directory = 'public/AdminProfile/' . $admin->id;
+        Storage::deleteDirectory($directory);
+    
+        $admin->delete();
+    
+        
+        $user = User::find($admin->user_id);
+        $user->role = 'user';
+        $user->save();
+    
+        return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil dihapus.');
     }
 
 
@@ -154,12 +173,12 @@ class AdminController extends Controller
 
     public function manageAdmin(){
         $admins = Admin::all();
-        $users = User::all();
+        $users = User::where('role', 'user')->get();
         return view('admin.manageAdmin-admin', compact('admins','users'));
     }
 
     public function navbarAdmin(){
-        $admins = Admin::all();
+        $admin = auth()->user();
         $users = User::all();
 
         return view('includes.admin-navbar',compact('admins','users'));

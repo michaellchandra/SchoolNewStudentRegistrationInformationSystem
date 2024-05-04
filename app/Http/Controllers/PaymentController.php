@@ -43,7 +43,9 @@ class PaymentController extends Controller
                 ->whereIn('paymentCategory', ['formulir', 'administrasi'])
                 ->count();
 
-            return view('admin.payment-admin', compact('payment', 'user', 'totalFormulir', 'totalAdministrasi', 'totalVerifyingPayments'));
+                $verifyingPayments = Payment::where('paymentStatus', 'Verifying')->get();
+
+            return view('admin.payment-admin', compact('payment', 'user', 'totalFormulir', 'totalAdministrasi', 'totalVerifyingPayments', 'verifyingPayments'));
         } elseif ($user && $user->role === 'user') {
             $payments = Payment::where('user_id', $user->id)->get();
             return view('user.payment-user', compact('payments'));
@@ -154,11 +156,8 @@ class PaymentController extends Controller
     }
 
 
-    public function pendingTransactions()
-    {
-        $pendingPayments = Payment::where('paymentStatus', 'pending')->get();
-        return view('admin.pending_transactions', compact('pendingPayments'));
-    }
+    
+   
 
     public function approvePayment(Payment $payment)
     {
@@ -244,6 +243,15 @@ class PaymentController extends Controller
 
         // Tampilkan bukti pembayaran
         return response()->file($filePath);
+    }
+
+
+    public function semuaPayment(){
+        $user = Auth::user();
+        $payment = Payment::all();
+        $verifyingPayments = Payment::where('paymentStatus', 'Verifying')->get();
+
+        return view('admin.allPayment-admin',compact('user','payment','verifyingPayments'));
     }
 
     
