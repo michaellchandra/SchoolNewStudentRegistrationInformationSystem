@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,8 +18,9 @@ class SchoolController extends Controller
     public function index()
     {
         $school = School::first();
+        $payment = Payment::all();
         if ($school !== null) {
-            return view('admin.schoolsetting-admin', compact('school'))->with('navbarSchool', $school);
+            return view('admin.schoolsetting-admin', compact('school','payment'))->with('navbarSchool', $school);
         } else {
             return redirect()->route('admin.school.create')->with('message', 'Anda harus membuat sekolah terlebih dahulu.');
         }
@@ -43,6 +45,7 @@ class SchoolController extends Controller
             'schoolDeskripsi' => 'required|string',
             'schoolTelepon' => 'required|string|max:20',
             'schoolLogo'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'schoolBiayaFormulir' => 'required|string|max:255',
             'schoolBatasPendaftaran'=> 'required|date',
         ]);
 
@@ -69,7 +72,9 @@ class SchoolController extends Controller
             'schoolLogo' => $filename,
             'schoolNomorRekening' =>$request->get('schoolNomorRekening'),
             'schoolNamaRekening' => $request->get('schoolNamaRekening'),
-            'schoolBatasPendaftaran' => $request->get('schoolBatasPendaftaran')
+            'schoolBiayaFormulir'=> $request->get('schoolBiayaFormulir'),
+            'schoolBatasPendaftaran' => $request->get('schoolBatasPendaftaran'),
+            'schoolSyaratKetentuanPendaftaran'=> $request->get('schoolSyaratKetentuanPendaftaran')
 
         ]);
         $school->save();
@@ -100,23 +105,67 @@ class SchoolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $school = School::findOrFail($id);
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'schoolNama' => 'required|string|max:255',
+        'schoolDeskripsi' => 'required|string',
+        'schoolTelepon' => 'required|string|max:20',
+        'schoolBiayaFormulir' => 'required|string|max:255',
+        'schoolBatasPendaftaran'=> 'required|date',
+    ]);
+
+    
+    $school = School::findOrFail($id);
+
+    if ($request->hasFile('schoolLogo')) {
+
+        $file = $request->file('schoolLogo');
+        $filename = $file->getClientOriginalName();
+        $directory = 'public/schoolSettings';
+
+        // Jika direktori belum ada, buat direktori baru
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory, 0777, true);
+        }
+
+        $file->storeAs($directory, $filename);
+
+        Storage::delete($directory . '/' . $school->schoolLogo);
         $school->update([
-            'schoolNama' => $request->schoolNama,
-            'schoolDeskripsi' => $request->schoolDeskripsi,
-            'schoolTelepon' => $request->schoolTelepon,
+            'schoolLogo' => $filename,
         ]);
-        return redirect()->route('admin.school.index')->with('success', 'Data sekolah berhasil diperbarui.');
     }
+
+    // Update informasi sekolah tanpa logo
+    $school->update([
+        'schoolNama' => $request->get('schoolNama'),
+        'schoolDeskripsi' => $request->get('schoolDeskripsi'),
+        'schoolTelepon' => $request->get('schoolTelepon'),
+        'schoolNomorRekening' => $request->get('schoolNomorRekening'),
+        'schoolNamaRekening' => $request->get('schoolNamaRekening'),
+        'schoolBiayaFormulir'=> $request->get('schoolBiayaFormulir'),
+        'schoolBatasPendaftaran' => $request->get('schoolBatasPendaftaran'),
+    ]);
+
+    return redirect()->route('admin.school.index')->with('success', 'Informasi sekolah berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+       
+    $school = School::findOrFail($id);
+
+    
+    Storage::delete('public/schoolSettings/' . $school->schoolLogo);
+
+    $school->delete();
+
+    return redirect()->route('admin.school.index')->with('success', 'Sekolah berhasil dihapus.');
     }
 
     public function sidebarViewUser(){
@@ -126,10 +175,5 @@ class SchoolController extends Controller
 
     }
 
-    // public function navbarViewAdmin(){
-
-    //     $school = School::first();
-    //     return view('includes.user-sidebar', compact('school'));
-
-    // }
+    
 }

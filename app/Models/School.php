@@ -15,7 +15,9 @@ class School extends Model
         'schoolTelepon', 
         'schoolNomorRekening',
         'schoolNamaRekening',
-        'schoolBatasPendaftaran'
+        'schoolBiayaFormulir',
+        'schoolBatasPendaftaran',
+        'schoolSyaratKetentuanPendaftaran'
     ];
 
     // public function admin()

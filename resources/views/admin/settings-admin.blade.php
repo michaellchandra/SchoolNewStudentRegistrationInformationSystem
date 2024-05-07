@@ -1,7 +1,18 @@
 @extends('layouts.admin')
 
 @section('content')
+@php
+use App\Models\School;
+    $school = School::first();
+@endphp
     <div class="container-fluid">
+        @if ($school === null)
+            <div class="alert alert-danger">
+                <p class="fs-5 fw-bold">Sekolah belum ditambahkan, harap tambahkan seluruh informasi sekolah terlebih dulu, sebelum menggunakan
+                    sistem.</p>
+                    <a href="/admin/settings/school/create"><i class="fas fa-arrow-right me-2"></i>Tambahkan Sekolah Disini</a>
+            </div>
+        @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
             <h1 class="h3 mb-0 text-dark">Pengaturan Sekolah</h1>
             {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i

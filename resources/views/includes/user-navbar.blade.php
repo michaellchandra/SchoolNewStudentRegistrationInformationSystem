@@ -1,3 +1,8 @@
+@php
+    use App\Models\School;
+    $school = School::first();
+@endphp
+
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow p-5">
 
     <!-- Sidebar Toggle (Topbar) -->
@@ -7,24 +12,30 @@
 
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
-        {{-- <img class="img-profile rounded-circle" src="storage/undraw_profile_1.svg"> --}}
+    <ul class="navbar-nav d-flex align-items-center">
+        @if($school && $school->schoolLogo)
+    <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}" alt="School Logo"
+        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+@else
+    <img src="{{ asset('storage/assets/graduation-cap-icon.svg') }}" alt="School Logo"
+        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+@endif
         <li class="nav-item">
-            
-          <label class="nav-item m-0 text-s">Welcome,</label>
-          <div class="nav-item fw-bold">{{ Auth::user()->email }}</div>
+
+            <label class="nav-item m-0 text-s">Welcome,</label>
+            <div class="nav-item fw-bold">{{ Auth::user()->email }}</div>
         </li>
-      </ul>
+    </ul>
 
     <ul class="navbar-nav ml-auto">
 
 
-            <!-- Authentication Links -->
-            @guest
-                @if (Route::has('login'))
-            <li class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-            </li>
+        <!-- Authentication Links -->
+        @guest
+            @if (Route::has('login'))
+                <li class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                </li>
             @endif
 
             @if (Route::has('register'))
@@ -32,22 +43,22 @@
                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
             @endif
-            @else
+        @else
             <li class="nav-item dropdown bg-light rounded">
-                
+
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <div class="col d-flex align-items-end flex-column">
                         <span class="mr-2 d-none d-sm-inline text-gray-600 small row">
-                            {{ Auth::user()->email}} </span>
+                            {{ Auth::user()->email }} </span>
                         <span class="mr-2 d-none d-lg-inline small row align-items-end">{{ Auth::user()->role }}</span>
                     </div>
-                    
+
                 </a>
 
 
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="navbarDropdown">
-                    
+
 
                     {{-- <a class="dropdown-item" href="#">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\PivotAdminUser;
 use Carbon\Carbon;
 
@@ -15,7 +16,7 @@ class AnalyticController extends Controller
      */
     public function index()
     {
-        return view( 'admin.analytic-admin' );
+        return view('admin.analytic-admin');
     }
 
     /**
@@ -75,26 +76,25 @@ class AnalyticController extends Controller
 
 
     public function weeklyRegistrations()
-{
-    $startOfWeek = Carbon::now()->startOfWeek();
-    $endOfWeek = Carbon::now()->endOfWeek();
-    $labels = [];
-    $data = [];
+    {
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $labels = [];
+        $data = [];
 
-    // Loop through each day of the week
-    for ($date = $startOfWeek; $date->lte($endOfWeek); $date->addDay()) {
-        // Retrieve the number of registrations for each day
-        $registrations = User::whereDate('created_at', $date)->count();
-        // Add the date as label
-        $labels[] = $date->format('(D) d/m');
-        // Add the number of registrations for the day
-        $data[] = $registrations;
+        // Loop through each day of the week
+        for ($date = $startOfWeek; $date->lte($endOfWeek); $date->addDay()) {
+            // Retrieve the number of registrations for each day
+            $registrations = User::whereDate('created_at', $date)->count();
+            // Add the date as label
+            $labels[] = $date->format('(D) d/m');
+            // Add the number of registrations for the day
+            $data[] = $registrations;
+        }
+
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
     }
-
-    return response()->json([
-        'labels' => $labels,
-        'data' => $data
-    ]);
 }
-}
-

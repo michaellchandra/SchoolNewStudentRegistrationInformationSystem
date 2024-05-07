@@ -6,11 +6,17 @@
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
         @endif
+        
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-5 mt-5">
             <h1 class="h3 mb-0 text-dark">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
@@ -35,8 +41,9 @@
                                     <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i>
-                                    </a> Akun Berhasil Registrasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
                                 </div>
                                 <div class="">
                                     <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
@@ -49,7 +56,7 @@
                                     <p class="mb-3 fw-bold">Pembayaran Formulir</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-secondary btn-circle btn-sm">
-                                        <i class="fas fa-chevron-right"></i></a>
+                                            <i class="fas fa-chevron-right"></i></a>
                                         Menunggu Upload Bukti Pembayaran Formulir
                                 </div>
                                 <div>
@@ -80,8 +87,9 @@
                                     <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i>
-                                    </a> Akun Berhasil Registrasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
                                 </div>
                                 <div class="">
                                     <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
@@ -94,7 +102,7 @@
                                     <p class="mb-3 fw-bold">Pembayaran Formulir</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-upload"></i></a>
+                                            <i class="fas fa-upload"></i></a>
                                         Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
                                 </div>
                                 <div>
@@ -120,732 +128,894 @@
                                 <p class="m-0">Pembayaran Administrasi</p>
                                 <h6 class="m-0 fw-bold text-danger">BELUM</h6>
                             </div>
-
-
                         @elseif ($registration->registrationStatus === 'Butuh Revisi Pembayaran Formulir')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                    <i class="fas fa-exclamation"></i></a>
-                                    Butuh Revisi Bukti Pembayaran Formulir</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
-                                @foreach ($payments as $payment )
-                                <p class="fs-6">{{ $payment->updated_at_submit}}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_revision}}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Pengisian Biodata & Berkas</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-
-                        @elseif ($registrationStatus === 'Pembayaran Formulir Terverifikasi')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-info text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Pengisian Biodata & Berkas</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-
-                        @elseif ($registrationStatus === 'Menunggu Verifikasi Biodata & Berkas')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
-
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                
-                                @endforeach
-                            </div>
-
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-
-                        @elseif ($registrationStatus === 'Butuh Revisi Biodata & Berkas')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload
+                                    </p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                        <i class="fas fa-exclamation"></i></a>
-                                        Butuh Revisi Biodata & Berkas, Cek Alasan Penolakan dari Admin</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_revision}}</p>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                                            <i class="fas fa-exclamation"></i></a>
+                                        Butuh Revisi Bukti Pembayaran Formulir
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_revision }}</p>
+                                    @endforeach
 
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pengisian Biodata & Berkas</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                        @elseif ($registrationStatus === 'Pembayaran Formulir Terverifikasi')
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-info text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pengisian Biodata & Berkas</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                        @elseif ($registrationStatus === 'Menunggu Verifikasi Biodata & Berkas')
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
 
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-upload"></i></a>
-                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                    <i class="fas fa-exclamation"></i></a>
-                                    Butuh Revisi Biodata & Formulir, Cek Alasan Penolakan</p>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                    @endforeach
+
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
-                                @foreach ($biodata as $data )
-                                <p class="fs-6">{{ $data->updated_at_submit}}</p>
-                                    <p class="fs-6">{{ $data->updated_at_revision}}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                    @endforeach
+                                </div>
 
                             </div>
-                            
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                        @elseif ($registrationStatus === 'Butuh Revisi Biodata & Berkas')
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
+
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                            <i class="fas fa-exclamation"></i></a>
+                                        Butuh Revisi Biodata & Formulir, Cek Alasan Penolakan
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $data->updated_at_revision }}</p>
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
                         @elseif ($registrationStatus === 'Biodata & Berkas Terverifikasi')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                    @endforeach
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
                         @elseif ($registrationStatus === 'Jadwal Tes Terkonfirmasi')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                        <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                    @endforeach
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Hasil Tes</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
+                                <p class="m-0">Hasil Tes</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
                         @elseif ($registrationStatus === 'Hasil Tes Gagal')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                    @if ($payment->paymentCategory === 'formulir')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                @endif
+                                    @endforeach
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div>
-                                <p class="mb-3 fw-bold">Hasil Tes</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                    <i class="fas fa-exclamation"></i></a>
-                                    Nilai anda tidak memenuhi kriteria</p>
-
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
                             </div>
-                            <h6 class="m-0 fw-bold text-danger">TIDAK LULUS</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
+                                <div>
+                                    <p class="mb-3 fw-bold">Hasil Tes</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-danger btn-circle btn-sm">
+                                            <i class="fas fa-exclamation"></i></a>
+                                        Nilai anda tidak memenuhi kriteria
+                                    </p>
 
+                                </div>
+                                <h6 class="m-0 fw-bold text-danger">TIDAK LULUS</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
                         @elseif ($registrationStatus === 'Hasil Tes Lulus')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                            </div>
-                            <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment )
+                                    @if ($payment->paymentCategory === 'formulir')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                @endif
+                                    @endforeach
+                                    
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div>
-                                <p class="mb-3 fw-bold">Hasil Tes</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i></a>
-                                    Selamat anda lulus tes masuk SMA Zion</p>
-
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
                             </div>
-                            <h6 class="m-0 fw-bold text-success">LULUS</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <p class="m-0">Pembayaran Administrasi</p>
-                            <h6 class="m-0 fw-bold text-danger">BELUM</h6>
-                        </div>
+                                <div>
+                                    <p class="mb-3 fw-bold">Hasil Tes</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Selamat anda lulus tes masuk @isset($school)
+                                            {{ $school->schoolNama }}
+                                        @else
+                                            NULL
+                                        @endisset
+                                    </p>
+                                </div>
+                                <h6 class="m-0 fw-bold text-success">LULUS</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <p class="m-0">Pembayaran Administrasi</p>
+                                <h6 class="m-0 fw-bold text-danger">BELUM</h6>
+                            </div>
                         @elseif ($registrationStatus === 'Menunggu Verifikasi Pembayaran Administrasi')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                        <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                        </div>
-                        <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                        </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
-                                        <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
-                                <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div>
-                                <p class="mb-3 fw-bold">Hasil Tes</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i></a>
-                                    Selamat anda lulus tes masuk SMA Zion</p>
-
-                            </div>
-                            <h6 class="m-0 fw-bold text-success">LULUS</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Administrasi</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6 text-end">{{ $payment->updated_at_submit }}</p>
-
-                                @endforeach
-
-                            </div>
-                        </div>
-
-                        @elseif ($registrationStatus === 'Pembayaran Administrasi Terverifikasi')
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                        <div class="">
-                                <p class="mb-3 fw-bold">Pendaftaran Akun</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a> Akun Berhasil Registrasi</p>
-                        </div>
-                        <div class="">
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                <p class="fs-6">{{ Auth::user()->created_at }}</p>
-                        </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Formulir</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
-                                <p class="fs-6">
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Formulir Terverifikasi</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                    @if ($payment->paymentCategory === 'formulir')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
                                     <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
-                                @endforeach
+                                @endif
+                                    @endforeach
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div>
-                                <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin</p>
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Biodata & Berkas Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
-                                @foreach ($biodata as $data)
-                                <p class="fs-6 text-end">{{ $data->updated_at_submit}}</p>
-                                <p class="fs-6 text-end">{{ $data->updated_at_accepted}}</p>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                            <div>
-                                <p class="mb-3 fw-bold">Hasil Tes</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i></a>
-                                    Selamat anda lulus tes masuk SMA Zion</p>
-
-                            </div>
-                            <h6 class="m-0 fw-bold text-success">LULUS</h6>
-                        </div>
-                        <div class="card-header d-flex justify-content-between py-3 align-items-center">
-
-                            <div>
-                                <p class="mb-3 fw-bold">Pembayaran Administrasi</p>
-                                <p class="fs-6">
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-upload"></i></a>
-                                    Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin</p>
+                                <div>
+                                    <p class="mb-3 fw-bold">Hasil Tes</p>
                                     <p class="fs-6">
                                         <a href="#" class="btn btn-success btn-circle btn-sm">
-                                        <i class="fas fa-check"></i></a>
-                                        Pembayaran Administrasi Terverifikasi</p>
+                                            <i class="fas fa-check"></i></a>
+                                        Selamat anda lulus tes masuk @isset($school)
+                                            {{ $school->schoolNama }}
+                                        @else
+                                            NULL
+                                        @endisset
+                                    </p>
+                                </div>
+                                <h6 class="m-0 fw-bold text-success">LULUS</h6>
                             </div>
-                            <div>
-                                <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
-                                @foreach ($payments as $payment)
-                                <p class="fs-6 text-end">{{ $payment->updated_at_submit }}</p>
-                                <p class="fs-6 text-end">{{ $payment->updated_at_accepted }}</p>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
-                                @endforeach
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Administrasi</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
 
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
+                                    @foreach ($payments as $payment)
+                                        @if ($payment->paymentCategory === 'administrasi')
+                                        <p class="fs-6 text-end">{{ $payment->updated_at_submit }}</p>
+                                        @endif
+                                    @endforeach
+
+                                </div>
                             </div>
-                        </div>
+                        @elseif ($registrationStatus === 'Pembayaran Administrasi Terverifikasi')
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                    @if ($payment->paymentCategory === 'formulir')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Hasil Tes</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Selamat anda lulus tes masuk @isset($school)
+                                        {{ $school->schoolNama }}
+                                    @else
+                                        NULL
+                                    @endisset
+                                    </p>
+
+                                </div>
+                                <h6 class="m-0 fw-bold text-success">LULUS</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Administrasi</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
+                                    @foreach ($payments as $payment)
+                                    @if ($payment->paymentCategory === 'administrasi')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
+
+                        @elseif ($registrationStatus === 'Butuh Revisi Pembayaran Administrasi')
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div class="">
+                                    <p class="mb-3 fw-bold">Pendaftaran Akun</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </a> Akun Berhasil Registrasi
+                                    </p>
+                                </div>
+                                <div class="">
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    <p class="fs-6">{{ Auth::user()->created_at }}</p>
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Formulir</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Pembayaran Formulir Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($payments as $payment)
+                                    @if ($payment->paymentCategory === 'formulir')
+                                    <p class="fs-6">{{ $payment->updated_at_submit }}</p>
+                                    <p class="fs-6">{{ $payment->updated_at_accepted }}</p>
+                                @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pengisian Biodata & Berkas</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Biodata & Berkas Berhasil di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Biodata & Berkas Administrasi Terverifikasi
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
+                                    @foreach ($biodata as $data)
+                                        <p class="fs-6 text-end">{{ $data->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $data->updated_at_accepted }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Hasil Tes</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-success btn-circle btn-sm">
+                                            <i class="fas fa-check"></i></a>
+                                        Selamat anda lulus tes masuk @isset($school)
+                                        {{ $school->schoolNama }}
+                                        @endisset
+                                    </p>
+
+                                </div>
+                                <h6 class="m-0 fw-bold text-success">LULUS</h6>
+                            </div>
+                            <div class="card-header d-flex justify-content-between py-3 align-items-center">
+
+                                <div>
+                                    <p class="mb-3 fw-bold">Pembayaran Administrasi</p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-upload"></i></a>
+                                        Bukti Pembayaran Berhasil Di Upload, Menunggu Verifikasi Admin
+                                    </p>
+                                    <p class="fs-6">
+                                        <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                            <i class="fas fa-exclamation"></i></a>
+                                            Butuh Revisi Bukti Pembayaran Administrasi, Cek Alasan Penolakan
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3 fw-bold text-warning text-end">BUTUH REVISI</h6>
+                                    @foreach ($payments as $payment)
+                                        @if ($payment->paymentCategory === 'administrasi')
+                                        <p class="fs-6 text-end">{{ $payment->updated_at_submit }}</p>
+                                        <p class="fs-6 text-end">{{ $payment->updated_at_revision }}</p>
+                                        @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
 
                         @endif
                     @endforeach
@@ -865,29 +1035,34 @@
 
                 <div class="card-body">
                     <p>Biaya Pendaftaran</p>
-                    {{-- @foreach ($payments as $payment)
-            <h2 class="fs-2 fw-bold mb-4">Rp. {{ $payment->paymentAmount }}</h2>
-            @endforeach --}}
+                    
+                    <h2 class="fs-2 fw-bold mb-4">Rp. @isset($school->schoolBiayaFormulir)
+                        {{ number_format($school->schoolBiayaFormulir, 0, ',', '.') }}
+                        @else
+                            Menunggu Konfirmasi dari Admin
+                    @endisset</h2>
+                   
+            
+            
                     <p>Silahkan melakukan transfer ke </p>
                     <p class="fs-4 fw-bold">
                         @isset($school->schoolNomorRekening)
-                        {{ $school->schoolNomorRekening }} 
-                    @else
-                        Menunggu Konfirmasi dari Admin
-                    @endisset
-                    a/n
-                    @isset($school->schoolNamaRekening)
-                        {{ $school->schoolNamaRekening }}
-                    @else
-                        NULL
-                    @endisset</p>
+                            {{ $school->schoolNomorRekening }}
+                        @else
+                            Menunggu Konfirmasi dari Admin
+                        @endisset
+                        a/n
+                        @isset($school->schoolNamaRekening)
+                            {{ $school->schoolNamaRekening }}
+                        @else
+                            NULL
+                        @endisset
+                    </p>
                 </div>
                 <div class="card-body">
                     <p>Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian lakukan konfirmasi
                         bukti pembayaran tombol dibawah ini.</p>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-
-
                         <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="paymentCategory" value="formulir">
@@ -895,14 +1070,11 @@
                             <button type="submit" class="p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm"
                                 formmethod="post"><i class="fas fa-download fa-sm text-white-50"></i>Konfirm</button>
                         </form>
-
-
                     </div>
                     <p>
                         *Perlu mengupload bukti pembayaran sebelum melakukan konfirmasi pembayaran
                     </p>
                 </div>
-
             </div>
         @elseif ($registrationStatus === 'Menunggu Verifikasi Pembayaran Formulir')
             <div id="paymentFormWaitingVerification" class="card shadow mb-4">
@@ -938,11 +1110,21 @@
                     </div>
 
                     <p>Biaya Pendaftaran</p>
-                    {{-- @foreach ($payments as $payment)
-            <h2 class="fs-2 fw-bold mb-4">Rp. {{ $payment->paymentAmount }}</h2>
-            @endforeach --}}
+                    <h2 class="fs-2 fw-bold mb-4">Rp. {{ number_format($school->schoolBiayaFormulir, 0, ',', '.') }}</h2>
                     <p>Silahkan melakukan transfer ke </p>
-                    <p class="fs-4 fw-bold">0706012010052 a/n MICHAEL CHANDRA</p>
+                    <p class="fs-4 fw-bold">
+                        @isset($school->schoolNomorRekening)
+                            {{ $school->schoolNomorRekening }}
+                        @else
+                            Menunggu Konfirmasi dari Admin
+                        @endisset
+                        a/n
+                        @isset($school->schoolNamaRekening)
+                            {{ $school->schoolNamaRekening }}
+                        @else
+                            NULL
+                        @endisset
+                    </p>
                 </div>
                 <div class="card-body">
                     <p>Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian lakukan konfirmasi
@@ -982,20 +1164,12 @@
             </div>
 
             <div id="biodataSyaratKetentuan" class="card shadow mb-4">
-                <div class="card-header d-flex flex-column justify-content-between py-3 align-items-start">
+                <div class="card-header py-3 align-items-start">
 
 
                     <h5 class="mb-3 fw-bold ">Syarat & Ketentuan Pendaftaran</h5>
-
-
-
-                    <div class="mb-3 card">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore accusamus, at blanditiis
-                            inventore
-                            ad optio laudantium alias veniam eveniet fuga consequuntur eaque maiores architecto temporibus
-                            obcaecati voluptas. Voluptatibus, adipisci ipsum!</p>
-                    </div>
-
+                    
+                        <p class="w-100">{!! nl2br(e($school->schoolSyaratKetentuanPendaftaran)) !!}</p>
                     <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Lanjut ke
                         Pengisian Biodata & Berkas</a>
 
@@ -1030,10 +1204,11 @@
                 </div>
                 <div class="mb-3 card-body">
                     <p>Mohon maaf, setelah dilakukan verifikasi berkas anda butuh revisi dengan alasan :</p>
-                    <p class="fw-bold text-info fs-3 mb-3">@foreach ($biodata as $data )
-                        {{ $data->rejectionReason }}
-                    @endforeach
-                        </p>
+                    <p class="fw-bold text-info fs-3 mb-3">
+                        @foreach ($biodata as $data)
+                            {{ $data->rejectionReason }}
+                        @endforeach
+                    </p>
 
                     <p>Mohon untuk melakukan revisi berkas sebelum tanggal penutupan pendaftaran</p>
                     <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Revisi
@@ -1061,11 +1236,16 @@
                 <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
                     <p class="m-0">Jadwal Tes</p>
-                    <h6 class="m-0 fw-bold text-primary">12 APRIL 2024</h6>
+                    <h6 class="m-0 fw-bold text-primary"></h6>
                 </div>
                 <div class="mb-3 card-body">
                     <p class="fs-4 fw-bold">Jadwal Tes anda sudah tampil</p>
-                    <p>Tes dilaksanakan pada tanggal 12 April 2024 di Lt. 3 SMA Zion Makassar</p>
+                    <p>Tes dilaksanakan di Gedung @isset($school)
+                            {{ $school->schoolNama }}
+                        @else
+                            NULL
+                        @endisset
+                    </p>
                 </div>
 
             </div>
@@ -1077,16 +1257,30 @@
                     <h6 class="m-0 fw-bold text-danger">Tidak Lulus</h6>
                 </div>
                 <div class="mb-3 card-body">
-                    <p class="fs-4 fw-bold">Terima kasih telah mengikuti proses pendaftaran di SMA Zion Makassar. </p>
+                    <p class="fs-4 fw-bold">Terima kasih telah mengikuti proses pendaftaran di
+                        @isset($school)
+                            {{ $school->schoolNama }}
+                        @else
+                            NULL
+                        @endisset </p>
                     <p>Setelah melakukan penilaian hasil tes, mohon maaf saudara
-                        @foreach ($biodata as $data )
-                        <b>{{ $data->namaLengkap}}</b>
+                        @foreach ($biodata as $data)
+                            <b>{{ $data->namaLengkap }}</b>
                         @endforeach
                         belum memenuhi minimum kriteria yang
-                        dibutuhkan oleh SMA Zion.
-                        Kami menghargai usaha dan partisipasi anda dalam proses pendaftaran siswa baru. Tetap semangat dan
+                        dibutuhkan oleh @isset($school)
+                            {{ $school->schoolNama }}
+                        @else
+                            NULL
+                        @endisset
+                        . Kami menghargai usaha dan partisipasi anda dalam proses pendaftaran siswa baru. Tetap semangat dan
                         mempersiapkan diri lebih baik untuk
-                        kesempatan mendatang. Terima kasih telah mengikuti pendaftaran siswa baru di SMA Zion Makassar.
+                        kesempatan mendatang. Terima kasih telah mengikuti pendaftaran siswa baru di
+                        @isset($school)
+                            {{ $school->schoolNama }}
+                        @else
+                            NULL
+                        @endisset.
                     </p>
                 </div>
 
@@ -1103,19 +1297,34 @@
                         <h6 class="m-0 fw-bold text-info">{{ $school->schoolBatasPendaftaran }}</h6>
                     </div>
                 </div>
-
+        
                 <div class="card-body">
                     <p class="">Setelah melakukan penilaian hasil tes, kami dengan senang hati mengumumkan bahwa
                         saudara <b>
-                            @foreach ($biodata as $data )
-                        {{ $data->namaLengkap}}
-                        @endforeach
+                            @foreach ($biodata as $data)
+                                {{ $data->namaLengkap }}
+                            @endforeach
                         </b>
-                         telah berhasil lolos seleksi SMA Zion Makassar. </p>
+                        telah berhasil lolos seleksi @isset($school)
+                            {{ $school->schoolNama }}
+                        @else
+                            NULL
+                        @endisset. </p>
                     <p>Selanjutnya, mohon untuk melunasi biaya administrasi sebelum tanggal Batas Akhir Pendaftaran.</p>
                     <p>Biaya Pendaftaran</p>
+                    <p class="fs-2 fw-bold mb-4">Rp. {{ number_format($payment->paymentAmount, 0, ',', '.') }}</p>
                     <p class="mt-5">Silahkan melakukan transfer ke </p>
-                    <p class="fs-4 fw-bold">0706012010052 a/n MICHAEL CHANDRA</p>
+                    <p class="fs-4 fw-bold">
+                        @isset($school)
+                            {{ $school->schoolNomorRekening }}
+                        @else
+                            NULL
+                        @endisset a/n @isset($school)
+                            {{ $school->schoolNamaRekening }}
+                        @else
+                            NULL
+                        @endisset
+                    </p>
                     <p class="mt-5">Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian
                         lakukan konfirmasi
                         bukti pembayaran tombol dibawah ini.</p>
@@ -1123,15 +1332,16 @@
                         <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="paymentCategory" value="administrasi">
-                            <input class="form-control form-control-lg w-50 me-3" name="paymentProof" type="file">
+                            <input class="form-control form-control-lg w-50 me-3" name="paymentProof" type="file" required>
                             <button type="submit" class="p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm"
                                 formmethod="post"><i class="fas fa-download fa-sm text-white-50"></i>Upload Bukti
                                 Pembayaran</button>
                         </form>
                     </div>
-
+        
                 </div>
-            @elseif($registrationStatus === 'Menunggu Verifikasi Pembayaran Administrasi')
+            </div>
+        @elseif($registrationStatus === 'Menunggu Verifikasi Pembayaran Administrasi')
                 <div id="paymentAdministrativeWaitingVerification" class="card shadow mb-4">
                     <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
@@ -1147,7 +1357,7 @@
                     </div>
 
                 </div>
-            @elseif ($registrationStatus === 'Butuh Revisi Pembayaran Administrasi')
+        @elseif ($registrationStatus === 'Butuh Revisi Pembayaran Administrasi')
                 <div id="paymentAdministrativeNeedRevision" class="card shadow mb-4">
                     <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
@@ -1160,17 +1370,27 @@
                             <p>Mohon maaf, bukti pembayaran anda telah di tolak oleh admin sekolah dengan alasan :</p>
                             <p class="fw-bold text-info fs-3">
                                 @foreach ($payments as $payment)
-                                    {{ $payment->rejectionReason }}
+                                    @if ($payment->paymentCategory === 'administrasi')
+                                        {{ $payment->rejectionReason }}
+                                    @endif
                                 @endforeach
                             </p>
                         </div>
 
                         <p>Biaya Pendaftaran</p>
-                        {{-- @foreach ($payments as $payment)
-            <h2 class="fs-2 fw-bold mb-4">Rp. {{ $payment->paymentAmount }}</h2>
-            @endforeach --}}
-                        <p>Silahkan melakukan transfer ke </p>
-                        <p class="fs-4 fw-bold">0706012010052 a/n MICHAEL CHANDRA</p>
+                    <p class="fs-2 fw-bold mb-4">Rp. {{ number_format($payment->paymentAmount, 0, ',', '.') }}</p>
+                    <p class="mt-5">Silahkan melakukan transfer ke </p>
+                    <p class="fs-4 fw-bold">
+                        @isset($school)
+                            {{ $school->schoolNomorRekening }}
+                        @else
+                            NULL
+                        @endisset a/n @isset($school)
+                            {{ $school->schoolNamaRekening }}
+                        @else
+                            NULL
+                        @endisset
+                    </p>
                     </div>
                     <div class="card-body">
                         <p>Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian lakukan
@@ -1196,7 +1416,7 @@
                     </div>
 
                 </div>
-            @elseif ($registrationStatus === 'Pembayaran Administrasi Terverifikasi')
+        @elseif ($registrationStatus === 'Pembayaran Administrasi Terverifikasi')
                 <div id="congratulations" class="card shadow mb-4">
                     <div class="card-header d-flex justify-content-between py-3 align-items-center">
 
@@ -1204,16 +1424,24 @@
                         <h6 class="m-0 fw-bold text-primary">SELESAI</h6>
                     </div>
                     <div class="mb-3 card-body">
-                        <p class="fs-4 fw-bold">Anda telah memenuhi seluruh persyaratan pendaftaran di SMA Zion Makassar
+                        <p class="fs-4 fw-bold">Anda telah memenuhi seluruh persyaratan pendaftaran di
+                            @isset($school)
+                                {{ $school->schoolNama }}
+                            @else
+                                NULL
+                            @endisset
                         </p>
                         <p>Informasi selanjutnya terkait pembelian baju, buku dan hal lainnya akan disampaikan kemudian.
                             Terima
-                            kasih telah memilih SMA Zion Makassar!</p>
+                            kasih telah memilih @isset($school)
+                                {{ $school->schoolNama }}
+                            @else
+                                NULL
+                            @endisset!</p>
                     </div>
 
                 </div>
-
-            @endif
+        @endif
 
 
     </div>

@@ -54,8 +54,16 @@
                         <input type="text" class="form-control" id="schoolNamaRekening" name="schoolNamaRekening" required>
                     </div>
                     <div class="mb-3">
+                        <label for="schoolBiayaFormulir" class="form-label">Biaya Formulir Pendaftaran</label>
+                        <input type="number" class="form-control" id="schoolBiayaFormulir" name="schoolBiayaFormulir" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="schoolBatasPendaftaran" class="form-label">Batas Akhir Pendaftaran Sekolah</label>
                         <input type="date" class="form-control" id="schoolBatasPendaftaran" name="schoolBatasPendaftaran" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="schoolDeskripsi" class="form-label">Syarat dan Ketentuan Pendaftaran</label>
+                        <textarea class="form-control" id="schoolSyaratKetentuanPendaftaran" name="schoolSyaratKetentuanPendaftaran" rows="5" required></textarea>
                     </div>
                     
                     

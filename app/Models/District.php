@@ -37,6 +37,11 @@ class District extends Model
         'regency_id'
     ];
 
+    // public function setKecamatanSekolahAsalAttribute($value)
+    // {
+    //     $namaKecamatan = District::find($value)->name; // Ganti Province dengan model provinsi Anda
+    //     $this->attributes['kecamatanSekolahAsal'] = $namaKecamatan; // Tetapkan nama provinsi ke kolom provinsiSekolahAsal
+    // }
     /**
      * District belongs to Regency.
      *

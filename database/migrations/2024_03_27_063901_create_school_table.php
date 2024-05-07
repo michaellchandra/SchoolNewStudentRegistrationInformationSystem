@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('schoolTelepon')->nullable();
             $table->string('schoolNomorRekening')->nullable();
             $table->string('schoolNamaRekening')->nullable();
+            $table->string('schoolBiayaFormulir')->nullable();
             $table->date('schoolBatasPendaftaran')->nullable();
+            $table->text('schoolSyaratKetentuanPendaftaran')->nullable();
         });
     }
 

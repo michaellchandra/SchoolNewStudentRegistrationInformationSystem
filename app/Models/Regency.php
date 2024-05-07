@@ -34,6 +34,11 @@ class Regency extends Model
     protected $hidden = [
         'province_id'
     ];
+    // public function setKotaSekolahAsalAttribute($value)
+    // {
+    //     $namaKota = Regency::find($value)->name; // Ganti Province dengan model provinsi Anda
+    //     $this->attributes['kotaSekolahAsal'] = $namaKota; // Tetapkan nama provinsi ke kolom provinsiSekolahAsal
+    // }
 
     /**
      * Regency belongs to Province.

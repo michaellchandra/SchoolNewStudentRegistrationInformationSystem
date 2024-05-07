@@ -1,8 +1,22 @@
+@php
+    use App\Models\School;
+    $school = School::first();
+@endphp
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="text-xs">School Admission System</div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center mt-3 mb-5" href="#">
+        <div class="col align-items-center">
+            
+            <div class="row text-xs fw-lighter mt-3">School Admission System</div>
+            
+        <div class="row text-s text-center fw-bold mb-3">
+            @isset($school)
+            {{ $school->schoolNama }}
+        @else
+        
+        @endisset</div>
+        </div>
     </a>
 
     <!-- Divider -->

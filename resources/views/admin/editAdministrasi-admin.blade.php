@@ -296,7 +296,7 @@
                                     <select name="provinsiSekolahAsal" class="rounded-pill p-2 form-select" id="provinsi" required>
                                         <option>Pilih Provinsi..</option>
                                         @foreach ($provinces as $provinsi)
-                                            <option value="{{ $provinsi->name }}">{{ $provinsi->name }}</option>
+                                            <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
                                         @endforeach
 
                                     </select>
@@ -309,12 +309,8 @@
                                     <h6 class="fw-bold">Kota/Kabupaten Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota">
+                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota" required>
                                         <option>Pilih Kota..</option>
-                                        {{-- @foreach ($regencies as $kota)
-                                        <option value="{{ $kota->name }}">{{ $kota->name }}</option>    
-                                        @endforeach --}}
-
                                     </select>
                                 </div>
                             </div>
@@ -325,11 +321,8 @@
                                     <h6 class="fw-bold">Kecamatan Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select" id="kecamatan">
+                                    <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select" id="kecamatan" required>
                                         <option>Pilih Kecamatan..</option>
-                                        {{-- @foreach ($districts as $kecamatan)
-                                            <option>{{ $kecamatan->name }}</option>
-                                        @endforeach --}}
 
                                     </select>
                                 </div>

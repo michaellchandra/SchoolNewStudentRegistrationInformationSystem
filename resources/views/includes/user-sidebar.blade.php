@@ -1,14 +1,19 @@
+@php
+    use App\Models\School;
+    $school = School::first();
+@endphp
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center mt-3" href="">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center mt-3 mb-5" href="">
         <div class="col align-items-center">
-            {{-- @if ($school->schoolLogo)
-                                        <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}"
-                                            alt="School Logo" class="img-fluid img-thumbnail">
-                                            @endif --}}
+            
             <div class="row text-xs fw-lighter">School Admission System</div>
-        {{-- <div class="row text-s text-center fw-bold">{{ $school->schoolNama }}</div> --}}
+        <div class="row text-s text-center fw-bold">@isset($school)
+            {{ $school->schoolNama }}
+        @else
+        
+        @endisset</div>
         </div>
         
     </a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Payment;
+use App\Models\School;
 use App\Models\Biodata;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -43,12 +44,13 @@ class PaymentController extends Controller
                 ->whereIn('paymentCategory', ['formulir', 'administrasi'])
                 ->count();
 
-                $verifyingPayments = Payment::where('paymentStatus', 'Verifying')->get();
+            $verifyingPayments = Payment::where('paymentStatus', 'Verifying')->get();
 
             return view('admin.payment-admin', compact('payment', 'user', 'totalFormulir', 'totalAdministrasi', 'totalVerifyingPayments', 'verifyingPayments'));
         } elseif ($user && $user->role === 'user') {
             $payments = Payment::where('user_id', $user->id)->get();
-            return view('user.payment-user', compact('payments'));
+            $school = School::first();
+            return view('user.payment-user', compact('payments','school'));
         }
         abort(403, 'Unauthorized');
     }
@@ -65,62 +67,77 @@ class PaymentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'paymentProof' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+{
+    $request->validate([
+        'paymentProof' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        $user_id = auth()->id();
-        $directory = 'public/' . $user_id . '/PaymentProofs';
-        if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true); // Membuat direktori secara rekursif jika belum ada
-        }
-        // Menyimpan file ke dalam direktori yang sesuai
-        $file = $request->file('paymentProof');
-        $filename = $file->getClientOriginalName(); // Nama asli file
-        $file->storeAs($directory, $filename);
-
-        // Cek apakah pembayaran sudah ada untuk pengguna ini
-        $payment = Payment::where('user_id', $user_id)->first();
-
-        // Jika pembayaran sudah ada, ganti informasi pembayaran yang sudah ada
-        if ($payment) {
-            $payment->update([
-                'paymentDate' => now(),
-                'paymentAmount' => 0,
-                'paymentStatus' => 'Verifying',
-                // 'paymentCategory' => $request->paymentCategory,
-                'paymentProof' => $filename,
-                'updated_at_submit' => now()
-            ]);
-        } else {
-            // Jika tidak, buat pembayaran baru
-            $payment = new Payment([
-                'user_id' => $user_id,
-                'paymentDate' => now(),
-                'paymentAmount' => 0,
-                'paymentStatus' => 'Verifying',
-                'paymentCategory' => $request->paymentCategory,
-                'paymentProof' => $filename,
-                'updated_at_submit' => now()
-            ]);
-            $payment->save();
-        }
-
-        $registrationStatus = '';
-        if ($request->paymentCategory === 'formulir') {
-            $registrationStatus = RegistrationStatus::STATUS_FORM_PAYMENT_VERIFICATION_PENDING;
-        } elseif ($request->paymentCategory === 'administrasi') {
-            $registrationStatus = RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFICATION_PENDING;
-        }
-
-        // Mengupdate registrationStatus pada model Registration
-        $registration = Registration::where('user_id', $user_id)->first();
-        $registration->registrationStatus = $registrationStatus;
-        $registration->save();
-
-        return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
+    $user_id = auth()->id();
+    $directory = 'public/' . $user_id . '/PaymentProofs';
+    if (!Storage::exists($directory)) {
+        Storage::makeDirectory($directory, 0777, true);
     }
+
+    $file = $request->file('paymentProof');
+    $filename = $file->getClientOriginalName();
+    $file->storeAs($directory, $filename);
+
+    // Tentukan jenis pembayaran
+    $paymentCategory = $request->paymentCategory;
+
+    // Tentukan jumlah pembayaran berdasarkan kategori
+    $paymentAmount = 0;
+    if ($paymentCategory === 'formulir') {
+        $school = School::first();
+        $paymentAmount = $school->schoolBiayaFormulir;
+    } elseif ($paymentCategory === 'administrasi') {
+        $paymentAmount = $request->input('paymentAmount');
+    }
+
+    // Temukan pembayaran yang ada untuk pengguna ini berdasarkan kategori pembayaran
+    $payment = Payment::where('user_id', $user_id)
+                        ->where('paymentCategory', $paymentCategory)
+                        ->first();
+
+    // Jika pembayaran sudah ada, update informasi pembayaran
+    if ($payment) {
+        $payment->update([
+            'paymentDate' => now(),
+            'paymentAmount' => $paymentAmount,
+            'paymentStatus' => 'Verifying',
+            'paymentProof' => $filename,
+            'updated_at_submit' => now()
+        ]);
+    } else {
+        // Jika belum ada, buat pembayaran baru
+        $payment = new Payment([
+            'user_id' => $user_id,
+            'paymentDate' => now(),
+            'paymentAmount' => $paymentAmount,
+            'paymentStatus' => 'Verifying',
+            'paymentCategory' => $paymentCategory,
+            'paymentProof' => $filename,
+            'updated_at_submit' => now()
+        ]);
+        $payment->save();
+    }
+
+    // Tentukan status pendaftaran berdasarkan kategori pembayaran
+    $registrationStatus = '';
+    if ($paymentCategory === 'formulir') {
+        $registrationStatus = RegistrationStatus::STATUS_FORM_PAYMENT_VERIFICATION_PENDING;
+    } elseif ($paymentCategory === 'administrasi') {
+        $registrationStatus = RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFICATION_PENDING;
+    }
+
+    // Update status pendaftaran pada model Registration
+    $registration = Registration::where('user_id', $user_id)->first();
+    $registration->registrationStatus = $registrationStatus;
+    $registration->save();
+
+    return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
+}
+
 
 
     /**
@@ -156,8 +173,8 @@ class PaymentController extends Controller
     }
 
 
-    
-   
+
+
 
     public function approvePayment(Payment $payment)
     {
@@ -165,7 +182,6 @@ class PaymentController extends Controller
         if ($payment->paymentCategory === 'formulir') {
             $registrations = $payment->user->registrations;
             foreach ($registrations as $registration) {
-                // Atur status pendaftaran
                 $registration->registrationStatus = RegistrationStatus::STATUS_FORM_PAYMENT_VERIFIED;
                 $registration->save();
             }
@@ -174,15 +190,10 @@ class PaymentController extends Controller
             $registrations = $payment->user->registrations;
 
             foreach ($registrations as $registration) {
-                // Atur status pendaftaran
                 $registration->registrationStatus = RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_VERIFIED;
-
-                // Simpan perubahan pada setiap objek pendaftaran
                 $registration->save();
             }
         }
-
-        // Perbarui status pembayaran menjadi 'approved'
 
         $payment->update([
             'paymentStatus' => 'approved',
@@ -194,24 +205,27 @@ class PaymentController extends Controller
 
     public function rejectPayment(Request $request, Payment $payment)
     {
-        $request->validate([
-            'rejectionReason' => 'required|string',
-        ]);
+        
         if ($payment->paymentCategory === 'formulir') {
+            $request->validate([
+                'rejectionReason' => 'required|string',
+            ]);
             $registrations = $payment->user->registrations;
             foreach ($registrations as $registration) {
-                // Atur status pendaftaran
                 $registration->registrationStatus = RegistrationStatus::STATUS_FORM_PAYMENT_REVISION_REQUIRED;
 
                 // Simpan perubahan pada setiap objek pendaftaran
                 $registration->save();
             }
         } elseif ($payment->paymentCategory === 'administrasi') {
-
+            $request->validate([
+                'rejectionReason' => 'required|string',
+                'paymentAmount' => $payment->paymentAmount
+            ]);
             $registrations = $payment->user->registrations;
 
             foreach ($registrations as $registration) {
-                // Atur status pendaftaran
+
                 $registration->registrationStatus = RegistrationStatus::STATUS_ADMINISTRATIVE_PAYMENT_REVISION_REQUIRED;
 
                 // Simpan perubahan pada setiap objek pendaftaran
@@ -221,7 +235,8 @@ class PaymentController extends Controller
         $payment->update([
             'paymentStatus' => 'rejected',
             'rejectionReason' => $request->rejectionReason,
-            'updated_at_revision' => now()
+            'updated_at_revision' => now(),
+            'paymentAmount' => $payment->paymentAmount
 
         ]);
 
@@ -246,13 +261,12 @@ class PaymentController extends Controller
     }
 
 
-    public function semuaPayment(){
+    public function semuaPayment()
+    {
         $user = Auth::user();
         $payment = Payment::all();
         $verifyingPayments = Payment::where('paymentStatus', 'Verifying')->get();
 
-        return view('admin.allPayment-admin',compact('user','payment','verifyingPayments'));
+        return view('admin.allPayment-admin', compact('user', 'payment', 'verifyingPayments'));
     }
-
-    
 }

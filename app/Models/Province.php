@@ -25,6 +25,12 @@ class Province extends Model
      */
     protected $table = 'provinces';
 
+    // public function setProvinsiSekolahAsalAttribute($value)
+    // {
+    //     $namaProvinsi = Province::find($value)->name; 
+    //     $this->attributes['provinsiSekolahAsal'] = $namaProvinsi; 
+    // }
+
     /**
      * Province has many regencies.
      *

@@ -3,6 +3,15 @@
 @section('content')
     <div class="container-fluid">
         <a href="/user/dashboard" class="pt-5 link-primary">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
             < Back to Dashboard</a>
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
                     <h1 class="h3 mb-0 text-dark">Pengisian Biodata & Berkas</h1>
@@ -294,10 +303,12 @@
                                 <div class="col-12 col-md-10 justify-content-start">
                                     <select name="provinsiSekolahAsal" class="rounded-pill p-2 form-select" id="provinsi" required>
                                         <option>Pilih Provinsi..</option>
+                                        
                                         @foreach ($provinces as $provinsi)
-                                            <option value="{{ $provinsi->name }}">{{ $provinsi->name }}</option>
-                                        @endforeach
+        <option value="{{ $provinsi->id }}" @if($biodata && $biodata->provinsiSekolahAsal == $provinsi->name) selected @endif>{{ $provinsi->name }}</option>
+    @endforeach
 
+    
                                     </select>
                                 </div>
                             </div>
@@ -308,31 +319,27 @@
                                     <h6 class="fw-bold">Kota/Kabupaten Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota">
+                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota" required>
                                         <option>Pilih Kota..</option>
-                                        {{-- @foreach ($regencies as $kota)
-                                        <option value="{{ $kota->name }}">{{ $kota->name }}</option>    
-                                        @endforeach --}}
-
+                                        
                                     </select>
                                 </div>
                             </div>
 
                             <!-- Kecamatan Sekolah Asal -->
-                            <div class="row mb-2">
-                                <div class="col-12 col-md-2 d-flex align-items-center">
-                                    <h6 class="fw-bold">Kecamatan Sekolah Asal*</h6>
-                                </div>
-                                <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select" id="kecamatan">
-                                        <option>Pilih Kecamatan..</option>
-                                        {{-- @foreach ($districts as $kecamatan)
-                                            <option>{{ $kecamatan->name }}</option>
-                                        @endforeach --}}
-
-                                    </select>
-                                </div>
-                            </div>
+                            
+<!-- Kecamatan Sekolah Asal -->
+<div class="row mb-2">
+    <div class="col-12 col-md-2 d-flex align-items-center">
+        <h6 class="fw-bold">Kecamatan Sekolah Asal*</h6>
+    </div>
+    <div class="col-12 col-md-10 justify-content-start">
+        <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select" id="kecamatan" required>
+            <option value="">Pilih Kecamatan..</option>
+            
+        </select>
+    </div>
+</div>
 
                         </div>
 
@@ -646,7 +653,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        
+  
         $(function(){
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
@@ -654,6 +661,22 @@
         })
 
         $(function(){
+            let provinsiSekolahAsal = '{{ $data->provinsiSekolahAsal ?? '' }}';
+        let kotaSekolahAsal = '{{ $data->kotaSekolahAsal ?? '' }}';
+        let kecamatanSekolahAsal = '{{ $data->kecamatanSekolahAsal ?? '' }}';
+
+        if (provinsiSekolahAsal !== '') {
+            $('#provinsi').val(provinsiSekolahAsal).change();
+        }
+
+        if (kotaSekolahAsal !== '') {
+            $('#kota').val(kotaSekolahAsal);
+        }
+
+        if (kecamatanSekolahAsal !== '') {
+            $('#kecamatan').val(kecamatanSekolahAsal);
+        }
+
             $('#provinsi').on('change',function(){
                 let id_provinsi =$('#provinsi').val();
 
@@ -694,5 +717,5 @@
             })
 
         })
-    </script>
+    </script>   
 @endsection

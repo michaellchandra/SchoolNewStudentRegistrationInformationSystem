@@ -1,9 +1,11 @@
 @php
 
     use App\Models\Admin;
+    use App\Models\School;
     use Illuminate\Support\Facades\Auth;
 
     $user = Auth::user();
+    $school = School::first();
 
     if ($user->role === 'admin') {
         $admin = Admin::where('user_id', $user->id)->first();
@@ -20,12 +22,23 @@
 
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
-
+    <ul class="navbar-nav d-flex align-items-center">
+        @if($school && $school->schoolLogo)
+    <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}" alt="School Logo"
+        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+@else
+    <img src="{{ asset('storage/assets/graduation-cap-icon.svg') }}" alt="School Logo"
+        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+@endif
         <li class="nav-item">
-
-            <label class="nav-item m-0 text-s text-black fw-bold">Selamat Datang di Sistem Pendaftaran Siswa Baru</label>
-            <p class="fst-italic">Admin Panel</p>
+        
+            <p class="nav-item pt-3 m-0 text-s text-black fw-bold">Selamat Datang di Sistem Pendaftaran Siswa Baru</p>
+            <p class=""> @isset($school)
+                {{ $school->schoolNama }}
+            @else
+                
+            @endisset</p>
+            <p class="fst-italic text-xs">Admin Panel</p>
             </p>
 
 

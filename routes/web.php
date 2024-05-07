@@ -6,7 +6,26 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    if (Auth::check()) {
+    
+        $role = Auth::user()->role;
+        
+        switch ($role) {
+            case 'admin':
+                return redirect()->route('admin.index');
+                break;
+            case 'user':
+                return redirect()->route('user.index');
+                break;
+            
+            default:
+                return redirect()->route('home'); // Redirect default jika peran tidak ditemukan
+        }
+    } else {
+        
+        return view('welcome');
+    }
 });
 
 Auth::routes();
@@ -45,6 +64,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/settings/school/store', [App\Http\Controllers\SchoolController::class, 'store'])->name('admin.school.store');
     Route::get('/admin/settings/school/{id}', [App\Http\Controllers\SchoolController::class, 'edit'])->name('admin.school.edit');
     Route::put('/admin/school/{id}', [App\Http\Controllers\SchoolController::class, 'update'])->name('admin.school.update');
+    Route::delete('/admin/school/{id}', [App\Http\Controllers\SchoolController::class, 'destroy'])->name('admin.school.destroy');
 
     //Payment
     
@@ -62,7 +82,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('admin/biodata/{biodata}/reject', [App\Http\Controllers\BiodataController::class, 'rejectBiodata'])->name('admin.biodata.reject');
     Route::get('/admin/biodata/edit/{biodata}',[App\Http\Controllers\BiodataController::class,'edit'])->name('admin.biodata.edit');
     Route::put('/admin/biodata/{biodata}',[App\Http\Controllers\BiodataController::class,'update'])->name('admin.biodata.update');
-    Route::get('admin/pendaftar/all',[App\Http\Controllers\BiodataController::class,'allCalonSiswa'])->name('admin.biodata.allCalonSiswa');
+    Route::get('/admin/pendaftar/all',[App\Http\Controllers\BiodataController::class,'allCalonSiswa'])->name('admin.biodata.allCalonSiswa');
     //Hasil Tes
     Route::post('/admin/apply-hasiltes', [App\Http\Controllers\RegistrationController::class,'applyStatusTes'])->name('admin.apply-status.test');
     Route::get('/admin/analytic',[App\Http\Controllers\AnalyticController::class, 'index'])->name('admin.analytics');
@@ -89,12 +109,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     //User View
     Route::get('/user/pengumuman', [App\Http\Controllers\PengumumanController::class, 'index'])->name('user.pengumuman');
     Route::view('/user/pengumuman/empty','user.pengumumanEmpty-user')->name('user.pengumuman-empty');
-
     Route::get('/user/pengisian-biodata', [App\Http\Controllers\BiodataController::class, 'create'])->name('user.biodata.create');
     Route::post('/user/pengisian-biodata/store',[App\Http\Controllers\BiodataController::class,'store'])->name('user.biodata.store');
     Route::get('/user/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('user.payment');
     Route::post('/getKota',[App\Http\Controllers\BiodataController::class,'getKota'])->name('getKota');
     Route::post('/getKecamatan',[App\Http\Controllers\BiodataController::class,'getKecamatan'])->name('getKecamatan');
+
     //Payment
     Route::post('/user/payment/store',[App\Http\Controllers\PaymentController::class,'store'])->name('user.payment.store');
 
