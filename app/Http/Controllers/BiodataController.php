@@ -66,11 +66,11 @@ class BiodataController extends Controller
         $user_id = auth()->id();
         $biodata = Biodata::where('user_id', $user_id)->first();
         $provinces = Province::all();
-        $districs = District::all();
+        $districts = District::all();
         $regency = Regency::all();
         
 
-        return view('user.pengisian-biodata', compact('biodata', 'provinces','districs','regency'));
+        return view('user.pengisian-biodata', compact('biodata', 'provinces','districts','regency'));
     }
 
     public function getKota(Request $request){
@@ -99,11 +99,9 @@ class BiodataController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        
         $request->validate([
-            'provinsiSekolahAsal' => 'sometimes|required|string',
-            'kotaSekolahAsal'=> 'sometimes|required|string',
-            'kecamatanSekolahAsal'=> 'sometimes|required|string',
+            
             'berkasAktaKelahiran' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'berkasKartuKeluarga' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'berkasKTPAyahKandung' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -117,22 +115,9 @@ class BiodataController extends Controller
             'scanRaportKelas9Genap' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sertifikatPrestasi' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sertifikatSertifikasi' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ],[
-            'provinsiSekolahAsal.required' => 'Pastikan memilih provinsi sekolah asal',
-            'kotaSekolahAsal.required' => 'Pastikan memilih kota sekolah asal',
-            'kecamatanSekolahAsal.required' => 'Pastikan memilih kecamatan sekolah asal.',
-            
         ]);
 
-
-        $provinsiId = $request->input('provinsiSekolahAsal');
-        $kotaId = $request->input('kotaSekolahAsal');
-        $kecamatanId = $request->input('kecamatanSekolahAsal');
-
-        $provinsi = Province::findOrFail($provinsiId);
-        $kota =  Regency::findOrFail($kotaId);
-        $kecamatan = District::findOrFail($kecamatanId);
-
+        
         $user_id = auth()->id();
 
         $directory = 'public/' . $user_id . '/Biodata';
@@ -150,10 +135,6 @@ class BiodataController extends Controller
         }
 
         $biodata = Biodata::where('user_id', $user_id)->first();
-
-        $biodataData['provinsiSekolahAsal'] = $provinsi->name;
-        $biodataData['kotaSekolahAsal'] = $kota->name;
-        $biodataData['kecamatanSekolahAsal'] = $kecamatan->name;
 
         if ($biodata) {
             $biodataData['user_id'] = $user_id;
@@ -175,10 +156,87 @@ class BiodataController extends Controller
         $registration->save();
 
         return redirect()->route('user.index')->with('success', 'Biodata berhasil disimpan');
-    } catch (ValidationException $e) {
-        // Tangkap pengecualian validasi dan kembali ke halaman sebelumnya dengan pesan kesalahan
-        return back()->withErrors($e->validator)->withInput();
+    
     }
+
+    public function saveProgress(Request $request){
+          
+        // $request->validate([
+        // 'namaLengkap'=>'nullable',
+        // 'jenisKelamin'=>'nullable',
+        // 'nomorNIK'=>'nullable',
+        // 'tempatLahir'=>'nullable',
+        // 'tanggalLahir'=>'nullable',
+        // 'jumlahSaudaraKandung'=>'nullable',
+        // 'jumlahSaudaraAngkat'=>'nullable',
+        // 'tinggiBadan'=>'nullable',
+        // 'beratBadan'=>'nullable',
+        // 'alamatSiswa'=>'nullable',
+        // 'jenisTinggal'=>'nullable',
+        // 'transportasiKeSekolah'=>'nullable',
+        // 'agamaSiswa'=>'nullable',
+        // 'nomorTeleponSiswa'=>'nullable',
+        // 'namaSekolahAsal'=>'nullable',
+        // 'alamatSekolahAsal'=>'nullable',
+        // 'provinsiSekolahAsal'=>'nullable',
+        // 'kotaSekolahAsal'=>'nullable',
+        // 'kecamatanSekolahAsal'=>'nullable',
+        // 'namaIbuKandung'=>'nullable',
+        // 'pekerjaanIbuKandung'=>'nullable',
+        // 'penghasilanIbuKandung'=>'nullable',
+        // 'nomorTeleponIbuKandung'=>'nullable',
+        // 'namaAyahKandung'=>'nullable',
+        // 'pekerjaanAyahKandung'=>'nullable',
+        // 'penghasilanAyahKandung'=>'nullable',
+        // 'nomorTeleponAyahKandung'=>'nullable',
+        // 'namaWali'=>'nullable',
+        // 'pekerjaanWali'=>'nullable',
+        // 'penghasilanWali'=>'nullable',
+        // 'nomorTeleponWali'=>'nullable',
+        // 'berkasAktaKelahiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'berkasKartuKeluarga' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'berkasKTPAyahKandung' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'berkasKTPIbuKandung' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'berkasKTPWali' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas7Ganjil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas7Genap' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas8Ganjil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas8Genap' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas9Ganjil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'scanRaportKelas9Genap' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'sertifikatPrestasi' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'sertifikatSertifikasi' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+
+        $user_id = auth()->id();
+
+        $directory = 'public/' . $user_id . '/Biodata';
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory, 0777, true);
+        }
+        $biodataData = $request->except('_token');
+        dd($biodataData);
+        foreach ($request->file() as $key => $file) {
+            if ($file->isValid()) {
+                $filename = $file->getClientOriginalName();
+                $file->storeAs($directory, $filename);
+                $biodataData[$key] = $filename;
+            }
+        }
+
+        $biodata = Biodata::where('user_id', $user_id)->first();
+
+        if ($biodata) {
+            $biodataData['user_id'] = $user_id;
+            $biodata->update($biodataData);
+
+        } else {
+            $biodataData['user_id'] = $user_id;
+            Biodata::create($biodataData);
+        }
+
+        return redirect()->route('user.index')->with('success', 'Berhasil menyimpan progres Biodata & Berkas, jangan lupa untuk melakukan submit untuk melanjutkan ke tahap berikutnya.');
+    
     }
 
     /**
@@ -194,23 +252,26 @@ class BiodataController extends Controller
      */
     public function edit(string $id)
     {
-        // $user_id = auth()->id();
-        $user = auth()->user(); 
-        $user_id = $user->id; 
-        $biodata = Biodata::findOrFail($id);
-        $provinces = Province::all();
-        return view('admin.editAdministrasi-admin', compact('biodata', 'provinces','user'));
+    $biodata = Biodata::findOrFail($id);
+    $provinces = Province::all();
+    $regency = Regency::where('province_id', $biodata->provinsiSekolahAsal)->get();
+    $districts = District::where('regency_id', $biodata->kotaSekolahAsal)->get();
+
+    $role = auth()->user()->role;
+
+    if ($role === 'admin') {
+        return view('admin.editAdministrasi-admin', compact('biodata', 'provinces', 'regency', 'districts'));
+    } else {
+        return view('user.editBiodata', compact('biodata', 'provinces', 'regency', 'districts'));
     }
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'provinsiSekolahAsal' => 'required|string',
-            'kotaSekolahAsal'=> 'required|string',
-            'kecamatanSekolahAsal'=> 'required|string',
             'berkasAktaKelahiran' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'berkasKartuKeluarga' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'berkasKTPAyahKandung' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -225,27 +286,15 @@ class BiodataController extends Controller
             'sertifikatPrestasi' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sertifikatSertifikasi' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
-        $provinsiId = $request->input('provinsiSekolahAsal');
-        $kotaId = $request->input('kotaSekolahAsal');
-        $kecamatanId = $request->input('kecamatanSekolahAsal');
-
-        $provinsi = Province::findOrFail($provinsiId);
-        $kota =  Regency::findOrFail($kotaId);
-        $kecamatan = District::findOrFail($kecamatanId);
-
-        $user = auth()->user();
-        $user_id = $user->id;
-        
+    
+    
+        $user_id = auth()->id();
+    
         $directory = 'public/' . $user_id . '/Biodata';
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory, 0777, true);
         }
-    
         $biodataData = $request->except('_token');
-        $biodataData['provinsiSekolahAsal'] = $provinsi->name;
-        $biodataData['kotaSekolahAsal'] = $kota->name;
-        $biodataData['kecamatanSekolahAsal'] = $kecamatan->name;
     
         foreach ($request->file() as $key => $file) {
             if ($file->isValid()) {
@@ -254,15 +303,18 @@ class BiodataController extends Controller
                 $biodataData[$key] = $filename;
             }
         }
+    
         $biodata = Biodata::findOrFail($id);
-        
-        if ($biodata) {
+    
+        $biodataData['user_id'] = $user_id;
             
-            $biodata->update($biodataData);
-        }
+        $biodata->update($biodataData);
+        
+
     
         return redirect()->route('admin.pendaftar')->with('success', 'Biodata berhasil disimpan');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -291,7 +343,7 @@ class BiodataController extends Controller
             $payment = new Payment([
                 'user_id' => $registration->user_id,
                 'paymentDate' => now(),
-                'paymentAmount' => $request->paymentAmount, // Default value, bisa diubah kemudian oleh admin
+                'paymentAmount' => $request->paymentAmount, 
                 'paymentStatus' => 'pending',
                 'paymentCategory' => 'administrasi',
                 'updated_at_submit' => now()

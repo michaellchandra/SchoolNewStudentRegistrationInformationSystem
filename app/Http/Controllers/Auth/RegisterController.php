@@ -77,15 +77,12 @@ class RegisterController extends Controller
             'asalReferensiSekolah' => $data['asalReferensiSekolah']
         ]);
 
-        // Mendapatkan tanggal sistem saat ini
+
         $currentDate = Carbon::now();
 
-        // Periksa bulan saat ini
         if ($currentDate->month >= 7) {
-            // Jika bulan saat ini adalah Juli atau setelahnya, tambahkan satu tahun
             $academicYearStart = $currentDate->year + 1;
         } else {
-            // Jika bulan saat ini adalah sebelum Juli, gunakan tahun saat ini
             $academicYearStart = $currentDate->year;
         }
 
@@ -102,11 +99,10 @@ class RegisterController extends Controller
 
     public function redirectTo()
     {
-        // Periksa apakah pengguna adalah admin atau bukan, dan alihkan mereka ke rute yang sesuai
         if (Auth::user()->role === 'admin') {
-            return '/admin/dashboard'; // Redirect ke admin dashboard
+            return '/admin/dashboard'; 
         } else {
-            return '/user/dashboard'; // Redirect ke user dashboard
+            return '/user/dashboard'; 
         }
     }
 }

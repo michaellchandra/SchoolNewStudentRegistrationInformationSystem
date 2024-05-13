@@ -7,9 +7,12 @@ use App\Models\User;
 use App\Models\Biodata;
 use App\Models\Payment;
 use App\Models\School;
+use App\Models\Survey;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\RegistrationStatus;
+use Carbon\Carbon;
+use App\Models\Answer;
 
 class UserController extends Controller
 {
@@ -23,6 +26,7 @@ class UserController extends Controller
         $payments = Payment::where('user_id', $loggedInUser->id)->get();
         $biodata = Biodata::where('user_id', $loggedInUser->id)->get();
         $school = School::first();
+        $survey = Survey::first();
 
         foreach ($users as $user) {
 
@@ -35,8 +39,8 @@ class UserController extends Controller
 
         }
 
-        // $payments = Payment::where('user_id', $users->id)->get();
-        return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata','school'));
+        
+        return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata','school','survey'));
     }
 
 
@@ -61,14 +65,32 @@ class UserController extends Controller
         //     'asalReferensiSekolah' => ['required'],
         // ]);
 
-        User::create([
+        $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'asalSekolah' => $request->asalSekolah,
             'asalReferensiSekolah' => $request->asalReferensiSekolah,
         ]);
 
-        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Akun pengguna berhasil ditambahkan.');
+        $currentDate = Carbon::now();
+
+        if ($currentDate->month >= 7) {
+            $academicYearStart = $currentDate->year + 1;
+        } else {
+            $academicYearStart = $currentDate->year;
+        }
+
+        $academicYear = $academicYearStart . '-' . ($academicYearStart + 1);
+        event(new \App\Events\UserRegistered($user));
+        $registration = new Registration();
+        $registration->user_id = $user->id;
+        $registration->registrationStatus = RegistrationStatus::STATUS_ACCOUNT_REGISTERED;
+        $registration->tahunAjaran = $academicYear;
+        $registration->save();
+
+        
+
+        return redirect()->route('admin.pendaftar')->with('success', 'Akun pengguna berhasil ditambahkan.');
     }
 
     /**
@@ -84,7 +106,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id); // Mengambil data pengguna berdasarkan ID
+        $user = User::findOrFail($id); 
         return view('admin.editUser', compact('user'));
     }
 
@@ -100,8 +122,6 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
 
         ]);
-
-
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -117,8 +137,6 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-
-        // Hapus pengguna dari database
         $user->delete();
 
         return redirect()->route('admin.pendaftarAdmin')->with('success', 'Data pengguna berhasil dihapus.');

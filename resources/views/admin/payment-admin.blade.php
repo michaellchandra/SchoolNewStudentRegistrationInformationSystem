@@ -93,10 +93,9 @@ use App\Models\School;
                             <tr>
                                 <th class="th-sm-1">No.</th>
                                 <th>Email</th>
-
                                 <th>Bukti Pembayaran</th>
                                 <th>Kategori</th>
-
+                                <th>Jumlah</th>
                                 <th>Status</th>
                                 <th>Action</th>
 
@@ -123,23 +122,44 @@ use App\Models\School;
                                         @endif
                                     </td>
                                     <td>{{ $payment->paymentCategory }}</td>
-
+                                    <td>Rp. {{ number_format($payment->paymentAmount, 0, ',', '.') }}</td>
                                     <td>{{ $payment->paymentStatus }}</td>
-                                    <td>
+                                    <td class="col-sm-2">
 
 
                                         @if ($payment->paymentStatus === 'Verifying')
-                                            <form action="{{ route('admin.payments.approve', $payment->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button
-                                                    class="btn btn-sm btn-primary shadow-sm"type="submit">Approve</button>
-                                            </form>
+                                        <button type="button" class="col btn btn-sm btn-success shadow-sm mb-2" data-toggle="modal" data-target="#confirmationModal">Approve</button>
+
+                                            
+                                        <!-- Modal Terima Pembayaran -->
+                                        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembayaran</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah Anda yakin ingin menyetujui pembayaran ini?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('admin.payments.approve', $payment->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary">Approve</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                             <form action="{{ route('admin.payments.reject', $payment->id) }}"
                                                 method="POST">
                                                 @csrf
-                                                <button class="btn btn-sm btn-primary shadow-sm" type="button"
+                                                <button class="col btn btn-sm btn-danger shadow-sm" type="button"
                                                     data-toggle="modal" data-target="#rejectionModal">Reject</button>
                                             </form>
                                             <!-- Model for Reject Payment -->
@@ -216,9 +236,9 @@ use App\Models\School;
 
                                 <th>Bukti Pembayaran</th>
                                 <th>Kategori</th>
-
+                                <th>Jumlah</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th class="col-sm-2">Action</th>
 
                             </tr>
                         </thead>
@@ -244,25 +264,42 @@ use App\Models\School;
                                         @endif
                                     </td>
                                     <td>{{ $payment->paymentCategory }}</td>
-
+                                    <td>Rp. {{ number_format($payment->paymentAmount, 0, ',', '.') }}</td>
                                     <td>{{ $payment->paymentStatus }}</td>
                                     <td>
-
-
                                         @if ($payment->paymentStatus === 'Verifying')
-                                            <form action="{{ route('admin.payments.approve', $payment->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button
-                                                    class="btn btn-sm btn-primary shadow-sm"type="submit">Approve</button>
-                                            </form>
+                                            
+                                            <button type="button" class="col btn btn-sm btn-success shadow-sm mb-2" data-toggle="modal" data-target="#confirmationModal">Approve</button>
 
-                                            <form action="{{ route('admin.payments.reject', $payment->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button class="btn btn-sm btn-primary shadow-sm" type="button"
+                                            
+                                            <!-- Modal Terima Pembayaran -->
+                                            <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembayaran</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Apakah Anda yakin ingin menyetujui pembayaran ini?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                            <form action="{{ route('admin.payments.approve', $payment->id) }}" method="POST">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-primary">Approve</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <button class="col btn btn-sm btn-danger shadow-sm mb-2" type="button"
                                                     data-toggle="modal" data-target="#rejectionModal">Reject</button>
-                                            </form>
+                                            
                                             <!-- Model for Reject Payment -->
                                             <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="rejectionModalLabel" aria-hidden="true">
@@ -295,8 +332,14 @@ use App\Models\School;
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
 
+                                            
+                                        
+
+                                        @endif
+                                        
+                                        
+                                        
                                     </td>
                                 </tr>
                             @empty

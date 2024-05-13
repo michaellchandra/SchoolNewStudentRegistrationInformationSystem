@@ -37,6 +37,11 @@
             <i class="fas fa-solid fa-money-bill"></i>
             <span>Pembayaran</span></a>
     </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="/user/survey">
+            <i class="fas fa-solid fa-poll-h"></i>
+            <span>Survey</span></a>
+    </li>
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

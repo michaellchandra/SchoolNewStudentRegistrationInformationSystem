@@ -97,6 +97,24 @@
                     @if ($verifyingBiodata->isNotEmpty())
                         @foreach ($biodata as $data)
                             @if ($data->biodataStatus === 'accepted')
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <tr>
+                                    <th></th>
+                                    <th class="th-sm-1">No.</th>
+                                    <th>Email</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Status Biodata</th>
+                                    <th>Status Pendaftaran</th>
+                                    <th>Tahun Ajaran</th>
+                                    <th>Biodata & Berkas</th>
+                                    <th class="col-2">Action</th>
+        
+                                    <th>Hasil Test</th>
+                                </tr>
+                                <td colspan="10" class="text-center">
+                                    Tidak ada biodata yang butuh diverifikasi saat ini.
+                                </td>
+                            </table>
                             @elseif($data->biodataStatus === 'Verifying')
                                 <div class="table-responsive">
                                     <table class="table table-bordered" width="100%" cellspacing="0">
@@ -124,7 +142,7 @@
                                             @endphp
                                             @if ($count >= 5)
                                             @break
-                                        @endif
+                                            @endif
 
                                         <tr>
                                             <td>
@@ -697,7 +715,7 @@
                                                                 action="{{ route('admin.biodata.accept', $data->id) }}"
                                                                 method="POST">
                                                                 @csrf
-                                                                <button class="btn btn-primary shadow-sm"
+                                                                <button class="col btn btn-sm btn-success shadow-sm mb-2"
                                                                     type="button" data-toggle="modal"
                                                                     data-target="#acceptModal">Approve</button>
 
@@ -721,29 +739,32 @@
                                                                                 </button>
                                                                             </div>
                                                                             <div class="modal-body">
-                                                                                <p>Apakah Anda yakin ingin menerima
-                                                                                    biodata dan berkas ini?</p>
+                                                                                
                                                                                 <form
                                                                                     action="{{ route('admin.biodata.accept', $data->id) }}"
                                                                                     method="POST">
                                                                                     @csrf
-                                                                                    <div class="mb-3">
+                                                                                    <div class="mb-4">
                                                                                         <label for="paymentAmount"
-                                                                                            class="form-label">Payment
-                                                                                            Amount</label>
+                                                                                            class="form-label">Masukkan Jumlah Administrasi yang harus dibayar</label>
                                                                                         <input type="number"
                                                                                             class="form-control"
                                                                                             id="paymentAmount"
                                                                                             name="paymentAmount"
                                                                                             required>
                                                                                     </div>
+                                                                                    <hr class="border border-dark border-1 opacity-25">
+                                                                            
+                                                                                <p>Apakah anda yakin ingin menerima
+                                                                                    biodata dan berkas ini?</p>
                                                                                     <button type="button"
                                                                                         class="btn btn-secondary"
                                                                                         data-dismiss="modal">Batal</button>
                                                                                     <button type="submit"
                                                                                         class="btn btn-primary">Terima</button>
                                                                                 </form>
-                                                                            </div>
+                                                                                
+                                                                                </div>
                                                                         </div>
                                                                     </div>
 
@@ -751,20 +772,19 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                    </div>
+                                                    
 
                                                     <!-- Reject Button-->
-                                                    <div class="col">
+                                                    <div class="">
                                                         <form action="{{ route('admin.biodata.reject', $data->id) }}"
                                                             method="POST">
                                                             @csrf
-                                                            <button class="btn btn-danger shadow-sm" type="button"
+                                                            <button class="col btn btn-sm btn-danger shadow-sm mb-2" type="button"
                                                                 data-toggle="modal"
                                                                 data-target="#rejectionModal">Reject</button>
                                                             <!-- Modal for Reject Biodata -->
                                                             <div class="modal fade" id="rejectionModal"
                                                                 tabindex="-1" role="dialog"
-                                                                aria-labelledby="rejectionModalLabel"
                                                                 aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
@@ -798,6 +818,7 @@
                                                             </div>
                                                         </form>
                                                     </div>
+                                                </div>
                                                 @elseif ($data->biodataStatus === 'pending')
                                                     <span>Belum Upload Administrasi</span>
                                                 @else
@@ -861,7 +882,29 @@
                         <option value="Lulus">Lulus</option>
                         <option value="Tidak Lulus">Tidak Lulus</option>
                     </select>
-                    <button type="submit" class="btn btn-primary ms-2">Terapkan Status</button>
+                    <button type="button" class="btn btn-primary ms-2" data-toggle="modal" data-target="#confirmationModal">
+                        Terapkan Status
+                    </button>
+                    <!-- Modal Confirmation Pilih Status -->
+                        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Status Hasil Tes</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Apakah anda yakin ingin menerapkan status hasil tes ini?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Ya, Terapkan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                 </div>
                 <div class="table-responsive">
@@ -918,9 +961,6 @@
                                     data-toggle="modal">
                                     Lihat Berkas
                                 </a>
-                                {{-- <a href="{{ route('admin.biodata.downloadZip', ['user_id' => $data->user_id]) }}">
-                                        Download Berkas Zip
-                                    </a> --}}
 
                                 <!-- Modal Biodata-->
                                 <div class="modal fade" id="fileModal{{ $data->id }}" tabindex="-1"
@@ -1051,7 +1091,8 @@
                                                                     <p class="m-0">Penghasilan Ayah Kandung :
                                                                     </p>
                                                                     <p class="fw-bold text-uppercase">
-                                                                        {{ $data->penghasilanAyahKandung }}</p>
+                                                                        Rp. {{ number_format($data->penghasilanAyahKandung, 0, ',', '.') }}
+                                                                        </p>
                                                                 </div>
                                                                 <div>
                                                                     <p class="m-0">Nomor Telepon Ayah Kandung :
@@ -1079,7 +1120,7 @@
                                                                 <div>
                                                                     <p class="m-0">Penghasilan Ibu Kandung :</p>
                                                                     <p class="fw-bold text-uppercase">
-                                                                        {{ $data->penghasilanIbuKandung }}</p>
+                                                                        Rp. {{ number_format($data->penghasilanIbuKandung, 0, ',', '.') }}</p>
                                                                 </div>
                                                                 <div>
                                                                     <p class="m-0">Nomor Telepon Ibu Kandung :
@@ -1107,7 +1148,7 @@
                                                                 <div>
                                                                     <p class="m-0">Penghasilan Wali :</p>
                                                                     <p class="fw-bold text-uppercase">
-                                                                        {{ $data->penghasilanWali }}</p>
+                                                                        Rp. {{ number_format($data->penghasilanWali, 0, ',', '.') }}</p>
                                                                 </div>
                                                                 <div>
                                                                     <p class="m-0">Nomor Telepon Wali :</p>
@@ -1367,7 +1408,7 @@
                                             <form action="{{ route('admin.biodata.accept', $data->id) }}"
                                                 method="POST">
                                                 @csrf
-                                                <button class="btn btn-primary shadow-sm" type="button"
+                                                <button class="col btn btn-sm btn-success shadow-sm mb-2" type="button"
                                                     data-toggle="modal"
                                                     data-target="#acceptModal">Approve</button>
 
@@ -1409,10 +1450,10 @@
                                 </div>
 
                                 <!-- Reject Button-->
-                                    <div class="col">
+                                    <div class="">
                                         <form action="{{ route('admin.biodata.reject', $data->id) }}" method="POST">
                                             @csrf
-                                            <button class="btn btn-danger shadow-sm" type="button" data-toggle="modal" data-target="#rejectionModal">Reject</button>
+                                            <button class="col btn btn-sm btn-danger shadow-sm mb-2" type="button" data-toggle="modal" data-target="#rejectionModal">Reject</button>
                                             <!-- Modal for Reject Biodata -->
                                                             <div class="modal fade" id="rejectionModal" tabindex="-1"
                                                                 role="dialog" aria-labelledby="rejectionModalLabel"
@@ -1463,16 +1504,16 @@
 
             </div>
     </div>
-</div>
-</form>
-@endforeach
+    </div>
+    </form>
+    @endforeach
 
-</table>
+    </table>
 
-</div>
-</form>
+    </div>
+    </form>
 
-</div>
+    </div>
 
 </div>
 
@@ -1648,14 +1689,4 @@
 
 </div>
 
-{{-- <script>
-        function validateForm() {
-            var checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]:checked');
-            if (checkboxes.length === 0) {
-                alert("Pilih setidaknya satu pengguna.");
-                return false;
-            }
-            return true;
-        }
-    </script> --}}
 @endsection

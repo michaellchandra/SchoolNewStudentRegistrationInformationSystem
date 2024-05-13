@@ -23,13 +23,13 @@ class UsersTableSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        // Menambahkan user biasa
-        User::create([
-            'email' => 'user@mc.com',
-            'password' => Hash::make('11223344'),
-            'asalSekolah' => 'Sekolah User',
-            'asalReferensiSekolah' => 'EXPO',
-            'role' => 'user',
-        ]);
+        // // Menambahkan user biasa
+        // User::create([
+        //     'email' => 'user@mc.com',
+        //     'password' => Hash::make('11223344'),
+        //     'asalSekolah' => 'Sekolah User',
+        //     'asalReferensiSekolah' => 'EXPO',
+        //     'role' => 'user',
+        // ]);
     }
 }

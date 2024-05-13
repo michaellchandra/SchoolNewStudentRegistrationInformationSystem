@@ -293,13 +293,12 @@
                                     <h6 class="fw-bold">Provinsi Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="provinsiSekolahAsal" class="rounded-pill p-2 form-select" id="provinsi" required>
-                                        <option>Pilih Provinsi..</option>
+                                    <input type="text" name="provinsiSekolahAsal" value="{{ $biodata ? $biodata->provinsiSekolahAsal : old('provinsiSekolahAsal') }}" class="rounded-pill p-2 form-control" id="provinsiInput" list="provinsiList" required>
+                                    <datalist id="provinsiList">
                                         @foreach ($provinces as $provinsi)
-                                            <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
+                                            <option value="{{ $provinsi->name }}">
                                         @endforeach
-
-                                    </select>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -309,9 +308,12 @@
                                     <h6 class="fw-bold">Kota/Kabupaten Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota" required>
-                                        <option>Pilih Kota..</option>
-                                    </select>
+                                    <input type="text" name="kotaSekolahAsal" value="{{ $biodata ? $biodata->kotaSekolahAsal : old('kotaSekolahAsal') }}" class="rounded-pill p-2 form-control" id="kotaInput" list="kotaList" required>
+                                    <datalist id="kotaList">
+                                        @foreach ($regency as $kota)
+                                            <option value="{{ $kota->name }}">
+                                        @endforeach
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -321,10 +323,12 @@
                                     <h6 class="fw-bold">Kecamatan Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select" id="kecamatan" required>
-                                        <option>Pilih Kecamatan..</option>
-
-                                    </select>
+                                    <input type="text" name="kecamatanSekolahAsal" value="{{ $biodata ? $biodata->kecamatanSekolahAsal : old('kecamatanSekolahAsal') }}" class="rounded-pill p-2 form-control" id="kecamatanInput" list="kecamatanList" required>
+                                    <datalist id="kecamatanList">
+                                        @foreach ($districts as $kecamatan)
+                                            <option value="{{ $kecamatan->name }}">
+                                        @endforeach
+                                    </datalist>
                                 </div>
                             </div>
 

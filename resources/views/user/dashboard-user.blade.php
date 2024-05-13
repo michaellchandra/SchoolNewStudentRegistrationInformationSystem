@@ -16,7 +16,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+        @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-5 mt-5">
             <h1 class="h3 mb-0 text-dark">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
@@ -899,7 +899,7 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <h6 class="mb-3 fw-bold text-info text-end">MENUNGGU VERIFIKASI</h6>
+                                    <h6 class="mb-3 fw-bold text-success text-end">SUDAH</h6>
                                     @foreach ($payments as $payment)
                                     @if ($payment->paymentCategory === 'administrasi')
                                     <p class="fs-6">{{ $payment->updated_at_submit }}</p>
@@ -1062,15 +1062,22 @@
                 <div class="card-body">
                     <p>Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian lakukan konfirmasi
                         bukti pembayaran tombol dibawah ini.</p>
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                        <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="paymentCategory" value="formulir">
-                            <input class="form-control form-control-lg w-50 me-3" name="paymentProof" type="file">
-                            <button type="submit" class="p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm"
-                                formmethod="post"><i class="fas fa-download fa-sm text-white-50"></i>Konfirm</button>
-                        </form>
-                    </div>
+                        <div class="mb-4 mt-5">
+                            <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 align-items-center">
+                                @csrf
+                                <input type="hidden" name="paymentCategory" value="formulir">
+                                <input type="hidden" name="{{ $school->schoolBiayaFormulir ?? 'Menunggu Data' }}">
+                                
+                                <div class="col-md">
+                                    <input class="form-control form-control-lg" name="paymentProof" type="file">
+                                </div>
+                        
+                                <div class="col-md-auto">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fas fa-download fa-sm text-white-50"></i> Konfirm</button>
+                                </div>
+                            </form>
+                        </div>
+                        
                     <p>
                         *Perlu mengupload bukti pembayaran sebelum melakukan konfirmasi pembayaran
                     </p>
@@ -1164,18 +1171,19 @@
             </div>
 
             <div id="biodataSyaratKetentuan" class="card shadow mb-4">
-                <div class="card-header py-3 align-items-start">
-
-
-                    <h5 class="mb-3 fw-bold ">Syarat & Ketentuan Pendaftaran</h5>
-                    
-                        <p class="w-100">{!! nl2br(e($school->schoolSyaratKetentuanPendaftaran)) !!}</p>
-                    <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Lanjut ke
-                        Pengisian Biodata & Berkas</a>
-
-
-
+                <div class="card-header d-flex justify-content-between py-3 align-items-center">
+                    <h5 class="fw-bold ">Syarat & Ketentuan Pendaftaran</h5>
                 </div>
+                    <div class="card-body">
+                        <p class="w-100">{!! nl2br(e($school->schoolSyaratKetentuanPendaftaran)) !!}</p>
+                        <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Lanjut ke
+                            Pengisian Biodata & Berkas</a>
+                    </div>
+                      
+
+
+
+                
             </div>
         @elseif ($registrationStatus === 'Menunggu Verifikasi Biodata & Berkas')
             <div id="biodataWaitingVerification" class="card shadow mb-4">
@@ -1210,9 +1218,10 @@
                         @endforeach
                     </p>
 
-                    <p>Mohon untuk melakukan revisi berkas sebelum tanggal penutupan pendaftaran</p>
-                    <a href="/user/pengisian-biodata" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Revisi
-                        Pengisian Biodata & Berkas</a>
+                    <p>Mohon melakukan revisi berkas untuk dapat melanjutkan ke tahap berikutnya.</p>
+                    @foreach ($biodata as $data)
+                    <a href="/user/pengisian-biodata" class="btn btn-lg btn-primary w-100">Revisi Biodata & Administrasi</a>
+                    @endforeach
                 </div>
 
             </div>
@@ -1227,9 +1236,19 @@
                     <p class="fs-4 fw-bold">Terima Kasih telah melakukan pengisian Biodata & Administrasi yang dibutuhkan
                         oleh
                         sekolah.</p>
-                    <p>Mohon kesediaannya menunggu hingga Jadwal Tes telah diberikan.</p>
+                    <p>Mohon kesediaannya menunggu hingga Jadwal Tes & Hasil Tes telah diberikan.</p>
                 </div>
 
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <p class="fw-bold fs-5 text-primary m-0">Bantu Kami Menjadi Lebih Baik</p>
+                </div>
+                <div class="card-body">
+                    <p>Terima kasih telah melakukan pendaftaran, bantu kami untuk memberikan pelayanan terbaik bagi anda kedepannya dengan mengisi survey melalui tombol dibawah ini. Masukan dan kritikan anda sangat kami hargai.</p>
+                    <a href="/user/survey" class="btn btn-sm btn-primary w-100 shadow-sm p-2 fs-4">Isi Survey Disini</a>
+                    <p class="fs-6">*Abaikan jika telah mengisi survey</p>
+                </div>
             </div>
         @elseif ($registrationStatus === 'Jadwal Tes Terkonfirmasi')
             <div id="jadwalTes" class="card shadow mb-4">
@@ -1328,16 +1347,21 @@
                     <p class="mt-5">Sesuai dengan nominal tertera untuk memudahkan kami melakukan pengecekan, kemudian
                         lakukan konfirmasi
                         bukti pembayaran tombol dibawah ini.</p>
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                        <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="paymentCategory" value="administrasi">
-                            <input class="form-control form-control-lg w-50 me-3" name="paymentProof" type="file" required>
-                            <button type="submit" class="p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm"
-                                formmethod="post"><i class="fas fa-download fa-sm text-white-50"></i>Upload Bukti
-                                Pembayaran</button>
-                        </form>
-                    </div>
+                        <div class="mb-4 mt-5">
+                            <form action="{{ route('user.payment.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 align-items-center">
+                                @csrf
+                                <input type="hidden" name="paymentCategory" value="administrasi">
+                                
+                                <div class="col-md">
+                                    <input class="form-control form-control-lg" name="paymentProof" type="file" required>
+                                </div>
+                        
+                                <div class="col-md-auto mt-sm-3">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fas fa-download fa-sm text-white-50"></i> Upload Bukti Pembayaran</button>
+                                </div>
+                            </form>
+                        </div>
+                        
         
                 </div>
             </div>
@@ -1402,7 +1426,7 @@
                             <form action="{{ route('user.payment.store') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" name="paymentCategory" value="formulir">
+                                <input type="hidden" name="paymentCategory" value="administrasi">
                                 <input class="form-control form-control-lg w-50 me-3" name="paymentProof" type="file">
                                 <button type="submit" class="p-3 m-2 fs-5 btn btn-sm btn-primary shadow-sm"
                                     formmethod="post"><i class="fas fa-download fa-sm text-white-50"></i>Konfirm</button>

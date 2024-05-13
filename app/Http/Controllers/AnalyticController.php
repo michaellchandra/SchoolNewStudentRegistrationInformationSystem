@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\PivotAdminUser;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Biodata;
 
 use Illuminate\Http\Request;
 
@@ -16,7 +17,13 @@ class AnalyticController extends Controller
      */
     public function index()
     {
-        return view('admin.analytic-admin');
+        $kotaSekolahAsal = Biodata::select('kotaSekolahAsal', DB::raw('COUNT(*) as total'))
+        ->groupBy('kotaSekolahAsal')
+        ->orderByDesc('total')
+        ->limit(5)
+        ->get();
+
+        return view('admin.analytic-admin',compact('kotaSekolahAsal'));
     }
 
     /**
@@ -84,11 +91,8 @@ class AnalyticController extends Controller
 
         // Loop through each day of the week
         for ($date = $startOfWeek; $date->lte($endOfWeek); $date->addDay()) {
-            // Retrieve the number of registrations for each day
             $registrations = User::whereDate('created_at', $date)->count();
-            // Add the date as label
             $labels[] = $date->format('(D) d/m');
-            // Add the number of registrations for the day
             $data[] = $registrations;
         }
 
@@ -97,4 +101,23 @@ class AnalyticController extends Controller
             'data' => $data
         ]);
     }
+
+    public function academicYear(){
+        
+        $registrationsByYear = DB::table('registrations')
+                                ->select(DB::raw("CONCAT(YEAR(tanggalRegistrasi), '-', YEAR(tanggalRegistrasi) + 1) AS academic_year"), DB::raw('COUNT(*) AS total_registrations'))
+                                ->groupBy('academic_year') 
+                                ->orderBy('academic_year') 
+                                ->get(); 
+    
+        return response()->json($registrationsByYear);
+    }
+
+    public function topSchoolCities()
+{
+    // Query untuk menghitung jumlah pendaftar dari setiap kota asal sekolah
+    
+
+    return view('admin.analytic-admin', compact('kotaAsalSekolah'));
+}
 }

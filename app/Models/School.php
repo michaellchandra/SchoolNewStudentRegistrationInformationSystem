@@ -20,8 +20,4 @@ class School extends Model
         'schoolSyaratKetentuanPendaftaran'
     ];
 
-    // public function admin()
-    // {
-    //     return $this->hasMany(Admin::class, 'admin_id'); // Definisikan relasi dengan model Admin
-    // }
 }

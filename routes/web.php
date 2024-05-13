@@ -74,7 +74,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/payments/all',[App\Http\Controllers\PaymentController::class,'semuaPayment'])->name('admin.payments.all');
 
 
+    //Manage Akun & Pendaftar
+    Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('admin.tambahUser');
+    Route::post('/user', [App\Http\Controllers\UserController::class, 'store'])->name('admin.tambahUser.store');
+    Route::get('/user/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('admin.editUser');
+    Route::get('/user/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('admin.editUser');
+    Route::put('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('admin.updateUser');
+    Route::delete('/user/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('admin.deleteUser');
+    Route::post('/users/{user}/reset-password', [App\Http\Controllers\UserController::class, 'resetPassword'])->name('admin.resetPasswordUser');
+
     //Biodata
+    Route::get('/admin/biodata/edit/{biodata}', [App\Http\Controllers\BiodataController::class, 'edit'])->name('user.biodata.edit');
+    Route::put('/admin/biodata/update/{biodata}', [App\Http\Controllers\BiodataController::class],'update')->name('user.biodata.update');
 
     //File Berkas
     Route::get('storage/{user_id}/biodata/{filename}', [App\Http\Controllers\BiodataController::class, 'showBiodataFile'])->name('admin.biodata.file');
@@ -88,34 +99,36 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/analytic',[App\Http\Controllers\AnalyticController::class, 'index'])->name('admin.analytics');
     Route::get('/daily-registrations', [App\Http\Controllers\AnalyticController::class, 'dailyRegistrations'])->name('daily.registrations');
     Route::get('/weekly-registrations', [App\Http\Controllers\AnalyticController::class, 'weeklyRegistrations'])->name('weekly.registrations');
+    Route::get('/academic-year', [App\Http\Controllers\AnalyticController::class, 'academicYear'])->name('academic.year');
     Route::get('/download/biodata/{filename}', [App\Http\Controllers\BiodataController::class, 'downloadAdministrasi'])->name('admin.biodata.download');
-Route::get('/download-zip/{user_id}', [App\Http\Controllers\BiodataController::class, 'downloadZip'])->name('admin.biodata.downloadZip');
+
+    //Survey
+    Route::get('/admin/survey',[App\Http\Controllers\SurveyController::class, 'index'])->name('admin.survey.index');
+    Route::get('/admin/survey/tambah-survey',[App\Http\Controllers\SurveyController::class,'create'])->name('admin.survey.create');
+    Route::post('/admin/survey/store',[App\Http\Controllers\SurveyController::class, 'store'])->name('admin.survey.store');
+    Route::put('/admin/survey/{id}',[App\Http\Controllers\SurveyController::class,'update'])->name('admin.survey.update');
+    Route::delete('/admin/survey/{id}',[App\Http\Controllers\SurveyController::class,'destroy'])->name('admin.survey.destroy');
+   
 });
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
-
-    //Manage Akun & Pendaftar
-    Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('admin.tambahUser');
-    Route::post('/user', [App\Http\Controllers\UserController::class, 'store'])->name('admin.tambahUser.store');
-
-    Route::get('/user/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('admin.editUser');
-    Route::get('/user/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('admin.editUser');
-    Route::put('/user/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('admin.updateUser');
-    Route::delete('/user/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('admin.deleteUser');
-    Route::post('/users/{user}/reset-password', [App\Http\Controllers\UserController::class, 'resetPassword'])->name('admin.resetPasswordUser');
+    
 
     //User View
     Route::get('/user/pengumuman', [App\Http\Controllers\PengumumanController::class, 'index'])->name('user.pengumuman');
     Route::view('/user/pengumuman/empty','user.pengumumanEmpty-user')->name('user.pengumuman-empty');
     Route::get('/user/pengisian-biodata', [App\Http\Controllers\BiodataController::class, 'create'])->name('user.biodata.create');
     Route::post('/user/pengisian-biodata/store',[App\Http\Controllers\BiodataController::class,'store'])->name('user.biodata.store');
+    Route::post('/user/pengisian-biodata/save',[App\Http\Controllers\BiodataController::class,'saveProgress'])->name('user.biodata.save');
     Route::get('/user/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('user.payment');
     Route::post('/getKota',[App\Http\Controllers\BiodataController::class,'getKota'])->name('getKota');
     Route::post('/getKecamatan',[App\Http\Controllers\BiodataController::class,'getKecamatan'])->name('getKecamatan');
 
     //Payment
     Route::post('/user/payment/store',[App\Http\Controllers\PaymentController::class,'store'])->name('user.payment.store');
+    Route::get('/user/survey',[App\Http\Controllers\SurveyController::class, 'index'])->name('user.survey.index');
+    Route::post('/user/survey/store',[App\Http\Controllers\AnswerController::class, 'store'])->name('user.answer.store');
 
 });

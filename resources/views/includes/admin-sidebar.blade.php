@@ -25,7 +25,7 @@
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
         <a class="nav-link" href="/admin/dashboard">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-home"></i>
             <span>Dashboard</span></a>
     </li>
     <li class="nav-item active">
@@ -37,6 +37,11 @@
         <a class="nav-link" href="/admin/payment">
             <i class="fas fa-solid fa-money-bill"></i>
             <span>Pembayaran</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="/admin/survey">
+            <i class="fas fa-solid fa-poll-h"></i>
+            <span>Survey</span></a>
     </li>
     <li class="nav-item active">
         <a class="nav-link" href="/admin/analytic">

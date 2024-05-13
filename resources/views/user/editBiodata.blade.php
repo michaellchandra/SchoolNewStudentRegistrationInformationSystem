@@ -14,13 +14,14 @@
             @endif
             < Back to Dashboard</a>
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-dark">Pengisian Biodata & Berkas</h1>
+                    <h1 class="h3 mb-0 text-dark">Revisi Biodata & Berkas</h1>
                     <a href="#" class="p-2 fs-6 btn btn-sm btn-primary shadow-sm"><i
                             class="fas fa-solid fa-question  text-white-50"></i> Bantuan</a>
                 </div>
 
-                <form action="{{ route('user.biodata.store') }}"  id="biodataForm" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('user.biodata.update', $biodata->id) }}" method="PUT" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <!-- Biodata Siswa -->
                     <div class="card shadow mb-4">
                         <div class="card-header d-flex justify-content-between py-3 align-items-center">
@@ -231,7 +232,7 @@
                                     <h6 class="fw-bold">Agama Siswa*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 d-flex align-items-center justify-content-start">
-                                <select name="agamaSiswa" class="rounded-pill p-2 form-select" required>
+                                    <select name="agamaSiswa" class="rounded-pill p-2 form-select">
                                         <option value="Islam"
                                             {{ $biodata && $biodata->agamaSiswa == 'Islam' ? 'selected' : '' }}>Islam
                                         </option>
@@ -301,12 +302,17 @@
                                     <h6 class="fw-bold">Provinsi Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <input type="text" name="provinsiSekolahAsal" value="{{ $biodata ? $biodata->provinsiSekolahAsal : old('provinsiSekolahAsal') }}" class="rounded-pill p-2 form-control" id="provinsiInput" list="provinsiList" required>
-                                    <datalist id="provinsiList">
+                                    <select name="provinsiSekolahAsal" class="rounded-pill p-2 form-select"
+                                        id="provinsi">
+                                        <option>Pilih Provinsi..</option>
+
                                         @foreach ($provinces as $provinsi)
-                                            <option value="{{ $provinsi->name }}">
+                                            <option value="{{ $provinsi->id }}"
+                                                @if ($biodata->provinsiSekolahAsal == $provinsi->id) selected @endif>{{ $provinsi->name }}
+                                            </option>
                                         @endforeach
-                                    </datalist>
+
+                                    </select>
                                 </div>
                             </div>
 
@@ -316,14 +322,19 @@
                                     <h6 class="fw-bold">Kota Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <input type="text" name="kotaSekolahAsal" value="{{ $biodata ? $biodata->kotaSekolahAsal : old('kotaSekolahAsal') }}" class="rounded-pill p-2 form-control" id="kotaInput" list="kotaList" required>
-                                    <datalist id="kotaList">
+                                    <select name="kotaSekolahAsal" class="rounded-pill p-2 form-select" id="kota">
+                                        <option>Pilih Kota..</option>
                                         @foreach ($regency as $kota)
-                                            <option value="{{ $kota->name }}">
+                                            <option value="{{ $kota->id }}"
+                                                @if ($biodata->kotaSekolahAsal == $kota->id) selected @endif>{{ $kota->name }}
+                                            </option>
                                         @endforeach
-                                    </datalist>
+                                    </select>
                                 </div>
                             </div>
+
+
+                            <!-- Kecamatan Sekolah Asal -->
 
                             <!-- Kecamatan Sekolah Asal -->
                             <div class="row mb-2">
@@ -331,12 +342,15 @@
                                     <h6 class="fw-bold">Kecamatan Sekolah Asal*</h6>
                                 </div>
                                 <div class="col-12 col-md-10 justify-content-start">
-                                    <input type="text" name="kecamatanSekolahAsal" value="{{ $biodata ? $biodata->kecamatanSekolahAsal : old('kecamatanSekolahAsal') }}" class="rounded-pill p-2 form-control" id="kecamatanInput" list="kecamatanList" required>
-                                    <datalist id="kecamatanList">
-                                        @foreach ($districts as $kecamatan)
-                                            <option value="{{ $kecamatan->name }}">
+                                    <select name="kecamatanSekolahAsal" class="rounded-pill p-2 form-select"
+                                        id="kecamatan">
+                                        <option>Pilih Kecamatan..</option>
+                                        @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}"
+                                                @if ($biodata->kecamatanSekolahAsal == $district->id) selected @endif>{{ $district->name }}
+                                            </option>
                                         @endforeach
-                                    </datalist>
+                                    </select>
                                 </div>
                             </div>
 
@@ -627,7 +641,6 @@
                                     <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatPrestasi }}</p>
                                 @endif
                             </div>
-
                             <!-- Sertifikasi Bahasa -->
                             <div class="mb-3">
                                 <label for="sertifikatSertifikasi" class="form-label fw-bold">Sertifikasi Bahasa</label>
@@ -636,36 +649,13 @@
                                     <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatSertifikasi }}</p>
                                 @endif
                             </div>
-                            
-                            <button type="button" class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#confirmationModal">
-                                <i class="fas fa-download fa-sm text-white-50"></i> Submit Biodata & Berkas
-                            </button>
-                            
-                            <!-- Modal Submit Biodata & Berkas -->
-                            <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pengiriman</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah anda yakin semua berkas administrasi sudah sesuai dan lengkap?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                            <button type="submit" name="submit" class="btn btn-success">Ya, Kirim Sekarang</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            
+                            <button type="submit" name="submit"
+                                class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" formmethod="post">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Update Biodata & Administrasi
+                            </button>
 
                 </form>
-                
     </div>
     </div>
 
@@ -673,14 +663,71 @@
 
 
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{-- <script>
-        $('#saveProgressButton').click(function() {
-        $('#biodataForm input[required]').removeAttr('required');
-        $('#biodataForm textarea[required]').removeAttr('required');
-        $('#biodataForm').submit();
-    });
-    </script> --}}
-    
+        
+  
+        $(function(){
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            });
+        })
+
+        $(function(){
+            let provinsiSekolahAsal = '{{ $data->provinsiSekolahAsal ?? '' }}';
+        let kotaSekolahAsal = '{{ $data->kotaSekolahAsal ?? '' }}';
+        let kecamatanSekolahAsal = '{{ $data->kecamatanSekolahAsal ?? '' }}';
+
+        if (provinsiSekolahAsal !== '') {
+            $('#provinsi').val(provinsiSekolahAsal).change();
+        }
+
+        if (kotaSekolahAsal !== '') {
+            $('#kota').val(kotaSekolahAsal).change();
+        }
+
+        if (kecamatanSekolahAsal !== '') {
+            $('#kecamatan').val(kecamatanSekolahAsal).change();
+        }
+
+            $('#provinsi').on('change',function(){
+                let id_provinsi =$('#provinsi').val();
+
+                $.ajax({
+                    type:'POST',
+                    url:'{{ route('getKota') }}',
+                    data : {id_provinsi:id_provinsi},
+                    cache : false,
+
+                    success:function(msg){
+                        $('#kota').html(msg);
+                        
+                    },
+                    error:function(data){
+                        console.log('error', data)
+                    }
+                })
+
+            }),
+            $('#kota').on('change',function(){
+                let id_kota =$('#kota').val();
+
+                $.ajax({
+                    type:'POST',
+                    url:'{{ route('getKecamatan') }}',
+                    data : {id_kota:id_kota},
+                    cache : false,
+
+                    success:function(msg){
+                        $('#kecamatan').html(msg);
+                        
+                    },
+                    error:function(data){
+                        console.log('error', data)
+                    }
+                })
+
+            })
+
+        })
+    </script>   --}}
 @endsection

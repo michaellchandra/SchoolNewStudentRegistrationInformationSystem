@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Registration;
 use App\Models\User;
 use App\Enums\RegistrationStatus;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -31,7 +32,22 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::all();
+        $currentDate = Carbon::now();
+
+        if ($currentDate->month >= 7) {
+            $academicYearStart = $currentDate->year + 1;
+        } else {
+            $academicYearStart = $currentDate->year;
+        }
+
+        $academicYear = $academicYearStart . '-' . ($academicYearStart + 1);
+        
+        $registration = new Registration();
+        $registration->user_id = $user->id;
+        $registration->registrationStatus = RegistrationStatus::STATUS_ACCOUNT_REGISTERED;
+        $registration->tahunAjaran = $academicYear;
+        $registration->save();
     }
 
     /**

@@ -82,10 +82,8 @@ class PaymentController extends Controller
     $filename = $file->getClientOriginalName();
     $file->storeAs($directory, $filename);
 
-    // Tentukan jenis pembayaran
     $paymentCategory = $request->paymentCategory;
 
-    // Tentukan jumlah pembayaran berdasarkan kategori
     $paymentAmount = 0;
     if ($paymentCategory === 'formulir') {
         $school = School::first();
@@ -99,8 +97,11 @@ class PaymentController extends Controller
                         ->where('paymentCategory', $paymentCategory)
                         ->first();
 
-    // Jika pembayaran sudah ada, update informasi pembayaran
+
     if ($payment) {
+        
+        $paymentAmount = $paymentCategory === 'formulir' ? $school->schoolBiayaFormulir : $payment->paymentAmount;
+    
         $payment->update([
             'paymentDate' => now(),
             'paymentAmount' => $paymentAmount,
@@ -113,7 +114,7 @@ class PaymentController extends Controller
         $payment = new Payment([
             'user_id' => $user_id,
             'paymentDate' => now(),
-            'paymentAmount' => $paymentAmount,
+            'paymentAmount' => $paymentCategory === 'formulir' ? $school->schoolBiayaFormulir : $request->input('paymentAmount'),
             'paymentStatus' => 'Verifying',
             'paymentCategory' => $paymentCategory,
             'paymentProof' => $filename,
@@ -135,7 +136,7 @@ class PaymentController extends Controller
     $registration->registrationStatus = $registrationStatus;
     $registration->save();
 
-    return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
+    return redirect()->back()->with('success', 'Terima kasih, bukti pembayaran telah berhasil terkirim');
 }
 
 
@@ -196,11 +197,12 @@ class PaymentController extends Controller
         }
 
         $payment->update([
+            'paymentAmount'=> $payment->paymentAmount,
             'paymentStatus' => 'approved',
             'updated_at_accepted' => now()
         ]);
 
-        return redirect()->back()->with('success', 'Payment approved successfully!');
+        return redirect()->back()->with('success', 'Pembayaran berhasil diterima');
     }
 
     public function rejectPayment(Request $request, Payment $payment)
@@ -217,11 +219,12 @@ class PaymentController extends Controller
                 // Simpan perubahan pada setiap objek pendaftaran
                 $registration->save();
             }
-        } elseif ($payment->paymentCategory === 'administrasi') {
+        } elseif ($payment && $payment->paymentCategory === 'administrasi') {
             $request->validate([
                 'rejectionReason' => 'required|string',
-                'paymentAmount' => $payment->paymentAmount
+                // 'paymentAmount' => $payment->paymentAmount
             ]);
+        
             $registrations = $payment->user->registrations;
 
             foreach ($registrations as $registration) {
@@ -240,7 +243,7 @@ class PaymentController extends Controller
 
         ]);
 
-        return redirect()->back()->with('success', 'Payment rejected successfully!');
+        return redirect()->back()->with('success', 'Pembayaran berhasil ditolak');
     }
 
     public function showPaymentProof($paymentProof)

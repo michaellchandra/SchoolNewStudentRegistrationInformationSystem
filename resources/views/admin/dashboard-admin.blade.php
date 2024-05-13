@@ -89,7 +89,7 @@
         <div class="card shadow mb-4">
             <div class="card-header d-flex justify-content-between py-3 align-items-center">
                 <h5 class="m-0 fw-bold text-primary">Pendaftar Terbaru</h5>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Lihat Semua</a>
+                <a href="/admin/pendaftar" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Lihat Semua</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -108,7 +108,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at->format('l, d F Y H:i') }}</td>
-                                <!-- Tambahkan kolom lain sesuai kebutuhan -->
+                                
                             </tr>
                             @endforeach
                         </tbody>

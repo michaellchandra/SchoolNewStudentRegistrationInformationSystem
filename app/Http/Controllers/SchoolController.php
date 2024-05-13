@@ -124,7 +124,6 @@ class SchoolController extends Controller
         $filename = $file->getClientOriginalName();
         $directory = 'public/schoolSettings';
 
-        // Jika direktori belum ada, buat direktori baru
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory, 0777, true);
         }

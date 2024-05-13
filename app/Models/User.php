@@ -64,11 +64,11 @@ class User extends Authenticatable
     }
 
 
-    public function isAdmin()
-    {
+    // public function isAdmin()
+    // {
 
-        return $this->admin()->exists();
-    }
+    //     return $this->admin()->exists();
+    // }
 
     public function registrations()
     {
@@ -80,5 +80,9 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class, 'user_id');
     }
 
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'user_id');
+    }
     
 }

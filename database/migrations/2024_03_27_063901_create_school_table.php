@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('admin_id');
-            // $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->string('schoolNama');
             $table->string('schoolLogo')->nullable();
             $table->string('schoolDeskripsi')->nullable();

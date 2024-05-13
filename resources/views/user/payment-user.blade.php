@@ -79,7 +79,7 @@
                                 
                         </p>
                         @isset($payment)
-                            @if ($payment->paymentCategory === 'formulir')
+                            @if ($payment->paymentCategory === 'administrasi')
                                 @if ($payment->paymentProof)
                                     <a href="{{ route('payment.proof', ['user_id' => $payment->user_id, 'paymentProof' => $payment->paymentProof]) }}"
                                         target="_blank" class="btn btn-sm btn-primary w-100 shadow-sm">Lihat Bukti</a>

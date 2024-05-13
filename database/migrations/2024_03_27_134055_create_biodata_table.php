@@ -15,43 +15,43 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('biodataStatus');
+            $table->string('biodataStatus')->nullable();
             $table->string('rejectionReason')->nullable();
     
             //Data Siswa
-            $table->string('namaLengkap');
-            $table->string('jenisKelamin');
-            $table->string('nomorNIK');
-            $table->string('tempatLahir');
-            $table->date('tanggalLahir');
+            $table->string('namaLengkap')->nullable();
+            $table->string('jenisKelamin')->nullable();
+            $table->string('nomorNIK')->nullable();
+            $table->string('tempatLahir')->nullable();
+            $table->date('tanggalLahir')->nullable();
             $table->string('jumlahSaudaraKandung')->nullable();
             $table->string('jumlahSaudaraAngkat')->nullable();
-            $table->string('tinggiBadan');
-            $table->string('beratBadan');
-            $table->string('alamatSiswa');
-            $table->string('jenisTinggal');
-            $table->string('transportasiKeSekolah');
-            $table->string('agamaSiswa');
-            $table->string('nomorTeleponSiswa');
+            $table->string('tinggiBadan')->nullable();
+            $table->string('beratBadan')->nullable();
+            $table->string('alamatSiswa')->nullable();
+            $table->string('jenisTinggal')->nullable();
+            $table->string('transportasiKeSekolah')->nullable();
+            $table->string('agamaSiswa')->nullable();
+            $table->string('nomorTeleponSiswa')->nullable();
 
             //Sekolah
-            $table->string('namaSekolahAsal');
-            $table->string('alamatSekolahAsal');
-            $table->string('provinsiSekolahAsal');
-            $table->string('kotaSekolahAsal');
-            $table->string('kecamatanSekolahAsal');
+            $table->string('namaSekolahAsal')->nullable();
+            $table->string('alamatSekolahAsal')->nullable();
+            $table->string('provinsiSekolahAsal')->nullable();
+            $table->string('kotaSekolahAsal')->nullable();
+            $table->string('kecamatanSekolahAsal')->nullable();
 
             //Ibu Kandung
-            $table->string('namaIbuKandung');
-            $table->string('pekerjaanIbuKandung');
-            $table->string('penghasilanIbuKandung');
-            $table->string('nomorTeleponIbuKandung');
+            $table->string('namaIbuKandung')->nullable();
+            $table->string('pekerjaanIbuKandung')->nullable();
+            $table->string('penghasilanIbuKandung')->nullable();
+            $table->string('nomorTeleponIbuKandung')->nullable();
 
             //Ayah Kandung
-            $table->string('namaAyahKandung');
-            $table->string('pekerjaanAyahKandung');
-            $table->string('penghasilanAyahKandung');
-            $table->string('nomorTeleponAyahKandung');
+            $table->string('namaAyahKandung')->nullable();
+            $table->string('pekerjaanAyahKandung')->nullable();
+            $table->string('penghasilanAyahKandung')->nullable();
+            $table->string('nomorTeleponAyahKandung')->nullable();
 
             //Wali
             $table->string('namaWali')->nullable();
@@ -60,19 +60,19 @@ return new class extends Migration
             $table->string('nomorTeleponWali')->nullable();
 
             //Berkas
-            $table->string('berkasAktaKelahiran');
-            $table->string('berkasKartuKeluarga');
-            $table->string('berkasKTPAyahKandung');
-            $table->string('berkasKTPIbuKandung');
+            $table->string('berkasAktaKelahiran')->nullable();
+            $table->string('berkasKartuKeluarga')->nullable();
+            $table->string('berkasKTPAyahKandung')->nullable();
+            $table->string('berkasKTPIbuKandung')->nullable();
             $table->string('berkasKTPWali')->nullable();
 
             //Raport
-            $table->string('scanRaportKelas7Ganjil');
-            $table->string('scanRaportKelas7Genap');
-            $table->string('scanRaportKelas8Ganjil');
-            $table->string('scanRaportKelas8Genap');
-            $table->string('scanRaportKelas9Ganjil');
-            $table->string('scanRaportKelas9Genap');
+            $table->string('scanRaportKelas7Ganjil')->nullable();
+            $table->string('scanRaportKelas7Genap')->nullable();
+            $table->string('scanRaportKelas8Ganjil')->nullable();
+            $table->string('scanRaportKelas8Genap')->nullable();
+            $table->string('scanRaportKelas9Ganjil')->nullable();
+            $table->string('scanRaportKelas9Genap')->nullable();
 
             //Sertifikat
             $table->string('sertifikatPrestasi')->nullable();
