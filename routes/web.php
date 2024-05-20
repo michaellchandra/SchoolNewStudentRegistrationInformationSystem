@@ -40,6 +40,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/create', [App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
     Route::post('/admin/store', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
+    Route::put('/admin/{id}',[App\Http\Controllers\AdminController::class,'update'])->name('admin.update');
     Route::get('/admin/pendaftar', [App\Http\Controllers\BiodataController::class, 'index'])->name('admin.pendaftar');
     Route::get('/admin/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('admin.payment');
     Route::get('/admin/semua-akun', [App\Http\Controllers\AdminController::class, 'semuaAkun'])->name('admin.semuaUser');

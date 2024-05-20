@@ -44,7 +44,7 @@ class PengumumanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $id)
+    public function store(Request $request)
     {
         $request->validate([
             'pengumumanDetail' => 'required|string|max:255',

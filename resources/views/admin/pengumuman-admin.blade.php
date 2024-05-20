@@ -6,10 +6,8 @@
         <div class="d-flex align-items-center justify-content-between mb-5 mt-5">
             <h1 class="h3 mb-0 text-dark w-50">Pengumuman</h1>
             <div class="col d-flex justify-content-end">
-                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editPengumuman">Ubah
-                    Pengumuman</button>
-                <button type="button" class="btn btn-danger m-2" data-bs-toggle="modal"
-                    data-bs-target="#hapusPengumuman">Hapus Pengumuman</button>
+                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editPengumuman">Ubah Pengumuman</button>
+                <button type="button" class="btn btn-danger m-2" data-bs-toggle="modal" data-bs-target="#hapusPengumuman">Hapus Pengumuman</button>
 
             </div>
 

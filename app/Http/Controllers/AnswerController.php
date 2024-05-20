@@ -14,8 +14,8 @@ class AnswerController extends Controller
      */
     public function index()
     {
-
-       
+        $answer = Answer::all();
+        return view ('admin.survey-admin',compact('answer'));
     }
 
     /**
@@ -34,7 +34,8 @@ class AnswerController extends Controller
         
         $answer = new Answer();
         $answer->user_id = auth()->user()->id;
-
+        $firstSurveyId = Survey::orderBy('id')->value('id');
+        $answer->survey_id = $firstSurveyId;
         $answer->jawabanPertanyaan1 = $request->input('jawabanPertanyaan1');
         $answer->jawabanPertanyaan2 = $request->input('jawabanPertanyaan2');
         $answer->jawabanPertanyaan3 = $request->input('jawabanPertanyaan3');

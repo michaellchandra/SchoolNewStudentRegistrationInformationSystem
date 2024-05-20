@@ -89,7 +89,6 @@ class AnalyticController extends Controller
         $labels = [];
         $data = [];
 
-        // Loop through each day of the week
         for ($date = $startOfWeek; $date->lte($endOfWeek); $date->addDay()) {
             $registrations = User::whereDate('created_at', $date)->count();
             $labels[] = $date->format('(D) d/m');
@@ -115,9 +114,6 @@ class AnalyticController extends Controller
 
     public function topSchoolCities()
 {
-    // Query untuk menghitung jumlah pendaftar dari setiap kota asal sekolah
-    
-
     return view('admin.analytic-admin', compact('kotaAsalSekolah'));
 }
 }

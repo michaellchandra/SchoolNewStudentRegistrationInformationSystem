@@ -79,17 +79,15 @@ class AdminController extends Controller
         $request->validate([
             'adminNama' => 'required|string|max:255',
             'adminTelepon' => 'required|string|max:20',
-            'user_id' => 'required|exists:users,id', // Pastikan user_id ada dalam tabel users
+            'user_id' => 'required|exists:users,id', 
         ]);
-    
-
-
+        
         $user_id = $request->input('user_id');
         
         // Membuat direktori untuk menyimpan foto admin
         $directory = 'public/AdminProfile/' . $user_id;
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true); 
+            Storage::makeDirectory($directory, 0755, true); 
         }
     
         // Menyimpan file foto admin
@@ -112,7 +110,6 @@ class AdminController extends Controller
         ];
         $admin = Admin::create($adminData);
     
-        // Mengubah role user menjadi 'admin'
         $user = User::find($request->input('user_id'));
         $user->role = 'admin';
         $user->save();
@@ -140,10 +137,54 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'adminNama' => 'required|string|max:255',
+        'adminTelepon' => 'required|string|max:20',
+        'user_id' => 'required|exists:users,id', 
+    ]);
 
+    // Temukan admin yang akan diperbarui
+    $admin = Admin::findOrFail($id);
+    $user_id = $request->input('user_id');
+    
+    // Membuat direktori untuk menyimpan foto admin
+    $directory = 'public/AdminProfile/' . $user_id;
+    if (!Storage::exists($directory)) {
+        Storage::makeDirectory($directory, 0777, true);
     }
+
+    // Menyimpan file foto admin jika ada file yang diunggah
+    if ($request->hasFile('adminFoto')) {
+        $file = $request->file('adminFoto');
+        $filename = $file->getClientOriginalName();
+        $file->storeAs($directory, $filename);
+
+        // Hapus foto lama jika ada dan berbeda dengan yang baru
+        if ($admin->adminFoto && $admin->adminFoto !== $filename) {
+            Storage::delete($directory . '/' . $admin->adminFoto);
+        }
+        
+        $admin->adminFoto = $filename;
+    }
+
+    // Memperbarui data admin di database
+    $admin->adminNama = $request->input('adminNama');
+    $admin->adminTelepon = $request->input('adminTelepon');
+    $admin->user_id = $request->input('user_id');
+    $admin->save();
+
+    
+    $user = User::find($request->input('user_id'));
+    if ($user->role !== 'admin') {
+        $user->role = 'admin';
+        $user->save();
+    }
+
+    return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified resource from storage.

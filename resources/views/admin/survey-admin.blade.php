@@ -118,5 +118,57 @@
             </div>
         </div>
 
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <p class="text-primary fw-bold fs-5 d-flex align-items-center m-0">Hasil Survey</p>
+            </div>
+            <div class="card-body">
+
+            
+            @if ($answer->count() > 0)
+            <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pertanyaan 1</th>
+                        <th>Pertanyaan 2</th>
+                        <th>Pertanyaan 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($answer as $answer)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $answer->jawabanPertanyaan1 }}</td>
+                        <td>{{ $answer->jawabanPertanyaan2 }}</td>
+                        <td>{{ $answer->jawabanPertanyaan3 }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+            @else
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pertanyaan 1</th>
+                        <th>Pertanyaan 2</th>
+                        <th>Pertanyaan 3</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <td colspan="10" class="text-center">
+                        Tidak ada jawaban survey saat ini.
+                    </td>
+                </tbody>
+            </table>
+            
+            @endif
+        </div>
+    </div>
+
     </div>
 @endsection

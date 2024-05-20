@@ -39,7 +39,6 @@ class UserController extends Controller
 
         }
 
-        
         return view('user.dashboard-user', compact('users','registrationStatus','payments','biodata','school','survey'));
     }
 
@@ -118,17 +117,15 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
 
         ]);
         $user->update([
-            'name' => $request->name,
             'email' => $request->email,
 
         ]);
 
-        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Akun berhasil diperbarui.');
+        return redirect()->route('admin.pendaftar')->with('success', 'Akun berhasil diperbarui.');
     }
 
     /**

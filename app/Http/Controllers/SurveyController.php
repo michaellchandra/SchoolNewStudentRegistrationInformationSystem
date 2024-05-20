@@ -18,16 +18,19 @@ class SurveyController extends Controller
     {
         $survey = Survey::first();
         $user = Auth::user();
-        $answer= Answer::where('user_id',$user->id)->get()->last();
+        
 
         if ($user && $user->role === 'admin') {
+            $answer= Answer::all();
             if ($survey) {
-                return view('admin.survey-admin', compact('survey'));
+                return view('admin.survey-admin', compact('survey','answer'));
             } else {
                 return redirect()->route('admin.survey.create')->with('message', 'Survey belum ada, anda harus membuat survey terlebih dahulu untuk memasukkan pertanyaan.');
             }
         } elseif ($user && $user->role === 'user') {
+            $answer= Answer::where('user_id',$user->id)->get()->last();
             if ($survey) {
+                
                 if($answer){
                     return view('user.surveyAnswered-user',compact('answer'));
                 } else {

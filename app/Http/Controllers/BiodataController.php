@@ -332,7 +332,6 @@ class BiodataController extends Controller
             'updated_at_accepted' => $updated_at_accepted_formatted
         ]);
 
-        // Ambil semua registrasi untuk pengguna yang terkait dengan biodata ini
         $registrations = $biodata->user->registrations;
 
         foreach ($registrations as $registration) {
@@ -353,7 +352,7 @@ class BiodataController extends Controller
 
         return redirect()->back()->with('success', 'Biodata accepted successfully!');
     }
-
+    
     public function rejectBiodata(Request $request, Biodata $biodata)
     {
         $request->validate([
