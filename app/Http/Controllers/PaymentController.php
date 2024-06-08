@@ -69,7 +69,7 @@ class PaymentController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'paymentProof' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'paymentProof' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
     ]);
 
     $user_id = auth()->id();

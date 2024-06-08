@@ -5,8 +5,8 @@
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
             <h1 class="h3 mb-0 text-dark">Pembayaran</h1>
-            <a href="#" class="p-2 fs-6 btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-solid fa-question  text-white-50"></i> Bantuan</a>
+            {{-- <a href="#" class="p-2 fs-6 btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-solid fa-question  text-white-50"></i> Bantuan</a> --}}
         </div>
 
         <!-- Pembayaran Formulir Card -->

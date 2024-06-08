@@ -14,7 +14,6 @@
 
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow p-5">
-
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
@@ -23,21 +22,21 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav d-flex align-items-center">
-        @if($school && $school->schoolLogo)
-    <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}" alt="School Logo"
-        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
-@else
-    <img src="{{ asset('storage/assets/graduation-cap-icon.svg') }}" alt="School Logo"
-        class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
-@endif
+        @if ($school && $school->schoolLogo)
+            <img src="{{ asset('storage/schoolSettings/' . $school->schoolLogo) }}" alt="School Logo"
+                class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+        @else
+            <img src="{{ asset('storage/assets/graduation-cap-icon.svg') }}" alt="School Logo"
+                class="img-fluid img-thumbnail p-2 me-2" style="width:75px; height:75px">
+        @endif
         <li class="nav-item">
-        
+
             <p class="nav-item pt-3 m-0 text-s text-black fw-bold">Selamat Datang di Sistem Pendaftaran Siswa Baru</p>
             <p class=""> @isset($school)
-                {{ $school->schoolNama }}
-            @else
-                
-            @endisset</p>
+                    {{ $school->schoolNama }}
+                @else
+                @endisset
+            </p>
             <p class="fst-italic text-xs">Admin Panel</p>
             </p>
 

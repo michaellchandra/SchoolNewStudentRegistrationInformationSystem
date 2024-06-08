@@ -306,8 +306,8 @@ class BiodataController extends Controller
     
         $biodata = Biodata::findOrFail($id);
     
-        $biodataData['user_id'] = $user_id;
-            
+        // $biodataData['user_id'] = $user_id;
+        $biodataData['user_id'] = $biodata->user_id;
         $biodata->update($biodataData);
         
 

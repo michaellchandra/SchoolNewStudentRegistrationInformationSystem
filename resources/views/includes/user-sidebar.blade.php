@@ -9,7 +9,8 @@
         <div class="col align-items-center">
             
             <div class="row text-xs fw-lighter">School Admission System</div>
-        <div class="row text-s text-center fw-bold">@isset($school)
+        <div class="row text-s text-center fw-bold">
+        @isset($school)
             {{ $school->schoolNama }}
         @else
         
@@ -41,6 +42,19 @@
         <a class="nav-link" href="/user/survey">
             <i class="fas fa-solid fa-poll-h"></i>
             <span>Survey</span></a>
+    </li>
+
+    <li class="nav-item active">
+        @isset($school)
+        <a class="nav-link" href="tel:{{ $school->schoolTelepon }}">
+            <i class="fas fa-solid fa-question"></i>
+            <span>
+                Butuh Bantuan
+            </span>
+        </a>
+        @else
+            
+        @endisset
     </li>
 
     <!-- Sidebar Toggler (Sidebar) -->

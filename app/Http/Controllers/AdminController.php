@@ -137,53 +137,55 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-{
-    $request->validate([
-        'adminNama' => 'required|string|max:255',
-        'adminTelepon' => 'required|string|max:20',
-        'user_id' => 'required|exists:users,id', 
-    ]);
+    public function update(Request $request, $id) {
 
-    // Temukan admin yang akan diperbarui
-    $admin = Admin::findOrFail($id);
-    $user_id = $request->input('user_id');
-    
-    // Membuat direktori untuk menyimpan foto admin
-    $directory = 'public/AdminProfile/' . $user_id;
-    if (!Storage::exists($directory)) {
-        Storage::makeDirectory($directory, 0777, true);
-    }
+        //Validasi input dari form field
+        $request->validate([
+            'adminNama' => 'required|string|max:255',
+            'adminTelepon' => 'required|string|max:20',
+            'user_id' => 'required|exists:users,id', 
+        ]);
 
-    // Menyimpan file foto admin jika ada file yang diunggah
-    if ($request->hasFile('adminFoto')) {
-        $file = $request->file('adminFoto');
-        $filename = $file->getClientOriginalName();
-        $file->storeAs($directory, $filename);
-
-        // Hapus foto lama jika ada dan berbeda dengan yang baru
-        if ($admin->adminFoto && $admin->adminFoto !== $filename) {
-            Storage::delete($directory . '/' . $admin->adminFoto);
-        }
+        // Temukan admin yang akan diperbarui
+        $admin = Admin::findOrFail($id);
+        $user_id = $request->input('user_id');
         
-        $admin->adminFoto = $filename;
+        // Membuat direktori untuk menyimpan foto admin
+        $directory = 'public/AdminProfile/' . $user_id;
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory, 0777, true);
+        }
+
+        // Menyimpan file foto admin jika ada file yang di upload
+        if ($request->hasFile('adminFoto')) {
+            $file = $request->file('adminFoto');
+            $filename = $file->getClientOriginalName();
+            $file->storeAs($directory, $filename);
+
+            // Hapus foto lama jika ada dan berbeda dengan yang baru
+            if ($admin->adminFoto && $admin->adminFoto !== $filename) {
+                Storage::delete($directory . '/' . $admin->adminFoto);
+            }
+            
+            $admin->adminFoto = $filename;
+        }
+
+        // Memperbarui data admin di database
+        $admin->adminNama = $request->input('adminNama');
+        $admin->adminTelepon = $request->input('adminTelepon');
+        $admin->user_id = $request->input('user_id');
+        $admin->save();
+
+        // Mencari user_id dan lakukan update role ke 'admin'
+        $user = User::find($request->input('user_id'));
+        if ($user->role !== 'admin') {
+            $user->role = 'admin';
+            $user->save();
+        }
+
+        //Kembali ke route dengan pesan sukses
+        return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil diperbarui.');
     }
-
-    // Memperbarui data admin di database
-    $admin->adminNama = $request->input('adminNama');
-    $admin->adminTelepon = $request->input('adminTelepon');
-    $admin->user_id = $request->input('user_id');
-    $admin->save();
-
-    
-    $user = User::find($request->input('user_id'));
-    if ($user->role !== 'admin') {
-        $user->role = 'admin';
-        $user->save();
-    }
-
-    return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil diperbarui.');
-}
 
 
     /**
@@ -191,19 +193,22 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
+        // Mencari Admin sesuai ID
         $admin = Admin::findOrFail($id);
 
         // Hapus file foto admin dari storage
         $directory = 'public/AdminProfile/' . $admin->id;
         Storage::deleteDirectory($directory);
-    
+        
+        // Hapus Admin dari Database
         $admin->delete();
     
-        
+        // Menjadi user_id dari admin, mengembalikan role ke 'user'
         $user = User::find($admin->user_id);
         $user->role = 'user';
         $user->save();
-    
+        
+        // Kembali ke route dengan pesan sukses
         return redirect()->route('admin.manageAdmin')->with('success', 'Admin berhasil dihapus.');
     }
 

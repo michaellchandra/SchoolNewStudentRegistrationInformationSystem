@@ -58,18 +58,23 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
+        //Validasi input pertanyaan wajib di isi
         $request->validate([
             'pertanyaan1' => 'required|string|max:255',
-
         ]);
 
+        // Mengecek apakah sudah ada Survey yang tersimpan
         if (Survey::count() > 0) {
-
+            //Ambil Survey pertama
             $survey = Survey::first();
+
+            // Update data survey
             $survey->update($request->only('pertanyaan1', 'pertanyaan2', 'pertanyaan3'));
         } else {
+            //Jika survey belum ada, buat survey dengan input dari request
             Survey::create($request->only('pertanyaan1', 'pertanyaan2', 'pertanyaan3'));
         }
+        // Kembali ke route dengan pesan sukses
         return redirect()->route('admin.index')->with('success', 'Survey berhasil dibuat');
     }
 

@@ -134,9 +134,15 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
 
-        return redirect()->route('admin.pendaftarAdmin')->with('success', 'Data pengguna berhasil dihapus.');
+        $payments = Payment::where('user_id', $id)->get();
+        foreach ($payments as $payment) {
+            $payment->delete();
+        }
+    
+        $user->delete();
+    
+        return redirect()->route('admin.pendaftar')->with('success', 'Data pengguna berhasil dihapus.');
     }
 
 

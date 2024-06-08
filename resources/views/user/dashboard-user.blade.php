@@ -19,8 +19,8 @@
         @endif
         <div class="d-sm-flex align-items-center justify-content-between mb-5 mt-5">
             <h1 class="h3 mb-0 text-dark">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
-                    class="fas fa-warning fa-sm text-white-50"></i> Bantuan</a>
+            {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
+                    class="fas fa-warning fa-sm text-white-50"></i> Bantuan</a> --}}
         </div>
 
         <!-- Status Pendaftaran -->

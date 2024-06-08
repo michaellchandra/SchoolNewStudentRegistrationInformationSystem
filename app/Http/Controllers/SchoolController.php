@@ -40,6 +40,7 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
+        //Validasi input form sekolah
         $request->validate([
             'schoolNama' => 'required|string|max:255',
             'schoolDeskripsi' => 'required|string',
@@ -53,18 +54,20 @@ class SchoolController extends Controller
         $admin = User::where('role', 'admin')->get();
         $directory = 'public/schoolSettings';
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory, 0777, true); // Membuat direktori secara rekursif jika belum ada
+            // Membuat direktori jika belum ada
+            Storage::makeDirectory($directory, 0777, true); 
         }
-
+        // Menyimpan file sesuai dengan nama file
         $file = $request->file('schoolLogo');
         $filename = $file->getClientOriginalName();
         $file->storeAs($directory, $filename);
 
+        // Cek Permission jika bukan admin
         if (!$admin) {
             return redirect()->route('admin.school.index')->with('error', 'Anda tidak memiliki izin untuk menambahkan sekolah.');
         }
 
-        // Membuat sekolah baru dan menyimpan admin_id
+        // Membuat sekolah baru
         $school = new School([
             'schoolNama' => $request->get('schoolNama'),
             'schoolDeskripsi' => $request->get('schoolDeskripsi'),
@@ -77,9 +80,10 @@ class SchoolController extends Controller
             'schoolSyaratKetentuanPendaftaran'=> $request->get('schoolSyaratKetentuanPendaftaran')
 
         ]);
+        // Simpan data sekolah
         $school->save();
 
-        
+        //Kembali ke route dengan pesan sukses
         return redirect()->route('admin.school.index')->with('success', 'Sekolah berhasil ditambahkan.');
 
     }
@@ -156,14 +160,16 @@ class SchoolController extends Controller
      */
     public function destroy(string $id)
     {
-       
+    // Cek sekolah berdasarkan ID
     $school = School::findOrFail($id);
 
-    
+    // Hapus data Logo yang ada di storage 
     Storage::delete('public/schoolSettings/' . $school->schoolLogo);
 
+    // Hapus data sekolah dari database
     $school->delete();
 
+    // Kembali ke route dengan pesan sukses
     return redirect()->route('admin.school.index')->with('success', 'Sekolah berhasil dihapus.');
     }
 
