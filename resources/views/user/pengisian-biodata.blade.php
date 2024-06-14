@@ -517,124 +517,179 @@
                         </div>
 
                         <div class="card-body">
-
-
+                            
+                            <p class="p-0 m-0">Mohon untuk mengisi seluruh biodata dan administrasi yang dibutuhkan. Seluruh berkas yang masuk, akan kami verifikasi terlebih dahulu</p>   
+                            <p class="fw-bold text-danger">Tanda * WAJIB DI ISI</p>
+                            
                             <!-- Akta Kelahiran -->
                             <div class="mb-3">
-                                <label for="berkasAktaKelahiran" class="form-label fw-bold">Akta Kelahiran</label>
-                                <input class="form-control rounded-pill p-2" name="berkasAktaKelahiran" type="file">
-                                @if ($biodata && $biodata->berkasAktaKelahiran)
-                                    <p class="mt-2">File sebelumnya: {{ $biodata->berkasAktaKelahiran }}</p>
-                                @endif
+                                <label for="berkasAktaKelahiran" class="form-label fw-bold">Akta Kelahiran*</label>
+                                <div class="w-100">
+                                    <input class="form-control rounded-pill p-2" name="berkasAktaKelahiran" type="file">
+                                    @if ($biodata && $biodata->berkasAktaKelahiran)
+                                        <p class="mt-2">File sebelumnya: {{ $biodata->berkasAktaKelahiran }}</p>
+                                    @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
+                            
 
                             <!-- Kartu Keluarga -->
                             <div class="mb-3">
-                                <label for="berkasKartuKeluarga" class="form-label fw-bold">Kartu Keluarga</label>
+                                <label for="berkasKartuKeluarga" class="form-label fw-bold">Kartu Keluarga*</label>
                                 <input class="form-control rounded-pill p-2" name="berkasKartuKeluarga" type="file">
-                                @if ($biodata && $biodata->berkasKartuKeluarga)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->berkasKartuKeluarga)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->berkasKartuKeluarga }}</p>
-                                @endif
+                                    @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
 
                             <!-- KTP Ayah Kandung -->
                             <div class="mb-3">
-                                <label for="berkasKTPAyahKandung" class="form-label fw-bold">KTP Ayah Kandung</label>
+                                <label for="berkasKTPAyahKandung" class="form-label fw-bold">KTP Ayah Kandung*</label>
                                 <input class="form-control rounded-pill p-2" name="berkasKTPAyahKandung" type="file">
-                                @if ($biodata && $biodata->berkasKTPAyahKandung)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->berkasKTPAyahKandung)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPAyahKandung }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- KTP Ibu Kandung -->
                             <div class="mb-3">
-                                <label for="berkasKTPIbuKandung" class="form-label fw-bold">KTP Ibu Kandung</label>
+                                <label for="berkasKTPIbuKandung" class="form-label fw-bold">KTP Ibu Kandung*</label>
                                 <input class="form-control rounded-pill p-2" name="berkasKTPIbuKandung" type="file">
-                                @if ($biodata && $biodata->berkasKTPIbuKandung)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->berkasKTPIbuKandung)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPIbuKandung }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- KTP Wali -->
                             <div class="mb-3">
                                 <label for="berkasKTPWali" class="form-label fw-bold">KTP Wali</label>
                                 <input class="form-control rounded-pill p-2" name="berkasKTPWali" type="file">
-                                @if ($biodata && $biodata->berkasKTPWali)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->berkasKTPWali)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->berkasKTPWali }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 7 Ganjil -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas7Ganjil" class="form-label fw-bold">Scan Raport Kelas VII -
-                                    Semester Ganjil</label>
+                                    Semester Ganjil*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas7Ganjil"
                                     type="file">
-                                @if ($biodata && $biodata->scanRaportKelas7Ganjil)
+                                    <div class="w-100">
+                                        @if ($biodata && $biodata->scanRaportKelas7Ganjil)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas7Ganjil }}</p>
                                 @endif
+                                        <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                    </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 7 Genap -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas7Genap" class="form-label fw-bold">Scan Raport Kelas VII -
-                                    Semester Genap</label>
+                                    Semester Genap*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas7Genap" type="file">
-                                @if ($biodata && $biodata->scanRaportKelas7Genap)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->scanRaportKelas7Genap)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas7Genap }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 8 Ganjil -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas8Ganjil" class="form-label fw-bold">Scan Raport Kelas VIII -
-                                    Semester Ganjil</label>
+                                    Semester Ganjil*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas8Ganjil"
                                     type="file">
-                                @if ($biodata && $biodata->scanRaportKelas8Ganjil)
+                                    <div class="w-100">
+                                        @if ($biodata && $biodata->scanRaportKelas8Ganjil)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas8Ganjil }}</p>
                                 @endif
+                                        <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                    </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 8 Genap -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas8Genap" class="form-label fw-bold">Scan Raport Kelas VIII -
-                                    Semester Genap</label>
+                                    Semester Genap*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas8Genap" type="file">
-                                @if ($biodata && $biodata->scanRaportKelas8Genap)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->scanRaportKelas8Genap)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas8Genap }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 9 Ganjil -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas9Ganjil" class="form-label fw-bold">Scan Raport Kelas IX -
-                                    Semester Ganjil</label>
+                                    Semester Ganjil*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas9Ganjil"
                                     type="file">
-                                @if ($biodata && $biodata->scanRaportKelas9Ganjil)
-                                    <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas9Ganjil }}</p>
-                                @endif
+                                    <div class="w-100">
+                                        @if ($biodata && $biodata->scanRaportKelas9Ganjil)
+                                        <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas9Ganjil }}</p>
+                                        @endif
+                                        <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                    </div>
+                                
                             </div>
                             <!-- Scan Raport Kelas 9 Genap -->
                             <div class="mb-3">
                                 <label for="scanRaportKelas9Genap" class="form-label fw-bold">Scan Raport Kelas IX -
-                                    Semester Genap</label>
+                                    Semester Genap*</label>
                                 <input class="form-control rounded-pill p-2" name="scanRaportKelas9Genap" type="file">
-                                @if ($biodata && $biodata->scanRaportKelas9Genap)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->scanRaportKelas9Genap)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->scanRaportKelas9Genap }}</p>
-                                @endif
+                                    @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             <!-- Sertifikat Lomba Akademik/Non-Akademik -->
                             <div class="mb-3">
                                 <label for="sertifikatPrestasi" class="form-label fw-bold">Sertifikat Lomba
                                     Akademik/Non-Akademik</label>
                                 <input class="form-control rounded-pill p-2" name="sertifikatPrestasi" type="file">
-                                @if ($biodata && $biodata->sertifikatPrestasi)
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->sertifikatPrestasi)
                                     <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatPrestasi }}</p>
                                 @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
 
                             <!-- Sertifikasi Bahasa -->
                             <div class="mb-3">
                                 <label for="sertifikatSertifikasi" class="form-label fw-bold">Sertifikasi Bahasa</label>
                                 <input class="form-control rounded-pill p-2" name="sertifikatSertifikasi" type="file">
-                                @if ($biodata && $biodata->sertifikatSertifikasi)
-                                    <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatSertifikasi }}</p>
-                                @endif
+                                <div class="w-100">
+                                    @if ($biodata && $biodata->sertifikatSertifikasi)
+                                        <p class="mt-2">File sebelumnya: {{ $biodata->sertifikatSertifikasi }}</p>
+                                    @endif
+                                    <p class="text-xs">*Format file yang diterima adalah JPG, PNG, GIF, SVG</p>
+                                </div>
+                                
                             </div>
                             
                             <button type="button" class="w-100 p-3 m-2 fs-5 btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#confirmationModal">
